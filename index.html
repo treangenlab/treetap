@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>Tree Tap — the tree of life game</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f5f8f5; --paper:#ffffff; --ink:#122019; --muted:#6b7f74; --line:#b7c5bc; --soft:#e6ede8;
+    --green:#17b26a; --green-ink:#0b7a46; --orange:#ff5d38; --orange-ink:#b83b1c; --blue:#2f6bff;
+    --ease:cubic-bezier(.2,.8,.2,1);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:"Instrument Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased;overscroll-behavior:none}
+  body{overflow:hidden}
+  h1,h2,.display{font-family:"Bricolage Grotesque","Instrument Sans",sans-serif}
+
+  #stage{position:fixed;inset:0;touch-action:none;cursor:grab;background:
+    radial-gradient(circle at 50% 42%, #ffffff 0%, var(--bg) 62%)}
+  #stage.dragging{cursor:grabbing}
+  #svg{width:100%;height:100%;display:block;user-select:none;-webkit-user-select:none}
+  .edge{fill:none;stroke:var(--line);stroke-width:1.4;vector-effect:non-scaling-stroke;stroke-linecap:round}
+  .edge.path{stroke:var(--ink);stroke-width:3;opacity:1}
+  .edge.path.draw{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:draw .55s var(--ease) forwards}
+  @keyframes draw{to{stroke-dashoffset:0}}
+  .node circle{fill:#fff;stroke:var(--line);stroke-width:1.2;vector-effect:non-scaling-stroke;transition:transform .18s var(--ease);transform-box:fill-box;transform-origin:center}
+  .node.clade circle{fill:var(--soft);stroke:#9fb0a6}
+  .node.picked circle{fill:var(--orange);stroke:var(--orange);transform:scale(1.9)}
+  .node.correct circle{fill:var(--green);stroke:var(--green);transform:scale(1.9);animation:pop .5s var(--ease)}
+  .node.picked.correct circle{fill:var(--green);stroke:var(--orange);stroke-width:3;transform:scale(2.2)}
+  .node.lca circle{fill:#fff;stroke:var(--ink);stroke-width:2.5;transform:scale(1.6)}
+  @keyframes pop{0%{transform:scale(0)}60%{transform:scale(2.4)}100%{transform:scale(1.9)}}
+  .lbl{font-family:"Instrument Sans",system-ui,sans-serif;font-size:10px;fill:var(--ink);pointer-events:none;font-weight:500}
+  .lbl.picked{fill:var(--orange-ink);font-weight:600}
+  .lbl.correct{fill:var(--green-ink);font-weight:600}
+  .clbl{font-family:"Instrument Sans",system-ui,sans-serif;font-size:6.5px;fill:var(--muted);pointer-events:none;opacity:0;transition:opacity .2s}
+  .clbl.major{font-size:8px;fill:#4e6359;opacity:1;font-weight:600}
+  #view.zoomed .clbl{opacity:1}
+  .clbl.picked,.clbl.lca{opacity:1;fill:var(--ink);font-weight:600}
+  #stage.locked{cursor:default}
+
+  .chip{position:absolute;transform:translate(-50%,-130%);background:var(--ink);color:#fff;font-size:12px;font-weight:600;padding:6px 10px;border-radius:999px;pointer-events:none;white-space:nowrap;opacity:0;transition:opacity .15s}
+  .chip.on{opacity:1}
+  .chip.green{background:var(--green-ink)}
+  .chip::after{content:"";position:absolute;left:50%;bottom:-5px;width:10px;height:10px;background:inherit;transform:translateX(-50%) rotate(45deg);border-radius:2px}
+
+  .top{position:fixed;top:0;left:0;right:0;padding:calc(10px + env(safe-area-inset-top)) 12px 0;display:flex;align-items:center;gap:10px;pointer-events:none}
+  .top > *{pointer-events:auto}
+  .pill{background:var(--paper);border-radius:999px;box-shadow:0 2px 10px rgba(18,32,25,.08),0 0 0 1px rgba(18,32,25,.05);padding:8px 12px;display:flex;align-items:center;gap:8px;font-weight:600;font-size:13px}
+  .brand{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:15px;letter-spacing:-.01em}
+  .dots{display:flex;gap:4px}
+  .dots i{width:16px;height:6px;border-radius:3px;background:var(--soft);transition:background .2s}
+  .dots i.now{background:var(--orange)} .dots i.done{background:var(--green)} .dots i.done.miss{background:#f3c26b}
+  .timer{margin-left:auto;font-variant-numeric:tabular-nums;min-width:74px;justify-content:center;position:relative;overflow:hidden}
+  .timer .bar{position:absolute;left:0;bottom:0;height:3px;background:var(--green);width:100%;transition:width .2s linear}
+  .timer.low{color:var(--orange-ink)} .timer.low .bar{background:var(--orange)}
+  .icon{width:38px;height:38px;padding:0;justify-content:center;border:0;cursor:pointer;font-size:16px}
+
+  .sheet{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;pointer-events:none}
+  .sheet > .inner{pointer-events:auto;width:100%;max-width:520px;margin:0 8px;background:var(--paper);border-radius:22px 22px 0 0;box-shadow:0 -6px 30px rgba(18,32,25,.12),0 0 0 1px rgba(18,32,25,.05);padding:14px 18px calc(14px + env(safe-area-inset-bottom));transition:transform .3s var(--ease)}
+  .sheet.hide > .inner{transform:translateY(120%)}
+  .lvl{font-size:12px;color:var(--muted);font-weight:600;margin:0 0 4px}
+  .oname{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:28px;line-height:1;margin:0;letter-spacing:-.02em}
+  .oname i{font-family:"Instrument Sans",sans-serif;font-style:italic;font-weight:400;font-size:14px;color:var(--muted);margin-left:8px;letter-spacing:0}
+  .blurb{margin:6px 0 10px;font-size:14px;line-height:1.4;color:#3c4f46;max-width:56ch}
+  .status{font-size:14px;line-height:1.4;margin:0 0 10px;min-height:20px}
+  .status b{color:var(--orange-ink)} .status .ok{color:var(--green-ink);font-weight:600} .status .path{color:var(--muted)}
+  .go{width:100%;border:0;border-radius:14px;padding:15px;font:700 16px "Bricolage Grotesque",sans-serif;background:var(--ink);color:#fff;cursor:pointer;transition:transform .12s var(--ease),background .15s}
+  .go:active{transform:scale(.98)}
+  .go.orange{background:var(--orange)} .go.green{background:var(--green)}
+  .go:disabled{background:var(--soft);color:var(--muted);cursor:default}
+  .go:focus-visible,.icon:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+
+  .overlay{position:fixed;inset:0;background:rgba(245,248,245,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
+  .overlay.on{opacity:1;pointer-events:auto}
+  .card{width:100%;max-width:520px;background:var(--paper);border-radius:24px 24px 0 0;padding:22px 20px calc(18px + env(safe-area-inset-bottom));max-height:92dvh;overflow:auto;box-shadow:0 -10px 40px rgba(18,32,25,.15);transform:translateY(30px);transition:transform .3s var(--ease)}
+  .overlay.on .card{transform:none}
+  .big{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:76px;line-height:.95;letter-spacing:-.04em;margin:0}
+  .big small{font-size:15px;font-weight:600;font-family:"Instrument Sans",sans-serif;color:var(--muted);letter-spacing:0;margin-left:8px}
+  .rank{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:22px;margin:10px 0 2px}
+  .sub{color:var(--muted);font-size:14px;line-height:1.45;margin:0 0 16px}
+  .pips{font-size:22px;letter-spacing:2px;margin-bottom:14px}
+  .rr{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:10px 12px;border-radius:14px;background:var(--bg);margin-bottom:6px}
+  .rr .n{font-weight:600;font-size:15px} .rr .w{font-size:12.5px;color:var(--muted);margin-top:2px} .rr .w span{color:var(--ink)}
+  .rr .d{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:26px;min-width:2ch;text-align:right}
+  .rr .d.z{color:var(--green-ink)}
+  .row{display:flex;gap:8px;margin-top:14px}
+  .row .go{flex:1}
+  .go.ghost{background:var(--soft);color:var(--ink)}
+  .toast{position:fixed;left:50%;bottom:calc(var(--sheetH,200px) + 14px);transform:translate(-50%,10px);background:var(--ink);color:#fff;padding:10px 14px;border-radius:999px;font-size:13px;font-weight:600;opacity:0;transition:.2s;pointer-events:none;z-index:9}
+  .toast.on{opacity:1;transform:translate(-50%,0)}
+  .hidden{display:none}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<div id="stage">
+  <svg id="svg" aria-label="Circular tree of life. Drag to pan, pinch or scroll to zoom, tap a branch to place the organism."><g id="view"></g></svg>
+  <div class="chip" id="chip"></div>
+</div>
+
+<div class="top">
+  <div class="pill"><span class="brand">Tree Tap</span><span class="dots" id="dots"></span></div>
+  <div class="pill timer" id="timer"><span id="tval">1:00</span><span class="bar" id="tbar"></span></div>
+  <button class="pill icon" id="fit" title="Fit whole tree" aria-label="Fit whole tree">⤢</button>
+</div>
+
+<div class="sheet" id="sheet"><div class="inner">
+  <p class="lvl" id="lvl"></p>
+  <h2 class="oname" id="oname"></h2>
+  <p class="blurb" id="blurb"></p>
+  <p class="status" id="status"></p>
+  <button class="go" id="go" disabled>Tap a branch to place it</button>
+</div></div>
+
+<div class="overlay" id="overlay"><div class="card" id="card"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ================= TREE =================
+const T = ["Life",[
+ ["Bacteria",[["Cyanobacteria"],["E. coli & relatives"],["Bacillus & lactobacilli"],["Streptomyces & relatives"],["Spirochaetes"]]],
+ ["Archaea",[["Methanogens & halophiles"],["Thermophilic archaea"],["Asgard archaea"]]],
+ ["Eukaryotes",[
+  ["Excavates",[["Euglena & trypanosomes"],["Giardia & relatives"]]],
+  ["SAR supergroup",[
+    ["Rhizarians",[["Forams & radiolarians"]]],
+    ["Stramenopiles",[["Diatoms"],["Kelp & brown algae"],["Water moulds"]]],
+    ["Alveolates",[["Ciliates"],["Dinoflagellates"],["Apicomplexans"]]]]],
+  ["Haptophytes",[["Coccolithophores"]]],
+  ["Archaeplastids",[
+    ["Red algae"],
+    ["Green plants",[
+      ["Chlorophyte green algae"],
+      ["Streptophytes",[
+        ["Charophyte green algae"],
+        ["Land plants",[
+          ["Liverworts"],["Mosses"],["Hornworts"],
+          ["Vascular plants",[
+            ["Clubmosses"],
+            ["Euphyllophytes",[
+              ["Ferns & horsetails"],
+              ["Seed plants",[
+                ["Gymnosperms",[["Cycads"],["Ginkgo"],["Conifers"],["Gnetophytes"]]],
+                ["Flowering plants",[
+                  ["Water lilies"],["Magnolias & laurels"],
+                  ["Monocots",[["Grasses"],["Orchids"],["Palms"],["Lilies & onions"]]],
+                  ["Eudicots",[["Buttercups & poppies"],["Cacti & carnations"],["Roses, beans & oaks"],["Sunflowers, mints & tomatoes"]]]]]]]]]]]]]]]]]]],
+  ["Amoebozoans",[["Amoebas"],["Slime moulds"]]],
+  ["Opisthokonts",[
+    ["Fungi",[["Chytrids"],["Bread moulds"],["Mycorrhizal fungi"],
+      ["Dikarya",[
+        ["Sac fungi",[["Yeasts"],["Penicillium & moulds"],["Truffles & morels"]]],
+        ["Club fungi",[["Mushrooms"],["Rusts & smuts"]]]]]]],
+    ["Choanoflagellates"],
+    ["Animals",[
+      ["Sponges"],["Comb jellies"],["Placozoans"],
+      ["Cnidarians",[["Jellyfish"],["Corals & anemones"],["Hydras"]]],
+      ["Bilaterians",[
+        ["Protostomes",[
+          ["Ecdysozoans",[
+            ["Roundworms"],["Tardigrades"],["Velvet worms"],
+            ["Arthropods",[
+              ["Chelicerates",[["Horseshoe crabs"],["Spiders"],["Scorpions"],["Mites & ticks"]]],
+              ["Myriapods",[["Centipedes"],["Millipedes"]]],
+              ["Pancrustaceans",[
+                ["Crabs, shrimp & lobsters"],["Barnacles"],["Copepods"],["Krill"],
+                ["Insects",[["Dragonflies"],["Grasshoppers & crickets"],["True bugs & aphids"],
+                  ["Insects with metamorphosis",[["Beetles"],["Butterflies & moths"],["Flies & mosquitoes"],["Bees, wasps & ants"]]]]]]]]]]],
+          ["Lophotrochozoans",[
+            ["Flatworms"],["Rotifers"],["Bryozoans"],["Brachiopods"],
+            ["Annelids",[["Earthworms"],["Leeches"],["Bristle worms"]]],
+            ["Molluscs",[["Chitons"],["Snails & slugs"],["Clams, mussels & oysters"],["Octopus, squid & nautilus"]]]]]]],
+        ["Deuterostomes",[
+          ["Echinoderms",[["Sea lilies"],["Starfish"],["Brittle stars"],["Sea urchins"],["Sea cucumbers"]]],
+          ["Acorn worms"],
+          ["Chordates",[
+            ["Lancelets"],["Sea squirts"],
+            ["Vertebrates",[
+              ["Hagfish"],["Lampreys"],
+              ["Jawed vertebrates",[
+                ["Cartilaginous fish",[["Sharks & rays"],["Chimaeras"]]],
+                ["Bony vertebrates",[
+                  ["Ray-finned fish",[["Sturgeons & paddlefish"],["Gars & bowfin"],["Teleost fish"]]],
+                  ["Lobe-finned lineage",[
+                    ["Coelacanths"],["Lungfish"],
+                    ["Tetrapods",[
+                      ["Amphibians",[["Frogs & toads"],["Salamanders & newts"],["Caecilians"]]],
+                      ["Amniotes",[
+                        ["Mammals",[["Monotremes"],
+                          ["Therians",[["Marsupials"],
+                            ["Placentals",[
+                              ["Sloths & armadillos"],["Elephants, manatees & aardvarks"],
+                              ["Boreoeutherians",[
+                                ["Euarchontoglires",[["Primates"],["Rodents"],["Rabbits & hares"]]],
+                                ["Laurasiatherians",[["Bats"],["Carnivorans"],["Even-toed ungulates & whales"],["Horses, rhinos & tapirs"]]]]]]]]]]],
+                        ["Reptiles",[
+                          ["Turtles"],
+                          ["Lepidosaurs",[["Tuatara"],["Squamates",[["Lizards"],["Snakes"]]]]],
+                          ["Archosaurs",[["Crocodilians"],
+                            ["Birds",[["Ostriches & kiwis"],
+                              ["Neognath birds",[["Ducks, chickens & pheasants"],
+                                ["Neoaves",[["Penguins"],["Hawks & eagles"],["Parrots"],["Songbirds"]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]];
+
+const MAJOR = new Set(["Bacteria","Archaea","Eukaryotes","Land plants","Flowering plants","Fungi","Animals","Arthropods","Insects","Molluscs","Vertebrates","Mammals","Reptiles","Birds","Placentals","Echinoderms","Chordates","Cnidarians"]);
+
+// ================= ORGANISMS =================
+const O = (name,sci,blurb,leaf)=>({name,sci,blurb,leaf});
+const POOLS = [
+ [ O("Dog","Canis familiaris","Furry, warm-blooded, born live, nursed on milk. Descended from wolves.","Carnivorans"),
+   O("Honeybee","Apis mellifera","Six legs, four wings, a stinger, and a colony to feed.","Bees, wasps & ants"),
+   O("Rose","Rosa","Thorny stems and petals that exist to lure pollinators.","Roses, beans & oaks"),
+   O("Common frog","Rana temporaria","Starts as a gilled tadpole, ends up breathing through lungs and moist skin.","Frogs & toads"),
+   O("Chicken","Gallus gallus","Feathered, warm-blooded, lays hard-shelled eggs. A living dinosaur.","Ducks, chickens & pheasants"),
+   O("Button mushroom","Agaricus bisporus","The fruiting body of an underground network. Drops spores from gills.","Mushrooms"),
+   O("Human","Homo sapiens","Upright, big-brained, opposable thumbs. You.","Primates"),
+   O("Monarch butterfly","Danaus plexippus","Scaled wings, a coiled straw for a mouth, and a caterpillar past.","Butterflies & moths"),
+   O("Brown rat","Rattus norvegicus","Ever-growing front teeth and a talent for living anywhere.","Rodents"),
+   O("Ladybird","Coccinellidae","Hard wing cases hide the flying wings underneath.","Beetles"),
+   O("Atlantic salmon","Salmo salar","A bony fish with fins on thin rays. Hatches in rivers, grows at sea.","Teleost fish") ],
+ [ O("Red kangaroo","Osphranter rufus","Born the size of a jellybean and finishes developing in a pouch.","Marsupials"),
+   O("Common octopus","Octopus vulgaris","Eight arms, three hearts, a beak. Cousin of snails and clams.","Octopus, squid & nautilus"),
+   O("American lobster","Homarus americanus","Armoured, ten-legged, gilled. Related to crabs and shrimp.","Crabs, shrimp & lobsters"),
+   O("Tarantula","Theraphosidae","Eight legs, no antennae, fangs. Not an insect.","Spiders"),
+   O("Scots pine","Pinus sylvestris","Needles, resin, and seeds on the scales of a cone. No flowers, ever.","Conifers"),
+   O("Great white shark","Carcharodon carcharias","A skeleton of cartilage, sandpaper skin, teeth on a conveyor belt.","Sharks & rays"),
+   O("Earthworm","Lumbricus terrestris","A body of repeating ring-like segments. Cousin of leeches.","Earthworms"),
+   O("Moon jellyfish","Aurelia aurita","Radially symmetric, no brain, stinging cells.","Jellyfish"),
+   O("Green sea turtle","Chelonia mydas","A shell fused to its ribs, scaly skin, eggs laid on beaches.","Turtles"),
+   O("Emperor penguin","Aptenodytes forsteri","Feathers for insulation, wings for swimming.","Penguins"),
+   O("Bottlenose dolphin","Tursiops truncatus","Air-breathing, milk-producing, and descended from hoofed land mammals.","Even-toed ungulates & whales"),
+   O("Maize","Zea mays","A tall grass whose wind-pollinated flowers become the cob.","Grasses"),
+   O("African elephant","Loxodonta africana","Trunk, tusks, and a lineage that shares roots with manatees.","Elephants, manatees & aardvarks"),
+   O("Rattlesnake","Crotalus","Legless, scaled, venomous, with heat-sensing pits.","Snakes"),
+   O("Sunflower","Helianthus annuus","One 'flower' that is actually hundreds of tiny ones packed together.","Sunflowers, mints & tomatoes"),
+   O("Fruit bat","Pteropus","The only mammal with true powered flight.","Bats") ],
+ [ O("Starfish","Asteroidea","Five-fold symmetry, hydraulic tube feet, and a surprisingly close relationship to you.","Starfish"),
+   O("Bracken fern","Pteridium aquilinum","Has veins to move water, but spreads by spores, not seeds.","Ferns & horsetails"),
+   O("Baker's yeast","Saccharomyces cerevisiae","A single cell that ferments sugar into alcohol and CO₂.","Yeasts"),
+   O("Nile crocodile","Crocodylus niloticus","Armoured, cold-blooded, and closer to birds than to lizards.","Crocodilians"),
+   O("Komodo dragon","Varanus komodoensis","A giant scaled predator with a forked tongue and venom glands.","Lizards"),
+   O("Sphagnum moss","Sphagnum","No roots, no true veins, no seeds. Builds bogs.","Mosses"),
+   O("Bath sponge","Spongia officinalis","An animal with no organs, no nerves and no mouth.","Sponges"),
+   O("Staghorn coral","Acropora","A colony of stinging polyps that builds a limestone skeleton.","Corals & anemones"),
+   O("Barnacle","Cirripedia","Glued head-down to a rock, kicking food into its mouth with its legs.","Barnacles"),
+   O("Garden snail","Cornu aspersum","A rasping tongue, a coiled shell and a muscular foot.","Snails & slugs"),
+   O("Scallop","Pectinidae","Two hinged shells, dozens of tiny blue eyes, and a jet-propelled escape.","Clams, mussels & oysters"),
+   O("Mosquito","Culicidae","Two wings only; the second pair became balancing knobs.","Flies & mosquitoes"),
+   O("Aphid","Aphidoidea","A piercing straw for a mouth. Can be born already pregnant.","True bugs & aphids"),
+   O("House centipede","Scutigera coleoptrata","One pair of legs per segment and venomous front claws.","Centipedes"),
+   O("Three-toed sloth","Bradypus","Hangs upside down, hosts algae in its fur, related to armadillos.","Sloths & armadillos"),
+   O("Coconut palm","Cocos nucifera","No true wood, no branches, parallel-veined leaves.","Palms"),
+   O("Saguaro cactus","Carnegiea gigantea","Leaves reduced to spines; the green stem does the photosynthesis.","Cacti & carnations"),
+   O("E. coli","Escherichia coli","No nucleus, a single circular chromosome, divides every 20 minutes.","E. coli & relatives"),
+   O("Dragonfly","Anisoptera","Wings that don't fold, huge eyes, and a nymph stage underwater.","Dragonflies") ],
+ [ O("Platypus","Ornithorhynchus anatinus","Fur and milk, but it lays eggs. Venomous spur on the hind leg.","Monotremes"),
+   O("Giant kelp","Macrocystis pyrifera","Grows half a metre a day. Looks like a plant. Isn't one.","Kelp & brown algae"),
+   O("Sea lamprey","Petromyzon marinus","A backbone but no jaws: a round sucker mouth ringed with teeth.","Lampreys"),
+   O("C. elegans","Caenorhabditis elegans","A transparent 1 mm worm with exactly 959 body cells. Unsegmented.","Roundworms"),
+   O("Nori seaweed","Pyropia","Wrapped around sushi. Photosynthetic, multicellular, and not green.","Red algae"),
+   O("Paramecium","Paramecium caudatum","One slipper-shaped cell covered in beating hairs, with two kinds of nucleus.","Ciliates"),
+   O("Malaria parasite","Plasmodium falciparum","A single-celled parasite that carries the remnant of a chloroplast.","Apicomplexans"),
+   O("Slime mould","Physarum polycephalum","One giant cell with millions of nuclei that can solve mazes.","Slime moulds"),
+   O("Horseshoe crab","Limulus polyphemus","Blue blood, a spiked tail, 450 million years of history. Not a crab.","Horseshoe crabs"),
+   O("Sea cucumber","Holothuroidea","A leathery tube with five-fold symmetry hidden inside.","Sea cucumbers"),
+   O("Sea lettuce","Ulva lactuca","Bright green, two cells thick, closer to oaks than to kelp.","Chlorophyte green algae"),
+   O("Manatee","Trichechus","A slow aquatic grazer whose nearest land relatives have trunks.","Elephants, manatees & aardvarks"),
+   O("Ginkgo","Ginkgo biloba","Fan-shaped leaves, fleshy seeds, and no living relatives at all.","Ginkgo"),
+   O("Deer tick","Ixodes scapularis","Eight legs, no antennae, a taste for blood.","Mites & ticks"),
+   O("Antarctic krill","Euphausia superba","A shrimp-like swarmer that feeds the whales.","Krill"),
+   O("Tapeworm","Taenia","Flat, unsegmented in origin, no gut, no body cavity.","Flatworms"),
+   O("Hydra","Hydra vulgaris","A freshwater polyp with stinging tentacles that never seems to age.","Hydras"),
+   O("Ostrich","Struthio camelus","A flightless bird with a flat breastbone and a very old lineage.","Ostriches & kiwis"),
+   O("Beluga sturgeon","Huso huso","Bony plates, a cartilage-heavy skeleton, and caviar.","Sturgeons & paddlefish"),
+   O("Caecilian","Gymnophiona","A limbless, burrowing amphibian that looks like a worm.","Caecilians"),
+   O("Black rhinoceros","Diceros bicornis","Odd number of toes, thick skin, and horns of keratin.","Horses, rhinos & tapirs"),
+   O("Red-tide dinoflagellate","Karenia brevis","A whirling single cell with two flagella that can glow at night.","Dinoflagellates"),
+   O("Comb jelly","Ctenophora","Rows of beating cilia refract light into rainbows. Not a jellyfish.","Comb jellies") ],
+ [ O("Tardigrade","Hypsibius exemplaris","Eight stubby legs, a moulting cuticle, survives vacuum. Not an arthropod.","Tardigrades"),
+   O("Coelacanth","Latimeria chalumnae","Fleshy, limb-like fins. Thought extinct until 1938.","Coelacanths"),
+   O("Sea squirt","Ciona intestinalis","Its larva has a notochord and a tail. Then it glues down and eats its own brain.","Sea squirts"),
+   O("Black truffle","Tuber melanosporum","Spores form in sacs, not on gills, and spread by being eaten.","Truffles & morels"),
+   O("Echidna","Tachyglossus aculeatus","Spiny, ant-eating, warm-blooded, hatched from a soft egg.","Monotremes"),
+   O("Hagfish","Myxine glutinosa","Jawless, nearly blind, fills a bucket with slime in seconds.","Hagfish"),
+   O("Diatom","Bacillariophyceae","A single photosynthetic cell in a glass shell.","Diatoms"),
+   O("Gut methanogen","Methanobrevibacter smithii","No nucleus, but a cell chemistry unlike any bacterium.","Methanogens & halophiles"),
+   O("Tuatara","Sphenodon punctatus","Lizard-like, with a third eye. Split from lizards 250 million years ago.","Tuatara"),
+   O("Toxoplasma","Toxoplasma gondii","A single-celled parasite that breeds in cats and infects a third of humans.","Apicomplexans"),
+   O("Spirulina","Arthrospira platensis","Photosynthetic, sold as a powder, ancestor of every chloroplast.","Cyanobacteria"),
+   O("Lancelet","Branchiostoma","A fish-shaped animal with a notochord but no skull, no bones, no brain to speak of.","Lancelets"),
+   O("Velvet worm","Peripatus","Soft, many-legged, sprays glue at prey. Sister to arthropods.","Velvet worms"),
+   O("Acorn worm","Enteropneusta","A burrowing marine worm with gill slits.","Acorn worms"),
+   O("Ratfish","Hydrolagus colliei","Cartilage skeleton, but its upper jaw is fused to the skull.","Chimaeras"),
+   O("Alligator gar","Atractosteus spatula","Armoured scales, a lung-like bladder, an ancient ray-finned line.","Gars & bowfin"),
+   O("Australian lungfish","Neoceratodus forsteri","Breathes air with a true lung. Your closest living fish relative.","Lungfish"),
+   O("Liverwort","Marchantia","A flat green thallus, no veins, reproduces by splashed sperm.","Liverworts"),
+   O("Foraminiferan","Foraminifera","A single cell in a chambered shell. Their fossils build chalk cliffs.","Forams & radiolarians"),
+   O("Euglena","Euglena gracilis","Swims with a whip, eats, and photosynthesises. Neither plant nor animal.","Euglena & trypanosomes"),
+   O("Trichoplax","Trichoplax adhaerens","A flat blob of a few thousand cells; the simplest known animal.","Placozoans"),
+   O("Choanoflagellate","Monosiga brevicollis","A collared single cell that looks just like a sponge's feeding cell.","Choanoflagellates"),
+   O("Coccolithophore","Emiliania huxleyi","A single cell armoured in chalk plates; turns whole seas milky.","Coccolithophores"),
+   O("Lamp shell","Brachiopoda","Two shells like a clam, but top and bottom rather than left and right.","Brachiopods"),
+   O("Sea lily","Crinoidea","A feathery filter feeder on a stalk; a relative of starfish.","Sea lilies"),
+   O("Wheat rust","Puccinia graminis","A fungus with five spore types and two host plants.","Rusts & smuts"),
+   O("Potato blight","Phytophthora infestans","Grows like a fungus, but is closer to kelp.","Water moulds"),
+   O("Welwitschia","Welwitschia mirabilis","Two leaves that grow for a thousand years. Cones, not flowers.","Gnetophytes"),
+   O("Stonewort","Chara","A green alga with a body plan closest to land plants.","Charophyte green algae"),
+   O("Lokiarchaeon","Lokiarchaeota","A deep-sea microbe that is the closest microbial cousin to all eukaryotes.","Asgard archaea"),
+   O("Magnolia","Magnolia grandiflora","Flowers with no clear petals or sepals, pollinated by beetles.","Magnolias & laurels"),
+   O("Chytrid fungus","Batrachochytrium dendrobatidis","A fungus with swimming spores. Devastates frogs.","Chytrids") ]
+];
+const LEVELS = ["Round 1 · warm-up","Round 2 · familiar","Round 3 · trickier","Round 4 · hard","Round 5 · expert"];
+const ROUND_SECONDS = 60;
+
+// ================= GRAPH + LAYOUT =================
+const nodes=[], leaves=[], byName={};
+function build(a,parent,depth){const n={name:a[0],parent,depth,children:[]};nodes.push(n);byName[n.name]=n;
+  if(a[1]) n.children=a[1].map(c=>build(c,n,depth+1)); else leaves.push(n); return n;}
+const root=build(T,null,0);
+function height(n){ n.h = n.children.length ? 1+Math.max(...n.children.map(height)) : 0; return n.h; }
+height(root); const MAXH=root.h;
+const R=300, N=leaves.length;
+leaves.forEach((l,i)=>{ l.i=i; l.a=-Math.PI/2 + i*2*Math.PI/N; });
+function span(n){ if(!n.children.length){n.lo=n.hi=n.i;return;} n.children.forEach(span); n.lo=n.children[0].lo; n.hi=n.children[n.children.length-1].hi; n.a=-Math.PI/2+((n.lo+n.hi)/2)*2*Math.PI/N; }
+span(root);
+nodes.forEach(n=>{ n.r = n===root?0:R*Math.pow((MAXH-n.h)/MAXH,.7); n.x=n.r*Math.cos(n.a); n.y=n.r*Math.sin(n.a); });
+const ancestors=n=>{const a=[];while(n){a.push(n);n=n.parent;}return a;};
+function pathBetween(a,b){const A=new Set(ancestors(a));let l=b;while(!A.has(l))l=l.parent;const up=[],down=[];for(let n=a;n!==l;n=n.parent)up.push(n);for(let n=b;n!==l;n=n.parent)down.push(n);return{lca:l,up,down,dist:up.length+down.length};}
+
+const view=document.getElementById("view");
+const ns="http://www.w3.org/2000/svg";
+const el=(t,attrs)=>{const e=document.createElementNS(ns,t);for(const k in attrs)e.setAttribute(k,attrs[k]);return e;};
+function render(){
+  view.innerHTML="";
+  const gE=el("g",{}),gN=el("g",{}),gL=el("g",{});
+  nodes.forEach(n=>{ if(!n.parent) return;
+    const p=n.parent; let d;
+    if(p.r===0) d=`M0 0 L${n.x} ${n.y}`;
+    else{ const sx=p.r*Math.cos(n.a), sy=p.r*Math.sin(n.a); const sweep=n.a>p.a?1:0;
+      d=`M${p.x} ${p.y} A${p.r} ${p.r} 0 0 ${sweep} ${sx} ${sy} L${n.x} ${n.y}`; }
+    const e=el("path",{class:"edge",d,"data-edge":n.name}); n.edge=e; gE.appendChild(e); });
+  nodes.forEach(n=>{
+    const g=el("g",{class:"node"+(n.children.length?" clade":""),"data-name":n.name});
+    g.appendChild(el("circle",{cx:n.x,cy:n.y,r:n.children.length?2.6:3.2})); n.g=g; gN.appendChild(g);
+    const deg=n.a*180/Math.PI, left=Math.cos(n.a)<0;
+    if(!n.children.length){
+      const t=el("text",{class:"lbl",transform:`rotate(${left?deg+180:deg})`,x:left?-(R+8):R+8,y:3.5,"text-anchor":left?"end":"start"}); t.textContent=n.name; n.lbl=t; gL.appendChild(t);
+    } else if(n!==root){
+      const t=el("text",{class:"clbl"+(MAJOR.has(n.name)?" major":""),transform:`rotate(${left?deg+180:deg})`,x:left?-(n.r-6):n.r-6,y:2.5,"text-anchor":left?"start":"end"}); t.textContent=n.name; n.lbl=t; gL.appendChild(t);
+    }
+  });
+  view.append(gE,gN,gL);
+}
+render();
+
+// ================= PAN / ZOOM =================
+const stage=document.getElementById("stage"), svg=document.getElementById("svg"), chip=document.getElementById("chip");
+let W=0,H=0,s=1,tx=0,ty=0, raf=null;
+function size(){W=stage.clientWidth;H=stage.clientHeight;svg.setAttribute("viewBox",`0 0 ${W} ${H}`);}
+function apply(){ if(raf) return; raf=requestAnimationFrame(()=>{raf=null;
+  view.setAttribute("transform",`translate(${W/2+tx} ${H/2+ty}) scale(${s})`);
+  view.classList.toggle("zoomed",s>1.5); placeChip(); }); }
+function sheetH(){ const sh=document.getElementById("sheet"); return sh.classList.contains("hide")?0:sh.offsetHeight; }
+function fit(){ size(); const Hv=H-sheetH()-60; const target=Math.min(W-10,Hv)/(2*(R+95)); s=target; tx=0; ty=-sheetH()/2+30; apply(); }
+function zoomTo(node,scale){ s=scale; tx=-node.x*s; ty=-node.y*s+ (H*0.12); apply(); }
+function toWorld(cx,cy){const b=stage.getBoundingClientRect();return{x:(cx-b.left-W/2-tx)/s,y:(cy-b.top-H/2-ty)/s};}
+function toScreen(x,y){return{x:W/2+tx+x*s,y:H/2+ty+y*s};}
+window.addEventListener("resize",()=>{size();apply();});
+
+const ptrs=new Map(); let start=null, pinch=null;
+stage.addEventListener("pointerdown",e=>{ stage.setPointerCapture(e.pointerId); ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(ptrs.size===1){ start={x:e.clientX,y:e.clientY,tx,ty,t:Date.now(),moved:false}; }
+  if(ptrs.size===2){ const [a,b]=[...ptrs.values()]; pinch={d:Math.hypot(a.x-b.x,a.y-b.y),s,mid:{x:(a.x+b.x)/2,y:(a.y+b.y)/2},world:toWorld((a.x+b.x)/2,(a.y+b.y)/2)}; start=null; }
+  stage.classList.add("dragging"); });
+stage.addEventListener("pointermove",e=>{ if(!ptrs.has(e.pointerId)) return; ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(ptrs.size===1&&start){ const dx=e.clientX-start.x, dy=e.clientY-start.y; if(Math.hypot(dx,dy)>6) start.moved=true; tx=start.tx+dx; ty=start.ty+dy; apply(); }
+  else if(ptrs.size===2&&pinch){ const [a,b]=[...ptrs.values()]; const d=Math.hypot(a.x-b.x,a.y-b.y); s=Math.min(8,Math.max(.25,pinch.s*d/pinch.d));
+    const mid={x:(a.x+b.x)/2,y:(a.y+b.y)/2}; const bx=stage.getBoundingClientRect(); tx=mid.x-bx.left-W/2-pinch.world.x*s; ty=mid.y-bx.top-H/2-pinch.world.y*s; apply(); } });
+function up(e){ const wasTap = ptrs.size===1 && start && !start.moved && Date.now()-start.t<400; ptrs.delete(e.pointerId);
+  if(ptrs.size<2) pinch=null; if(ptrs.size===0){ stage.classList.remove("dragging"); if(wasTap) tap(e.clientX,e.clientY); start=null; } }
+stage.addEventListener("pointerup",up); stage.addEventListener("pointercancel",up);
+stage.addEventListener("wheel",e=>{ e.preventDefault(); const w=toWorld(e.clientX,e.clientY); s=Math.min(8,Math.max(.25,s*Math.exp(-e.deltaY*0.0015)));
+  const b=stage.getBoundingClientRect(); tx=e.clientX-b.left-W/2-w.x*s; ty=e.clientY-b.top-H/2-w.y*s; apply(); },{passive:false});
+document.getElementById("fit").onclick=()=>fit();
+
+function nearest(cx,cy){ const w=toWorld(cx,cy); const th=Math.max(16,22/s); let best=null,bd=th;
+  nodes.forEach(n=>{ let d=Math.hypot(n.x-w.x,n.y-w.y);
+    if(!n.children.length){ const lr=R+8+ (n.name.length*5.2)/2; const lx=lr*Math.cos(n.a), ly=lr*Math.sin(n.a);
+      // distance to label segment approx: check along the label line
+      const ux=Math.cos(n.a),uy=Math.sin(n.a); const proj=(w.x-n.x)*ux+(w.y-n.y)*uy; const clamped=Math.max(0,Math.min(n.name.length*5.2+8,proj)); const px=n.x+ux*clamped, py=n.y+uy*clamped; d=Math.min(d,Math.hypot(px-w.x,py-w.y)*0.9); }
+    if(d<bd){bd=d;best=n;} });
+  return best; }
+
+// ================= GAME =================
+const $=id=>document.getElementById(id);
+let round=0,picked=null,locked=false,hist=[],orgs=[],timerId=null,tLeft=0,roundStart=0,totalMs=0;
+const rand=a=>a[Math.floor(Math.random()*a.length)];
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove("on"),1800);}
+
+function newGame(){ round=0;hist=[];totalMs=0; orgs=POOLS.map(p=>rand(p)); $("overlay").classList.remove("on"); $("sheet").classList.remove("hide"); fit(); startRound();
+  toast("Drag to pan · pinch or scroll to zoom"); }
+function dots(){ $("dots").innerHTML=orgs.map((_,i)=>`<i class="${i<round?'done'+(hist[i]&&hist[i].dist>0?' miss':''):i===round?'now':''}"></i>`).join(""); }
+function clearMarks(){ nodes.forEach(n=>{ n.g.classList.remove("picked","correct","lca"); n.edge&&n.edge.classList.remove("path","draw"); n.lbl&&n.lbl.classList.remove("picked","correct","lca"); }); chip.classList.remove("on","green"); }
+
+function startRound(){
+  picked=null;locked=false; clearMarks(); stage.classList.remove("locked");
+  const o=orgs[round];
+  $("lvl").textContent=LEVELS[round]; $("oname").innerHTML=`${o.name}<i>${o.sci}</i>`; $("blurb").textContent=o.blurb;
+  $("status").innerHTML=`Tap the branch where <b>${o.name}</b> belongs. A tip is exact; a clade is a safe hedge.`;
+  const go=$("go"); go.disabled=true; go.className="go"; go.textContent="Tap a branch to place it"; go.onclick=()=>confirm(false);
+  dots(); startTimer();
+}
+function startTimer(){ clearInterval(timerId); tLeft=ROUND_SECONDS; roundStart=Date.now(); tick();
+  timerId=setInterval(()=>{ tLeft=ROUND_SECONDS-(Date.now()-roundStart)/1000; if(tLeft<=0){tLeft=0;tick();clearInterval(timerId);timeout();} else tick(); },100); }
+function tick(){ const m=Math.floor(tLeft/60), sec=Math.floor(tLeft%60); $("tval").textContent=`${m}:${String(sec).padStart(2,"0")}`; $("tbar").style.width=(tLeft/ROUND_SECONDS*100)+"%"; $("timer").classList.toggle("low",tLeft<=10); }
+function timeout(){ if(locked) return; if(picked) confirm(); else { picked=root.name; confirm(true); } }
+
+function tap(cx,cy){ if(locked) return; const n=nearest(cx,cy); if(!n) return; pick(n); }
+function pick(n){ picked=n.name; nodes.forEach(m=>{m.g.classList.toggle("picked",m===n); m.lbl&&m.lbl.classList.toggle("picked",m===n);});
+  chip.textContent=n.name; chip.classList.remove("green"); chip.classList.add("on"); chipNode=n; placeChip();
+  const o=orgs[round]; const go=$("go"); go.disabled=false; go.className="go orange"; go.textContent=`Place ${o.name} here`;
+  $("status").innerHTML = n.children.length ? `Placing in the <b>${n.name}</b> clade — a hedge, so at least ${n.h} branch${n.h>1?"es":""} off.` : `Placing <b>${o.name}</b> with <b>${n.name}</b>.`; }
+let chipNode=null;
+function placeChip(){ if(!chipNode) return; const p=toScreen(chipNode.x,chipNode.y); chip.style.left=p.x+"px"; chip.style.top=p.y+"px"; }
+
+function confirm(timedOut){
+  if(!picked||locked) return; locked=true; clearInterval(timerId); stage.classList.add("locked");
+  totalMs+=Date.now()-roundStart;
+  const o=orgs[round], g=byName[picked], c=byName[o.leaf], p=pathBetween(g,c);
+  hist.push({o,guess:g.name,dist:p.dist,timedOut:!!timedOut});
+  c.g.classList.add("correct"); c.lbl.classList.add("correct");
+  if(p.dist>0){ p.lca.g.classList.add("lca"); p.lca.lbl&&p.lca.lbl.classList.add("lca"); }
+  [...p.up,...p.down].forEach((n,i)=>{ const e=n.edge; const len=e.getTotalLength(); e.style.setProperty("--len",len); e.classList.add("path","draw"); e.style.animationDelay=(i*0.06)+"s"; e.parentNode.appendChild(e); });
+  chipNode=c; chip.textContent=o.leaf; chip.classList.add("on","green"); placeChip();
+  // zoom toward the correct answer
+  const mid={x:(g.x+c.x)/2,y:(g.y+c.y)/2}; const Hv=H-sheetH()-70; const spread=Math.hypot(g.x-c.x,g.y-c.y)+140; const target=Math.min(2.4,Math.max(s,Math.min(W,Hv)/spread));
+  s=target; tx=-mid.x*s; ty=-mid.y*s-sheetH()/2+35; apply();
+
+  let msg;
+  if(timedOut) msg=`Time's up — counted from the root. <b>${p.dist} branches</b> off.`;
+  else if(p.dist===0) msg=`<span class="ok">Exactly right.</span>`;
+  else if(p.dist<=2) msg=`<b>${p.dist} branch${p.dist>1?"es":""}</b> off. Very close.`;
+  else if(p.dist<=5) msg=`<b>${p.dist} branches</b> off.`;
+  else msg=`<b>${p.dist} branches</b> off. Last shared ancestor: ${p.lca.name}.`;
+  const lin=ancestors(c).slice(0,4).map(n=>n.name).join(" ‹ ");
+  $("status").innerHTML=`${msg} <span class="path">${o.name} sits at ${lin}.</span>`;
+  const go=$("go"); go.className="go"+(p.dist===0?" green":""); go.textContent=round===orgs.length-1?"See results":"Next organism";
+  go.onclick=()=>{ round++; round<orgs.length?startRound():results(); };
+  dots();
+}
+
+const pip=d=>d===0?"🟩":d<=2?"🟨":d<=5?"🟧":"🟥";
+const fmt=ms=>{const t=Math.round(ms/1000);return`${Math.floor(t/60)}:${String(t%60).padStart(2,"0")}`;};
+function results(){
+  $("sheet").classList.add("hide"); round=orgs.length; dots(); fit();
+  const total=hist.reduce((a,h)=>a+h.dist,0);
+  const [rank,sub]= total===0?["Perfect cladist","Every organism on the right tip. Willi Hennig salutes you."]:
+    total<=4?["Systematist","You know your clades. Misses were a branch or two at most."]:
+    total<=10?["Field naturalist","Solid instincts, with a slip in the deep branches."]:
+    total<=20?["Curious amateur","The big groups are there; the fine structure needs another look."]:
+    ["Cambrian explosion","Lots of branches in play. The tree makes more sense every run."];
+  $("card").innerHTML=`
+    <p class="big">${total}<small>branches off · ${fmt(totalMs)}</small></p>
+    <p class="rank">${rank}</p><p class="sub">${sub} Lower is better; zero means every placement was exact.</p>
+    <div class="pips">${hist.map(h=>pip(h.dist)).join("")}</div>
+    ${hist.map(h=>`<div class="rr"><div><div class="n">${h.o.name}</div><div class="w">${h.dist===0?`<span>${h.o.leaf}</span>`:`${h.timedOut?"no placement":"you chose "+h.guess} · belongs with <span>${h.o.leaf}</span>`}</div></div><div class="d ${h.dist===0?'z':''}">${h.dist}</div></div>`).join("")}
+    <div class="row"><button class="go ghost" id="again">Play again</button><button class="go green" id="share">Share score</button></div>`;
+  $("overlay").classList.add("on");
+  $("again").onclick=newGame;
+  $("share").onclick=async()=>{
+    const text=`Tree Tap 🌳 ${total} branches off · ${fmt(totalMs)}\n${hist.map(h=>pip(h.dist)).join("")}\n${hist.map(h=>`${h.o.name} ${h.dist===0?"✓":h.dist}`).join(" · ")}\n${location.href.split("#")[0]}`;
+    try{ if(navigator.share) await navigator.share({title:"Tree Tap",text}); else { await navigator.clipboard.writeText(text); toast("Copied to clipboard"); } }
+    catch(e){ try{await navigator.clipboard.writeText(text);toast("Copied to clipboard");}catch(_){toast("Couldn't share");} } };
+}
+
+new ResizeObserver(()=>document.body.style.setProperty("--sheetH",document.getElementById("sheet").offsetHeight+"px")).observe(document.querySelector("#sheet .inner"));
+size(); newGame();
+</script>
+</body>
+</html>
