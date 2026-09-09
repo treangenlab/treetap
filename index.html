@@ -32,12 +32,15 @@
   .node.picked.correct circle{fill:var(--green);stroke:var(--orange);stroke-width:3;transform:scale(2.2)}
   .node.lca circle{fill:#fff;stroke:var(--ink);stroke-width:2.5;transform:scale(1.6)}
   @keyframes pop{0%{transform:scale(0)}60%{transform:scale(2.4)}100%{transform:scale(1.9)}}
-  .lbl{font-family:"Instrument Sans",system-ui,sans-serif;font-size:10px;fill:var(--ink);pointer-events:none;font-weight:500}
+  .lbl{font-family:"Instrument Sans",system-ui,sans-serif;font-size:10px;fill:var(--ink);pointer-events:none;font-weight:500;paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round}
   .lbl.picked{fill:var(--orange-ink);font-weight:600}
   .lbl.correct{fill:var(--green-ink);font-weight:600}
-  .clbl{font-family:"Instrument Sans",system-ui,sans-serif;font-size:6.5px;fill:var(--muted);pointer-events:none;opacity:0;transition:opacity .2s}
-  .clbl.major{font-size:8px;fill:#4e6359;opacity:1;font-weight:600}
+  .clbl{font-family:"Instrument Sans",system-ui,sans-serif;font-size:6px;fill:#5b6f65;pointer-events:none;opacity:0;transition:opacity .2s;paint-order:stroke;stroke:#fff;stroke-width:2.6px;stroke-linejoin:round;font-weight:600}
+  .tick{stroke:#d3dcd6;stroke-width:1;vector-effect:non-scaling-stroke;stroke-dasharray:2 3}
+  #view.nolabels .clbl{opacity:0!important}
+  .clbl.major{font-size:7.5px;fill:#40554b;opacity:1}
   #view.zoomed .clbl{opacity:1}
+  #view.nolabels .clbl.picked,#view.nolabels .clbl.lca{opacity:1!important}
   .clbl.picked,.clbl.lca{opacity:1;fill:var(--ink);font-weight:600}
   #stage.locked{cursor:default}
 
@@ -210,110 +213,125 @@ const MAJOR = new Set(["Bacteria","Archaea","Eukaryotes","Land plants","Flowerin
 // ================= ORGANISMS =================
 const O = (name,sci,blurb,leaf)=>({name,sci,blurb,leaf});
 const POOLS = [
- [ O("Dog","Canis familiaris","Furry, warm-blooded, born live, nursed on milk. Descended from wolves.","Carnivorans"),
-   O("Honeybee","Apis mellifera","Six legs, four wings, a stinger, and a colony to feed.","Bees, wasps & ants"),
-   O("Rose","Rosa","Thorny stems and petals that exist to lure pollinators.","Roses, beans & oaks"),
-   O("Common frog","Rana temporaria","Starts as a gilled tadpole, ends up breathing through lungs and moist skin.","Frogs & toads"),
-   O("Chicken","Gallus gallus","Feathered, warm-blooded, lays hard-shelled eggs. A living dinosaur.","Ducks, chickens & pheasants"),
-   O("Button mushroom","Agaricus bisporus","The fruiting body of an underground network. Drops spores from gills.","Mushrooms"),
+ [ O("Dog","Canis familiaris","Furry, warm-blooded, born live, nursed on milk.","Carnivorans"),
+   O("Honeybee","Apis mellifera","Six legs, four wings, a stinger, and a hive to feed.","Bees, wasps & ants"),
+   O("Rose","Rosa","Thorny stems and showy petals.","Roses, beans & oaks"),
+   O("Common frog","Rana temporaria","Starts as a gilled tadpole, ends up breathing air through moist skin.","Frogs & toads"),
+   O("Chicken","Gallus gallus","Feathered, warm-blooded, lays hard-shelled eggs.","Ducks, chickens & pheasants"),
+   O("Button mushroom","Agaricus bisporus","A fruiting body that drops spores from gills.","Mushrooms"),
    O("Human","Homo sapiens","Upright, big-brained, opposable thumbs. You.","Primates"),
-   O("Monarch butterfly","Danaus plexippus","Scaled wings, a coiled straw for a mouth, and a caterpillar past.","Butterflies & moths"),
+   O("Monarch butterfly","Danaus plexippus","Scaled wings, a coiled straw for a mouth, a caterpillar past.","Butterflies & moths"),
    O("Brown rat","Rattus norvegicus","Ever-growing front teeth and a talent for living anywhere.","Rodents"),
    O("Ladybird","Coccinellidae","Hard wing cases hide the flying wings underneath.","Beetles"),
-   O("Atlantic salmon","Salmo salar","A bony fish with fins on thin rays. Hatches in rivers, grows at sea.","Teleost fish") ],
+   O("Atlantic salmon","Salmo salar","Fins held up by thin rays. Hatches in rivers, grows at sea.","Teleost fish"),
+   O("Giant sequoia","Sequoiadendron giganteum","The most massive tree alive. Seeds in cones.","Conifers"),
+   O("Tulip","Tulipa","A bulb, strap-like leaves with parallel veins, flower parts in threes.","Lilies & onions") ],
  [ O("Red kangaroo","Osphranter rufus","Born the size of a jellybean and finishes developing in a pouch.","Marsupials"),
-   O("Common octopus","Octopus vulgaris","Eight arms, three hearts, a beak. Cousin of snails and clams.","Octopus, squid & nautilus"),
-   O("American lobster","Homarus americanus","Armoured, ten-legged, gilled. Related to crabs and shrimp.","Crabs, shrimp & lobsters"),
-   O("Tarantula","Theraphosidae","Eight legs, no antennae, fangs. Not an insect.","Spiders"),
-   O("Scots pine","Pinus sylvestris","Needles, resin, and seeds on the scales of a cone. No flowers, ever.","Conifers"),
+   O("Common octopus","Octopus vulgaris","Eight arms, three hearts, a beak, no shell.","Octopus, squid & nautilus"),
+   O("American lobster","Homarus americanus","Armoured, ten-legged, gilled, with big claws.","Crabs, shrimp & lobsters"),
+   O("Tarantula","Theraphosidae","Eight legs, no antennae, fangs.","Spiders"),
    O("Great white shark","Carcharodon carcharias","A skeleton of cartilage, sandpaper skin, teeth on a conveyor belt.","Sharks & rays"),
-   O("Earthworm","Lumbricus terrestris","A body of repeating ring-like segments. Cousin of leeches.","Earthworms"),
-   O("Moon jellyfish","Aurelia aurita","Radially symmetric, no brain, stinging cells.","Jellyfish"),
-   O("Green sea turtle","Chelonia mydas","A shell fused to its ribs, scaly skin, eggs laid on beaches.","Turtles"),
+   O("Earthworm","Lumbricus terrestris","A body of repeating ring-like segments.","Earthworms"),
+   O("Moon jellyfish","Aurelia aurita","Radially symmetric, no brain, stinging cells, drifts.","Jellyfish"),
+   O("Green sea turtle","Chelonia mydas","A shell fused to its ribs, eggs laid on beaches.","Turtles"),
    O("Emperor penguin","Aptenodytes forsteri","Feathers for insulation, wings for swimming.","Penguins"),
-   O("Bottlenose dolphin","Tursiops truncatus","Air-breathing, milk-producing, and descended from hoofed land mammals.","Even-toed ungulates & whales"),
-   O("Maize","Zea mays","A tall grass whose wind-pollinated flowers become the cob.","Grasses"),
-   O("African elephant","Loxodonta africana","Trunk, tusks, and a lineage that shares roots with manatees.","Elephants, manatees & aardvarks"),
+   O("Killer whale","Orcinus orca","Air-breathing, milk-producing, lives entirely at sea.","Even-toed ungulates & whales"),
+   O("Bamboo","Bambusoideae","Hollow jointed stems, can grow a metre a day, flowers once in decades.","Grasses"),
+   O("African elephant","Loxodonta africana","Trunk, tusks, and the largest land animal.","Elephants, manatees & aardvarks"),
    O("Rattlesnake","Crotalus","Legless, scaled, venomous, with heat-sensing pits.","Snakes"),
-   O("Sunflower","Helianthus annuus","One 'flower' that is actually hundreds of tiny ones packed together.","Sunflowers, mints & tomatoes"),
-   O("Fruit bat","Pteropus","The only mammal with true powered flight.","Bats") ],
- [ O("Starfish","Asteroidea","Five-fold symmetry, hydraulic tube feet, and a surprisingly close relationship to you.","Starfish"),
-   O("Bracken fern","Pteridium aquilinum","Has veins to move water, but spreads by spores, not seeds.","Ferns & horsetails"),
-   O("Baker's yeast","Saccharomyces cerevisiae","A single cell that ferments sugar into alcohol and CO₂.","Yeasts"),
-   O("Nile crocodile","Crocodylus niloticus","Armoured, cold-blooded, and closer to birds than to lizards.","Crocodilians"),
-   O("Komodo dragon","Varanus komodoensis","A giant scaled predator with a forked tongue and venom glands.","Lizards"),
+   O("Sunflower","Helianthus annuus","One 'flower' that is really hundreds of tiny ones packed together.","Sunflowers, mints & tomatoes"),
+   O("Fruit bat","Pteropus","The only mammal with true powered flight.","Bats"),
+   O("Peanut","Arachis hypogaea","A pod that ripens underground. Fixes nitrogen with root bacteria.","Roses, beans & oaks"),
+   O("Cuttlefish","Sepia officinalis","Skin that changes colour in a blink, an internal chalky bone, a beak.","Octopus, squid & nautilus") ],
+ [ O("Starfish","Asteroidea","Five-fold symmetry and hydraulic tube feet.","Starfish"),
+   O("Bracken fern","Pteridium aquilinum","Veins to move water, but spreads by spores, not seeds.","Ferns & horsetails"),
+   O("Baker's yeast","Saccharomyces cerevisiae","A single cell that ferments sugar into alcohol.","Yeasts"),
+   O("Nile crocodile","Crocodylus niloticus","Armoured, cold-blooded, four-chambered heart.","Crocodilians"),
+   O("Slowworm","Anguis fragilis","Legless, scaled, with eyelids and a tail it can drop. Not a snake.","Lizards"),
    O("Sphagnum moss","Sphagnum","No roots, no true veins, no seeds. Builds bogs.","Mosses"),
-   O("Bath sponge","Spongia officinalis","An animal with no organs, no nerves and no mouth.","Sponges"),
-   O("Staghorn coral","Acropora","A colony of stinging polyps that builds a limestone skeleton.","Corals & anemones"),
-   O("Barnacle","Cirripedia","Glued head-down to a rock, kicking food into its mouth with its legs.","Barnacles"),
-   O("Garden snail","Cornu aspersum","A rasping tongue, a coiled shell and a muscular foot.","Snails & slugs"),
-   O("Scallop","Pectinidae","Two hinged shells, dozens of tiny blue eyes, and a jet-propelled escape.","Clams, mussels & oysters"),
+   O("Bath sponge","Spongia officinalis","No organs, no nerves, no mouth. Filters water through pores.","Sponges"),
+   O("Sea anemone","Actiniaria","A stinging flower-like animal stuck to a rock.","Corals & anemones"),
+   O("Barnacle","Cirripedia","Glued head-down to a rock inside a chalky shell, kicking food into its mouth.","Barnacles"),
+   O("Woodlouse","Oniscidea","Fourteen legs, breathes through gills, rolls into a ball. Lives on land.","Crabs, shrimp & lobsters"),
+   O("Scallop","Pectinidae","Two hinged shells, dozens of tiny blue eyes, a jet-propelled escape.","Clams, mussels & oysters"),
    O("Mosquito","Culicidae","Two wings only; the second pair became balancing knobs.","Flies & mosquitoes"),
-   O("Aphid","Aphidoidea","A piercing straw for a mouth. Can be born already pregnant.","True bugs & aphids"),
-   O("House centipede","Scutigera coleoptrata","One pair of legs per segment and venomous front claws.","Centipedes"),
-   O("Three-toed sloth","Bradypus","Hangs upside down, hosts algae in its fur, related to armadillos.","Sloths & armadillos"),
+   O("Cicada","Cicadidae","A piercing straw for a mouth and a 17-year wait underground.","True bugs & aphids"),
+   O("Firefly","Lampyridae","Glows at night. Has hard wing cases.","Beetles"),
+   O("House centipede","Scutigera coleoptrata","One pair of legs per segment, venomous front claws.","Centipedes"),
+   O("Three-toed sloth","Bradypus","Hangs upside down and hosts algae in its fur.","Sloths & armadillos"),
+   O("Walrus","Odobenus rosmarus","Tusked, blubbery, hauls out on ice. Descended from bear-like ancestors.","Carnivorans"),
+   O("Venus flytrap","Dionaea muscipula","Snaps shut on insects. A flowering plant from the Carolinas.","Cacti & carnations"),
+   O("Vanilla","Vanilla planifolia","A climbing vine whose seed pods flavour ice cream.","Orchids"),
    O("Coconut palm","Cocos nucifera","No true wood, no branches, parallel-veined leaves.","Palms"),
-   O("Saguaro cactus","Carnegiea gigantea","Leaves reduced to spines; the green stem does the photosynthesis.","Cacti & carnations"),
-   O("E. coli","Escherichia coli","No nucleus, a single circular chromosome, divides every 20 minutes.","E. coli & relatives"),
-   O("Dragonfly","Anisoptera","Wings that don't fold, huge eyes, and a nymph stage underwater.","Dragonflies") ],
+   O("E. coli","Escherichia coli","No nucleus, one circular chromosome, divides every 20 minutes.","E. coli & relatives"),
+   O("Dragonfly","Anisoptera","Wings that don't fold, huge eyes, a nymph stage underwater.","Dragonflies"),
+   O("Axolotl","Ambystoma mexicanum","Keeps its gills for life and regrows lost limbs.","Salamanders & newts") ],
  [ O("Platypus","Ornithorhynchus anatinus","Fur and milk, but it lays eggs. Venomous spur on the hind leg.","Monotremes"),
-   O("Giant kelp","Macrocystis pyrifera","Grows half a metre a day. Looks like a plant. Isn't one.","Kelp & brown algae"),
+   O("Giant kelp","Macrocystis pyrifera","Grows half a metre a day in undersea forests.","Kelp & brown algae"),
    O("Sea lamprey","Petromyzon marinus","A backbone but no jaws: a round sucker mouth ringed with teeth.","Lampreys"),
-   O("C. elegans","Caenorhabditis elegans","A transparent 1 mm worm with exactly 959 body cells. Unsegmented.","Roundworms"),
-   O("Nori seaweed","Pyropia","Wrapped around sushi. Photosynthetic, multicellular, and not green.","Red algae"),
-   O("Paramecium","Paramecium caudatum","One slipper-shaped cell covered in beating hairs, with two kinds of nucleus.","Ciliates"),
-   O("Malaria parasite","Plasmodium falciparum","A single-celled parasite that carries the remnant of a chloroplast.","Apicomplexans"),
+   O("C. elegans","Caenorhabditis elegans","A transparent 1 mm worm with exactly 959 body cells.","Roundworms"),
+   O("Nori seaweed","Pyropia","Wrapped around sushi. Photosynthetic, multicellular, not green.","Red algae"),
+   O("Paramecium","Paramecium caudatum","One slipper-shaped cell covered in beating hairs.","Ciliates"),
+   O("Malaria parasite","Plasmodium falciparum","A single-celled parasite of red blood cells.","Apicomplexans"),
    O("Slime mould","Physarum polycephalum","One giant cell with millions of nuclei that can solve mazes.","Slime moulds"),
-   O("Horseshoe crab","Limulus polyphemus","Blue blood, a spiked tail, 450 million years of history. Not a crab.","Horseshoe crabs"),
-   O("Sea cucumber","Holothuroidea","A leathery tube with five-fold symmetry hidden inside.","Sea cucumbers"),
-   O("Sea lettuce","Ulva lactuca","Bright green, two cells thick, closer to oaks than to kelp.","Chlorophyte green algae"),
-   O("Manatee","Trichechus","A slow aquatic grazer whose nearest land relatives have trunks.","Elephants, manatees & aardvarks"),
-   O("Ginkgo","Ginkgo biloba","Fan-shaped leaves, fleshy seeds, and no living relatives at all.","Ginkgo"),
+   O("Horseshoe crab","Limulus polyphemus","Blue blood, a spiked tail, 450 million years of history.","Horseshoe crabs"),
+   O("Sea cucumber","Holothuroidea","A leathery tube that can eject its own organs in defence.","Sea cucumbers"),
+   O("Sea lettuce","Ulva lactuca","Bright green and two cells thick.","Chlorophyte green algae"),
+   O("Manatee","Trichechus","A slow aquatic grazer with a paddle tail.","Elephants, manatees & aardvarks"),
+   O("Hyrax","Procavia capensis","Looks like a large guinea pig. Has tusk-like incisors and hooves on its toes.","Elephants, manatees & aardvarks"),
+   O("Ginkgo","Ginkgo biloba","Fan-shaped leaves, fleshy seeds, no living relatives.","Ginkgo"),
    O("Deer tick","Ixodes scapularis","Eight legs, no antennae, a taste for blood.","Mites & ticks"),
    O("Antarctic krill","Euphausia superba","A shrimp-like swarmer that feeds the whales.","Krill"),
-   O("Tapeworm","Taenia","Flat, unsegmented in origin, no gut, no body cavity.","Flatworms"),
-   O("Hydra","Hydra vulgaris","A freshwater polyp with stinging tentacles that never seems to age.","Hydras"),
-   O("Ostrich","Struthio camelus","A flightless bird with a flat breastbone and a very old lineage.","Ostriches & kiwis"),
-   O("Beluga sturgeon","Huso huso","Bony plates, a cartilage-heavy skeleton, and caviar.","Sturgeons & paddlefish"),
-   O("Caecilian","Gymnophiona","A limbless, burrowing amphibian that looks like a worm.","Caecilians"),
-   O("Black rhinoceros","Diceros bicornis","Odd number of toes, thick skin, and horns of keratin.","Horses, rhinos & tapirs"),
+   O("Tapeworm","Taenia","Flat, no gut, no body cavity, absorbs food through its skin.","Flatworms"),
+   O("Portuguese man o' war","Physalia physalis","A floating colony of stinging polyps. Not a true jellyfish.","Hydras"),
+   O("Ostrich","Struthio camelus","A flightless bird with a flat breastbone.","Ostriches & kiwis"),
+   O("Beluga sturgeon","Huso huso","Bony plates, a mostly cartilage skeleton, and caviar.","Sturgeons & paddlefish"),
+   O("Caecilian","Gymnophiona","A limbless, burrowing animal with moist skin that looks like a worm.","Caecilians"),
+   O("Black rhinoceros","Diceros bicornis","Three toes per foot and horns of keratin.","Horses, rhinos & tapirs"),
    O("Red-tide dinoflagellate","Karenia brevis","A whirling single cell with two flagella that can glow at night.","Dinoflagellates"),
-   O("Comb jelly","Ctenophora","Rows of beating cilia refract light into rainbows. Not a jellyfish.","Comb jellies") ],
- [ O("Tardigrade","Hypsibius exemplaris","Eight stubby legs, a moulting cuticle, survives vacuum. Not an arthropod.","Tardigrades"),
+   O("Comb jelly","Ctenophora","Rows of beating cilia refract light into rainbows. No stinging cells.","Comb jellies"),
+   O("Quinoa","Chenopodium quinoa","A grain-like seed from a broad-leaved plant, not a grass.","Cacti & carnations"),
+   O("Sand dollar","Clypeasteroida","A flattened disc with a five-petal pattern, covered in tiny spines.","Sea urchins"),
+   O("Trypanosome","Trypanosoma brucei","A single cell with a whip-like tail that causes sleeping sickness.","Euglena & trypanosomes") ],
+ [ O("Tardigrade","Hypsibius exemplaris","Eight stubby legs, a moulting cuticle, survives vacuum.","Tardigrades"),
    O("Coelacanth","Latimeria chalumnae","Fleshy, limb-like fins. Thought extinct until 1938.","Coelacanths"),
-   O("Sea squirt","Ciona intestinalis","Its larva has a notochord and a tail. Then it glues down and eats its own brain.","Sea squirts"),
+   O("Sea squirt","Ciona intestinalis","Its larva has a stiff rod along its back and a tail. Then it glues down and eats its own brain.","Sea squirts"),
    O("Black truffle","Tuber melanosporum","Spores form in sacs, not on gills, and spread by being eaten.","Truffles & morels"),
    O("Echidna","Tachyglossus aculeatus","Spiny, ant-eating, warm-blooded, hatched from a soft egg.","Monotremes"),
    O("Hagfish","Myxine glutinosa","Jawless, nearly blind, fills a bucket with slime in seconds.","Hagfish"),
    O("Diatom","Bacillariophyceae","A single photosynthetic cell in a glass shell.","Diatoms"),
    O("Gut methanogen","Methanobrevibacter smithii","No nucleus, but a cell chemistry unlike any bacterium.","Methanogens & halophiles"),
-   O("Tuatara","Sphenodon punctatus","Lizard-like, with a third eye. Split from lizards 250 million years ago.","Tuatara"),
+   O("Tuatara","Sphenodon punctatus","Lizard-like, with a third eye. Not a lizard.","Tuatara"),
    O("Toxoplasma","Toxoplasma gondii","A single-celled parasite that breeds in cats and infects a third of humans.","Apicomplexans"),
-   O("Spirulina","Arthrospira platensis","Photosynthetic, sold as a powder, ancestor of every chloroplast.","Cyanobacteria"),
-   O("Lancelet","Branchiostoma","A fish-shaped animal with a notochord but no skull, no bones, no brain to speak of.","Lancelets"),
-   O("Velvet worm","Peripatus","Soft, many-legged, sprays glue at prey. Sister to arthropods.","Velvet worms"),
+   O("Spirulina","Arthrospira platensis","Photosynthetic, sold as a powder, no nucleus.","Cyanobacteria"),
+   O("Lancelet","Branchiostoma","Fish-shaped, with a stiff rod along its back but no skull and no bones.","Lancelets"),
+   O("Velvet worm","Peripatus","Soft, many-legged, sprays glue at prey.","Velvet worms"),
    O("Acorn worm","Enteropneusta","A burrowing marine worm with gill slits.","Acorn worms"),
    O("Ratfish","Hydrolagus colliei","Cartilage skeleton, but its upper jaw is fused to the skull.","Chimaeras"),
-   O("Alligator gar","Atractosteus spatula","Armoured scales, a lung-like bladder, an ancient ray-finned line.","Gars & bowfin"),
-   O("Australian lungfish","Neoceratodus forsteri","Breathes air with a true lung. Your closest living fish relative.","Lungfish"),
+   O("Alligator gar","Atractosteus spatula","Armoured diamond scales and a lung-like swim bladder.","Gars & bowfin"),
+   O("Australian lungfish","Neoceratodus forsteri","Breathes air with a true lung.","Lungfish"),
    O("Liverwort","Marchantia","A flat green thallus, no veins, reproduces by splashed sperm.","Liverworts"),
    O("Foraminiferan","Foraminifera","A single cell in a chambered shell. Their fossils build chalk cliffs.","Forams & radiolarians"),
-   O("Euglena","Euglena gracilis","Swims with a whip, eats, and photosynthesises. Neither plant nor animal.","Euglena & trypanosomes"),
+   O("Euglena","Euglena gracilis","Swims with a whip, eats, and photosynthesises.","Euglena & trypanosomes"),
    O("Trichoplax","Trichoplax adhaerens","A flat blob of a few thousand cells; the simplest known animal.","Placozoans"),
-   O("Choanoflagellate","Monosiga brevicollis","A collared single cell that looks just like a sponge's feeding cell.","Choanoflagellates"),
+   O("Choanoflagellate","Monosiga brevicollis","A collared single cell with a whip. The nearest thing to an animal that isn't one.","Choanoflagellates"),
    O("Coccolithophore","Emiliania huxleyi","A single cell armoured in chalk plates; turns whole seas milky.","Coccolithophores"),
    O("Lamp shell","Brachiopoda","Two shells like a clam, but top and bottom rather than left and right.","Brachiopods"),
-   O("Sea lily","Crinoidea","A feathery filter feeder on a stalk; a relative of starfish.","Sea lilies"),
+   O("Sea lily","Crinoidea","A feathery filter feeder on a stalk.","Sea lilies"),
    O("Wheat rust","Puccinia graminis","A fungus with five spore types and two host plants.","Rusts & smuts"),
-   O("Potato blight","Phytophthora infestans","Grows like a fungus, but is closer to kelp.","Water moulds"),
+   O("Potato blight","Phytophthora infestans","Grows like a fungus. Isn't one.","Water moulds"),
    O("Welwitschia","Welwitschia mirabilis","Two leaves that grow for a thousand years. Cones, not flowers.","Gnetophytes"),
    O("Stonewort","Chara","A green alga with a body plan closest to land plants.","Charophyte green algae"),
-   O("Lokiarchaeon","Lokiarchaeota","A deep-sea microbe that is the closest microbial cousin to all eukaryotes.","Asgard archaea"),
+   O("Lokiarchaeon","Lokiarchaeota","A deep-sea microbe with no nucleus, but genes that look eukaryotic.","Asgard archaea"),
    O("Magnolia","Magnolia grandiflora","Flowers with no clear petals or sepals, pollinated by beetles.","Magnolias & laurels"),
-   O("Chytrid fungus","Batrachochytrium dendrobatidis","A fungus with swimming spores. Devastates frogs.","Chytrids") ]
+   O("Chytrid fungus","Batrachochytrium dendrobatidis","A fungus with swimming spores. Devastates frogs.","Chytrids"),
+   O("Sulfolobus","Sulfolobus acidocaldarius","Thrives in boiling acid hot springs. No nucleus.","Thermophilic archaea"),
+   O("Moss animal","Bryozoa","A colony of tiny tentacled filter feeders that looks like moss on a rock.","Bryozoans"),
+   O("Bristlecone pine","Pinus longaeva","The oldest known living individual organisms.","Conifers") ]
 ];
-const LEVELS = ["Round 1 · warm-up","Round 2 · familiar","Round 3 · trickier","Round 4 · hard","Round 5 · expert"];
-const ROUND_SECONDS = 60;
+const LEVELS = ["Round 1 · warm-up","Round 2 · familiar","Round 3 · trickier","Round 4 · hard · clade names hidden","Round 5 · expert · clade names hidden"];
+const ROUND_SECONDS = 45;
+const BLIND_FROM = 3; // rounds 4-5: clade names hidden, tips only
 
 // ================= GRAPH + LAYOUT =================
 const nodes=[], leaves=[], byName={};
@@ -347,9 +365,11 @@ function render(){
     g.appendChild(el("circle",{cx:n.x,cy:n.y,r:n.children.length?2.6:3.2})); n.g=g; gN.appendChild(g);
     const deg=n.a*180/Math.PI, left=Math.cos(n.a)<0;
     if(!n.children.length){
-      const t=el("text",{class:"lbl",transform:`rotate(${left?deg+180:deg})`,x:left?-(R+8):R+8,y:3.5,"text-anchor":left?"end":"start"}); t.textContent=n.name; n.lbl=t; gL.appendChild(t);
+      const tk=el("line",{class:"tick",x1:n.x,y1:n.y,x2:(R+10)*Math.cos(n.a),y2:(R+10)*Math.sin(n.a)}); gE.appendChild(tk);
+      const t=el("text",{class:"lbl",transform:`rotate(${left?deg+180:deg})`,x:left?-(R+13):R+13,y:3.5,"text-anchor":left?"end":"start"}); t.textContent=n.name; n.lbl=t; gL.appendChild(t);
     } else if(n!==root){
-      const t=el("text",{class:"clbl"+(MAJOR.has(n.name)?" major":""),transform:`rotate(${left?deg+180:deg})`,x:left?-(n.r-6):n.r-6,y:2.5,"text-anchor":left?"start":"end"}); t.textContent=n.name; n.lbl=t; gL.appendChild(t);
+      const bottom=Math.sin(n.a)>0; const rr=n.r-7;
+      const t=el("text",{class:"clbl"+(MAJOR.has(n.name)?" major":""),transform:`rotate(${bottom?deg-90:deg+90}) translate(0 ${bottom?rr:-rr})`,x:0,y:bottom?-2:5,"text-anchor":"middle"}); t.textContent=n.name; n.lbl=t; gL.appendChild(t);
     }
   });
   view.append(gE,gN,gL);
@@ -362,7 +382,7 @@ let W=0,H=0,s=1,tx=0,ty=0, raf=null;
 function size(){W=stage.clientWidth;H=stage.clientHeight;svg.setAttribute("viewBox",`0 0 ${W} ${H}`);}
 function apply(){ if(raf) return; raf=requestAnimationFrame(()=>{raf=null;
   view.setAttribute("transform",`translate(${W/2+tx} ${H/2+ty}) scale(${s})`);
-  view.classList.toggle("zoomed",s>1.5); placeChip(); }); }
+  view.classList.toggle("zoomed",s>1.9); placeChip(); }); }
 function sheetH(){ const sh=document.getElementById("sheet"); return sh.classList.contains("hide")?0:sh.offsetHeight; }
 function fit(){ size(); const Hv=H-sheetH()-60; const target=Math.min(W-10,Hv)/(2*(R+95)); s=target; tx=0; ty=-sheetH()/2+30; apply(); }
 function zoomTo(node,scale){ s=scale; tx=-node.x*s; ty=-node.y*s+ (H*0.12); apply(); }
@@ -388,9 +408,9 @@ document.getElementById("fit").onclick=()=>fit();
 
 function nearest(cx,cy){ const w=toWorld(cx,cy); const th=Math.max(16,22/s); let best=null,bd=th;
   nodes.forEach(n=>{ let d=Math.hypot(n.x-w.x,n.y-w.y);
-    if(!n.children.length){ const lr=R+8+ (n.name.length*5.2)/2; const lx=lr*Math.cos(n.a), ly=lr*Math.sin(n.a);
+    if(!n.children.length){ 
       // distance to label segment approx: check along the label line
-      const ux=Math.cos(n.a),uy=Math.sin(n.a); const proj=(w.x-n.x)*ux+(w.y-n.y)*uy; const clamped=Math.max(0,Math.min(n.name.length*5.2+8,proj)); const px=n.x+ux*clamped, py=n.y+uy*clamped; d=Math.min(d,Math.hypot(px-w.x,py-w.y)*0.9); }
+      const ux=Math.cos(n.a),uy=Math.sin(n.a); const proj=(w.x-n.x)*ux+(w.y-n.y)*uy; const clamped=Math.max(0,Math.min(n.name.length*5.2+13,proj)); const px=n.x+ux*clamped, py=n.y+uy*clamped; d=Math.min(d,Math.hypot(px-w.x,py-w.y)*0.9); }
     if(d<bd){bd=d;best=n;} });
   return best; }
 
@@ -411,6 +431,7 @@ function startRound(){
   $("lvl").textContent=LEVELS[round]; $("oname").innerHTML=`${o.name}<i>${o.sci}</i>`; $("blurb").textContent=o.blurb;
   $("status").innerHTML=`Tap the branch where <b>${o.name}</b> belongs. A tip is exact; a clade is a safe hedge.`;
   const go=$("go"); go.disabled=true; go.className="go"; go.textContent="Tap a branch to place it"; go.onclick=()=>confirm(false);
+  view.classList.toggle("nolabels",round>=BLIND_FROM);
   dots(); startTimer();
 }
 function startTimer(){ clearInterval(timerId); tLeft=ROUND_SECONDS; roundStart=Date.now(); tick();
@@ -436,7 +457,7 @@ function confirm(timedOut){
   [...p.up,...p.down].forEach((n,i)=>{ const e=n.edge; const len=e.getTotalLength(); e.style.setProperty("--len",len); e.classList.add("path","draw"); e.style.animationDelay=(i*0.06)+"s"; e.parentNode.appendChild(e); });
   chipNode=c; chip.textContent=o.leaf; chip.classList.add("on","green"); placeChip();
   // zoom toward the correct answer
-  const mid={x:(g.x+c.x)/2,y:(g.y+c.y)/2}; const Hv=H-sheetH()-70; const spread=Math.hypot(g.x-c.x,g.y-c.y)+140; const target=Math.min(2.4,Math.max(s,Math.min(W,Hv)/spread));
+  const mid={x:(g.x+c.x)/2,y:(g.y+c.y)/2}; const Hv=H-sheetH()-70; const spread=Math.hypot(g.x-c.x,g.y-c.y)+140; const target=Math.max(.3,Math.min(2.4,Math.min(W,Hv)/spread));
   s=target; tx=-mid.x*s; ty=-mid.y*s-sheetH()/2+35; apply();
 
   let msg;
@@ -455,12 +476,12 @@ function confirm(timedOut){
 const pip=d=>d===0?"🟩":d<=2?"🟨":d<=5?"🟧":"🟥";
 const fmt=ms=>{const t=Math.round(ms/1000);return`${Math.floor(t/60)}:${String(t%60).padStart(2,"0")}`;};
 function results(){
-  $("sheet").classList.add("hide"); round=orgs.length; dots(); fit();
+  $("sheet").classList.add("hide"); round=orgs.length; dots(); fit(); view.classList.remove("nolabels");
   const total=hist.reduce((a,h)=>a+h.dist,0);
   const [rank,sub]= total===0?["Perfect cladist","Every organism on the right tip. Willi Hennig salutes you."]:
-    total<=4?["Systematist","You know your clades. Misses were a branch or two at most."]:
-    total<=10?["Field naturalist","Solid instincts, with a slip in the deep branches."]:
-    total<=20?["Curious amateur","The big groups are there; the fine structure needs another look."]:
+    total<=3?["Systematist","You know your clades. Misses were a branch or two at most."]:
+    total<=8?["Field naturalist","Solid instincts, with a slip in the deep branches."]:
+    total<=16?["Curious amateur","The big groups are there; the fine structure needs another look."]:
     ["Cambrian explosion","Lots of branches in play. The tree makes more sense every run."];
   $("card").innerHTML=`
     <p class="big">${total}<small>branches off · ${fmt(totalMs)}</small></p>
