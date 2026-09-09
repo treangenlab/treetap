@@ -15,16 +15,14 @@
   *{box-sizing:border-box}
   html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:"Instrument Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased;overscroll-behavior:none}
   body{overflow:hidden}
-  h1,h2,.display{font-family:"Bricolage Grotesque","Instrument Sans",sans-serif}
-
-  #stage{position:fixed;inset:0;touch-action:none;cursor:grab;background:
-    radial-gradient(circle at 50% 42%, #ffffff 0%, var(--bg) 62%)}
+  #stage{position:fixed;inset:0;touch-action:none;cursor:grab;background:radial-gradient(circle at 50% 42%, #ffffff 0%, var(--bg) 62%)}
   #stage.dragging{cursor:grabbing}
   #svg{width:100%;height:100%;display:block;user-select:none;-webkit-user-select:none}
-  .edge{fill:none;stroke:var(--line);stroke-width:1.4;vector-effect:non-scaling-stroke;stroke-linecap:round}
-  .edge.path{stroke:var(--ink);stroke-width:3;opacity:1}
+  .edge{fill:none;stroke:var(--line);stroke-width:1.3;vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}
+  .edge.path{stroke:var(--ink);stroke-width:3}
   .edge.path.draw{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:draw .55s var(--ease) forwards}
   @keyframes draw{to{stroke-dashoffset:0}}
+  .tick{stroke:#d3dcd6;stroke-width:1;vector-effect:non-scaling-stroke;stroke-dasharray:2 3}
   .node circle{fill:#fff;stroke:var(--line);stroke-width:1.2;vector-effect:non-scaling-stroke;transition:transform .18s var(--ease);transform-box:fill-box;transform-origin:center}
   .node.clade circle{fill:var(--soft);stroke:#9fb0a6}
   .node.picked circle{fill:var(--orange);stroke:var(--orange);transform:scale(1.9)}
@@ -32,31 +30,23 @@
   .node.picked.correct circle{fill:var(--green);stroke:var(--orange);stroke-width:3;transform:scale(2.2)}
   .node.lca circle{fill:#fff;stroke:var(--ink);stroke-width:2.5;transform:scale(1.6)}
   @keyframes pop{0%{transform:scale(0)}60%{transform:scale(2.4)}100%{transform:scale(1.9)}}
-  .lbl{font-family:"Instrument Sans",system-ui,sans-serif;font-size:10px;fill:var(--ink);pointer-events:none;font-weight:500;paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round}
+  text{font-family:"Instrument Sans",system-ui,sans-serif;pointer-events:none;paint-order:stroke;stroke:#fff;stroke-linejoin:round}
+  .lbl{font-size:10px;fill:var(--ink);font-weight:500;stroke-width:3px}
   .lbl.picked{fill:var(--orange-ink);font-weight:600}
   .lbl.correct{fill:var(--green-ink);font-weight:600}
-  .clbl{font-family:"Instrument Sans",system-ui,sans-serif;font-size:6px;fill:#5b6f65;pointer-events:none;opacity:0;transition:opacity .2s;paint-order:stroke;stroke:#fff;stroke-width:2.6px;stroke-linejoin:round;font-weight:600}
-  .tick{stroke:#d3dcd6;stroke-width:1;vector-effect:non-scaling-stroke;stroke-dasharray:2 3}
-  #view.nolabels .clbl{opacity:0!important}
-  #view.notips .lbl{opacity:0}
-  #view.notips.revealed .lbl.correct,#view.notips.revealed .lbl.picked{opacity:1}
-  #view.notips .tick{opacity:0}
-  #view.notips.revealed .tick.show{opacity:1}
-  #view.notips .clbl{opacity:1}
-  .mode{display:flex;flex-direction:column;gap:8px;margin-top:14px}
-  .mode button{text-align:left;border:2px solid var(--soft);background:#fff;border-radius:16px;padding:14px 16px;cursor:pointer;font-family:inherit;color:var(--ink)}
-  .mode button:hover,.mode button:focus-visible{border-color:var(--ink);outline:none}
-  .mode b{display:block;font-family:"Bricolage Grotesque",sans-serif;font-size:18px;margin-bottom:2px}
-  .mode span{font-size:13px;color:var(--muted);line-height:1.4}
+  .clbl{font-size:6px;fill:#5b6f65;opacity:0;transition:opacity .2s;stroke-width:2.6px;font-weight:600}
   .clbl.major{font-size:7.5px;fill:#40554b;opacity:1}
   #view.zoomed .clbl{opacity:1}
+  .clbl.picked,.clbl.lca{opacity:1;fill:var(--ink)}
+  #view.nolabels .clbl{opacity:0!important}
   #view.nolabels .clbl.picked,#view.nolabels .clbl.lca{opacity:1!important}
-  .clbl.picked,.clbl.lca{opacity:1;fill:var(--ink);font-weight:600}
+  #view.notips .lbl,#view.notips .tick{opacity:0}
+  #view.notips.revealed .lbl.correct,#view.notips.revealed .lbl.picked,#view.notips.revealed .tick.show{opacity:1}
+  #view.notips .clbl{opacity:1}
   #stage.locked{cursor:default}
 
   .chip{position:absolute;transform:translate(-50%,-130%);background:var(--ink);color:#fff;font-size:12px;font-weight:600;padding:6px 10px;border-radius:999px;pointer-events:none;white-space:nowrap;opacity:0;transition:opacity .15s}
-  .chip.on{opacity:1}
-  .chip.green{background:var(--green-ink)}
+  .chip.on{opacity:1} .chip.green{background:var(--green-ink)}
   .chip::after{content:"";position:absolute;left:50%;bottom:-5px;width:10px;height:10px;background:inherit;transform:translateX(-50%) rotate(45deg);border-radius:2px}
 
   .top{position:fixed;top:0;left:0;right:0;padding:calc(10px + env(safe-area-inset-top)) 12px 0;display:flex;align-items:center;gap:10px;pointer-events:none}
@@ -82,9 +72,9 @@
   .status b{color:var(--orange-ink)} .status .ok{color:var(--green-ink);font-weight:600} .status .path{color:var(--muted)}
   .go{width:100%;border:0;border-radius:14px;padding:15px;font:700 16px "Bricolage Grotesque",sans-serif;background:var(--ink);color:#fff;cursor:pointer;transition:transform .12s var(--ease),background .15s}
   .go:active{transform:scale(.98)}
-  .go.orange{background:var(--orange)} .go.green{background:var(--green)}
+  .go.orange{background:var(--orange)} .go.green{background:var(--green)} .go.ghost{background:var(--soft);color:var(--ink)}
   .go:disabled{background:var(--soft);color:var(--muted);cursor:default}
-  .go:focus-visible,.icon:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+  .go:focus-visible,.icon:focus-visible,.seg button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 
   .overlay{position:fixed;inset:0;background:rgba(245,248,245,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
   .overlay.on{opacity:1;pointer-events:auto}
@@ -99,28 +89,28 @@
   .rr .n{font-weight:600;font-size:15px} .rr .w{font-size:12.5px;color:var(--muted);margin-top:2px} .rr .w span{color:var(--ink)}
   .rr .d{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:26px;min-width:2ch;text-align:right}
   .rr .d.z{color:var(--green-ink)}
-  .row{display:flex;gap:8px;margin-top:14px}
-  .row .go{flex:1}
-  .go.ghost{background:var(--soft);color:var(--ink)}
+  .row{display:flex;gap:8px;margin-top:14px} .row .go{flex:1}
+  .opt{font-size:12px;font-weight:600;color:var(--muted);margin:14px 0 6px}
+  .seg{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .seg button{text-align:left;border:2px solid var(--soft);background:#fff;border-radius:14px;padding:12px 14px;cursor:pointer;font-family:inherit;color:var(--ink)}
+  .seg button.on{border-color:var(--ink);background:var(--bg)}
+  .seg b{display:block;font-family:"Bricolage Grotesque",sans-serif;font-size:16px;margin-bottom:2px}
+  .seg span{font-size:12px;color:var(--muted);line-height:1.35}
   .toast{position:fixed;left:50%;bottom:calc(var(--sheetH,200px) + 14px);transform:translate(-50%,10px);background:var(--ink);color:#fff;padding:10px 14px;border-radius:999px;font-size:13px;font-weight:600;opacity:0;transition:.2s;pointer-events:none;z-index:9}
   .toast.on{opacity:1;transform:translate(-50%,0)}
-  .hidden{display:none}
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-
 <div id="stage">
-  <svg id="svg" aria-label="Circular tree of life. Drag to pan, pinch or scroll to zoom, tap a branch to place the organism."><g id="view"></g></svg>
+  <svg id="svg" aria-label="Tree of life. Drag to pan, pinch or scroll to zoom, tap a branch to place the organism."><g id="view"></g></svg>
   <div class="chip" id="chip"></div>
 </div>
-
 <div class="top">
   <div class="pill"><span class="brand">Tree Tap</span><span class="dots" id="dots"></span></div>
-  <div class="pill timer" id="timer"><span id="tval">1:00</span><span class="bar" id="tbar"></span></div>
+  <div class="pill timer" id="timer"><span id="tval">0:45</span><span class="bar" id="tbar"></span></div>
   <button class="pill icon" id="fit" title="Fit whole tree" aria-label="Fit whole tree">⤢</button>
 </div>
-
 <div class="sheet" id="sheet"><div class="inner">
   <p class="lvl" id="lvl"></p>
   <h2 class="oname" id="oname"></h2>
@@ -128,398 +118,724 @@
   <p class="status" id="status"></p>
   <button class="go" id="go" disabled>Tap a branch to place it</button>
 </div></div>
-
 <div class="overlay" id="overlay"><div class="card" id="card"></div></div>
 <div class="toast" id="toast"></div>
-
 <script>
-// ================= TREE =================
-const T = ["Life",[
- ["Bacteria",[["Cyanobacteria"],["E. coli & relatives"],["Bacillus & lactobacilli"],["Streptomyces & relatives"],["Spirochaetes"]]],
- ["Archaea",[["Methanogens & halophiles"],["Thermophilic archaea"],["Asgard archaea"]]],
- ["Eukaryotes",[
-  ["Excavates",[["Euglena & trypanosomes"],["Giardia & relatives"]]],
-  ["SAR supergroup",[
-    ["Rhizarians",[["Forams & radiolarians"]]],
-    ["Stramenopiles",[["Diatoms"],["Kelp & brown algae"],["Water moulds"]]],
-    ["Alveolates",[["Ciliates"],["Dinoflagellates"],["Apicomplexans"]]]]],
-  ["Haptophytes",[["Coccolithophores"]]],
-  ["Archaeplastids",[
-    ["Red algae"],
-    ["Green plants",[
-      ["Chlorophyte green algae"],
-      ["Streptophytes",[
-        ["Charophyte green algae"],
-        ["Land plants",[
-          ["Liverworts"],["Mosses"],["Hornworts"],
-          ["Vascular plants",[
-            ["Clubmosses"],
-            ["Euphyllophytes",[
-              ["Ferns & horsetails"],
-              ["Seed plants",[
-                ["Gymnosperms",[["Cycads"],["Ginkgo"],["Conifers"],["Gnetophytes"]]],
-                ["Flowering plants",[
-                  ["Water lilies"],["Magnolias & laurels"],
-                  ["Monocots",[["Grasses"],["Orchids"],["Palms"],["Lilies & onions"]]],
-                  ["Eudicots",[["Buttercups & poppies"],["Cacti & carnations"],["Roses, beans & oaks"],["Sunflowers, mints & tomatoes"]]]]]]]]]]]]]]]]]]],
-  ["Amoebozoans",[["Amoebas"],["Slime moulds"]]],
-  ["Opisthokonts",[
-    ["Fungi",[["Chytrids"],["Bread moulds"],["Mycorrhizal fungi"],
-      ["Dikarya",[
-        ["Sac fungi",[["Yeasts"],["Penicillium & moulds"],["Truffles & morels"]]],
-        ["Club fungi",[["Mushrooms"],["Rusts & smuts"]]]]]]],
-    ["Choanoflagellates"],
-    ["Animals",[
-      ["Sponges"],["Comb jellies"],["Placozoans"],
-      ["Cnidarians",[["Jellyfish"],["Corals & anemones"],["Hydras"]]],
-      ["Bilaterians",[
-        ["Protostomes",[
-          ["Ecdysozoans",[
-            ["Roundworms"],["Tardigrades"],["Velvet worms"],
-            ["Arthropods",[
-              ["Chelicerates",[["Horseshoe crabs"],["Spiders"],["Scorpions"],["Mites & ticks"]]],
-              ["Myriapods",[["Centipedes"],["Millipedes"]]],
-              ["Pancrustaceans",[
-                ["Crabs, shrimp & lobsters"],["Barnacles"],["Copepods"],["Krill"],
-                ["Insects",[["Dragonflies"],["Grasshoppers & crickets"],["True bugs & aphids"],
-                  ["Insects with metamorphosis",[["Beetles"],["Butterflies & moths"],["Flies & mosquitoes"],["Bees, wasps & ants"]]]]]]]]]]],
-          ["Lophotrochozoans",[
-            ["Flatworms"],["Rotifers"],["Bryozoans"],["Brachiopods"],
-            ["Annelids",[["Earthworms"],["Leeches"],["Bristle worms"]]],
-            ["Molluscs",[["Chitons"],["Snails & slugs"],["Clams, mussels & oysters"],["Octopus, squid & nautilus"]]]]]]],
-        ["Deuterostomes",[
-          ["Echinoderms",[["Sea lilies"],["Starfish"],["Brittle stars"],["Sea urchins"],["Sea cucumbers"]]],
-          ["Acorn worms"],
-          ["Chordates",[
-            ["Lancelets"],["Sea squirts"],
-            ["Vertebrates",[
-              ["Hagfish"],["Lampreys"],
-              ["Jawed vertebrates",[
-                ["Cartilaginous fish",[["Sharks & rays"],["Chimaeras"]]],
-                ["Bony vertebrates",[
-                  ["Ray-finned fish",[["Sturgeons & paddlefish"],["Gars & bowfin"],["Teleost fish"]]],
-                  ["Lobe-finned lineage",[
-                    ["Coelacanths"],["Lungfish"],
-                    ["Tetrapods",[
-                      ["Amphibians",[["Frogs & toads"],["Salamanders & newts"],["Caecilians"]]],
-                      ["Amniotes",[
-                        ["Mammals",[["Monotremes"],
-                          ["Therians",[["Marsupials"],
-                            ["Placentals",[
-                              ["Sloths & armadillos"],["Elephants, manatees & aardvarks"],
-                              ["Boreoeutherians",[
-                                ["Euarchontoglires",[["Primates"],["Rodents"],["Rabbits & hares"]]],
-                                ["Laurasiatherians",[["Bats"],["Carnivorans"],["Even-toed ungulates & whales"],["Horses, rhinos & tapirs"]]]]]]]]]]],
-                        ["Reptiles",[
-                          ["Turtles"],
-                          ["Lepidosaurs",[["Tuatara"],["Squamates",[["Lizards"],["Snakes"]]]]],
-                          ["Archosaurs",[["Crocodilians"],
-                            ["Birds",[["Ostriches & kiwis"],
-                              ["Neognath birds",[["Ducks, chickens & pheasants"],
-                                ["Neoaves",[["Penguins"],["Hawks & eagles"],["Parrots"],["Songbirds"]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]];
+const TREE_TXT=`Life
+ Bacteria
+  Cyanobacteria|Cyanobacteria
+  Enterobacteria (E. coli, Salmonella)|Enterobacterales
+  Pseudomonads|Pseudomonadales
+  Rhizobia & rickettsias|Alphaproteobacteria
+  Bacillus & lactobacilli|Bacillota
+  Streptomyces & mycobacteria|Actinomycetota
+  Spirochaetes|Spirochaetota
+  Chlamydiae|Chlamydiota
+  Bacteroides|Bacteroidota
+  Deinococcus (radiation-proof)|Deinococcota
+ Archaea
+  Methanogens|Methanomicrobia
+  Halophiles (salt-lovers)|Halobacteria
+  Thermophilic archaea|Thermoproteota
+  Nanoarchaea|Nanoarchaeota
+  Asgard archaea|Asgardarchaeota
+ Eukaryotes
+  Excavates
+   Euglena & trypanosomes|Euglenozoa
+   Giardia & relatives|Fornicata
+   Trichomonads|Parabasalia
+  SAR supergroup
+   Rhizarians
+    Forams|Foraminifera
+    Radiolarians|Radiolaria
+    Cercozoans|Cercozoa
+   Stramenopiles
+    Diatoms|Bacillariophyta
+    Kelp & brown algae|Phaeophyceae
+    Golden algae|Chrysophyceae
+    Water moulds|Oomycota
+   Alveolates
+    Ciliates|Ciliophora
+    Dinoflagellates|Dinoflagellata
+    Apicomplexans|Apicomplexa
+  Haptophytes & cryptophytes
+   Coccolithophores|Haptophyta
+   Cryptomonads|Cryptophyta
+  Archaeplastids
+   Glaucophytes|Glaucophyta
+   Red algae|Rhodophyta
+   Green plants
+    Chlorophyte green algae|Chlorophyta
+    Streptophytes
+     Charophyte green algae|Charophyta
+     Land plants
+      Liverworts|Marchantiophyta
+      Mosses|Bryophyta
+      Hornworts|Anthocerotophyta
+      Vascular plants
+       Clubmosses & quillworts|Lycopodiopsida
+       Euphyllophytes
+        Ferns & horsetails
+         Horsetails|Equisetidae
+         Whisk ferns|Psilotidae
+         True ferns|Polypodiidae
+        Seed plants
+         Gymnosperms
+          Cycads|Cycadophyta
+          Ginkgo|Ginkgophyta
+          Gnetophytes|Gnetophyta
+          Conifers
+           Pines, firs & spruces|Pinaceae
+           Araucarias|Araucariaceae
+           Podocarps|Podocarpaceae
+           Cypresses & redwoods|Cupressaceae
+           Yews|Taxaceae
+         Flowering plants
+          Amborella|Amborellales
+          Water lilies|Nymphaeales
+          Magnoliids
+           Magnolias|Magnoliales
+           Laurels & avocado|Laurales
+           Black pepper|Piperales
+          Monocots
+           Aroids & duckweed|Alismatales
+           Lilies|Liliales
+           Orchids|Orchidaceae
+           Asparagus, onions & agaves|Asparagales
+           Palms|Arecales
+           Gingers & bananas|Zingiberales
+           Grasses|Poaceae
+           Sedges, rushes & bromeliads|Poales
+          Eudicots
+           Buttercups & poppies|Ranunculales
+           Proteas & planes|Proteales
+           Cacti, carnations & sundews|Caryophyllales
+           Rosids
+            Grapes|Vitales
+            Roses, apples & strawberries|Rosaceae
+            Beans & peas|Fabaceae
+            Oaks, birches & walnuts|Fagales
+            Cucumbers & squashes|Cucurbitales
+            Cabbages & mustards|Brassicales
+            Citrus & maples|Sapindales
+            Eucalyptus & myrtles|Myrtales
+           Asterids
+            Blueberries & heathers|Ericales
+            Coffee & gentians|Gentianales
+            Mints & sages|Lamiales
+            Tomatoes & potatoes|Solanales
+            Sunflowers & daisies|Asterales
+            Carrots & parsley|Apiales
+  Amoebozoans
+   Amoebas|Tubulinea
+   Plasmodial slime moulds|Myxogastria
+   Social amoebas|Dictyostelia
+  Opisthokonts
+   Fungi
+    Chytrids|Chytridiomycota
+    Microsporidia|Microsporidia
+    Bread moulds|Mucoromycota
+    Mycorrhizal fungi|Glomeromycota
+    Dikarya
+     Sac fungi
+      Yeasts|Saccharomycotina
+      Penicillium & moulds|Eurotiomycetes
+      Truffles & morels|Pezizomycetes
+      Lichen-forming fungi|Lecanoromycetes
+      Cordyceps & ergot|Sordariomycetes
+     Club fungi
+      Gilled mushrooms|Agaricales
+      Bracket fungi|Polyporales
+      Chanterelles|Cantharellales
+      Jelly fungi|Tremellomycetes
+      Rusts & smuts|Pucciniomycotina
+   Choanoflagellates|Choanoflagellatea
+   Animals
+    Sponges
+     Glass sponges|Hexactinellida
+     Demosponges|Demospongiae
+     Calcareous sponges|Calcarea
+    Comb jellies|Ctenophora
+    Placozoans|Placozoa
+    Cnidarians
+     True jellyfish|Scyphozoa
+     Box jellies|Cubozoa
+     Corals & anemones|Anthozoa
+     Hydras & siphonophores|Hydrozoa
+    Bilaterians
+     Acoel worms|Xenacoelomorpha
+     Protostomes
+      Ecdysozoans
+       Roundworms|Nematoda
+       Horsehair worms|Nematomorpha
+       Priapulid worms|Priapulida
+       Tardigrades|Tardigrada
+       Velvet worms|Onychophora
+       Arthropods
+        Chelicerates
+         Horseshoe crabs|Xiphosura
+         Sea spiders|Pycnogonida
+         Scorpions|Scorpiones
+         Spiders|Araneae
+         Harvestmen|Opiliones
+         Mites & ticks|Acari
+        Myriapods
+         Centipedes|Chilopoda
+         Millipedes|Diplopoda
+        Pancrustaceans
+         Ostracods|Ostracoda
+         Copepods|Copepoda
+         Barnacles|Cirripedia
+         Krill|Euphausiacea
+         Shrimp & prawns|Caridea
+         Crabs & lobsters|Reptantia
+         Woodlice & isopods|Isopoda
+         Amphipods|Amphipoda
+         Insects
+          Silverfish|Zygentoma
+          Mayflies|Ephemeroptera
+          Dragonflies|Odonata
+          Cockroaches & termites|Blattodea
+          Mantises|Mantodea
+          Grasshoppers & crickets|Orthoptera
+          Stick insects|Phasmatodea
+          Earwigs|Dermaptera
+          True bugs, aphids & cicadas|Hemiptera
+          Lice|Psocodea
+          Insects with metamorphosis
+           Beetles|Coleoptera
+           Lacewings & antlions|Neuroptera
+           Butterflies & moths|Lepidoptera
+           Caddisflies|Trichoptera
+           Flies & mosquitoes|Diptera
+           Fleas|Siphonaptera
+           Bees, wasps & ants|Hymenoptera
+      Lophotrochozoans
+       Flatworms|Platyhelminthes
+       Rotifers|Rotifera
+       Ribbon worms|Nemertea
+       Bryozoans|Bryozoa
+       Brachiopods|Brachiopoda
+       Annelids
+        Earthworms|Crassiclitellata
+        Leeches|Hirudinea
+        Bristle worms|Polychaeta
+        Deep-sea tube worms|Siboglinidae
+       Molluscs
+        Chitons|Polyplacophora
+        Tusk shells|Scaphopoda
+        Gastropods
+         Sea snails|Caenogastropoda
+         Land snails & slugs|Stylommatophora
+         Sea slugs|Nudibranchia
+        Bivalves
+         Clams & cockles|Veneroida
+         Mussels|Mytilida
+         Oysters & scallops|Pectinida
+        Cephalopods
+         Nautilus|Nautilida
+         Octopuses|Octopoda
+         Squid & cuttlefish|Decapodiformes
+     Deuterostomes
+      Echinoderms
+       Sea lilies|Crinoidea
+       Starfish|Asteroidea
+       Brittle stars|Ophiuroidea
+       Sea urchins & sand dollars|Echinoidea
+       Sea cucumbers|Holothuroidea
+      Acorn worms|Enteropneusta
+      Chordates
+       Lancelets|Cephalochordata
+       Tunicates
+        Sea squirts|Ascidiacea
+        Salps|Thaliacea
+       Vertebrates
+        Hagfish|Myxini
+        Lampreys|Petromyzontida
+        Jawed vertebrates
+         Cartilaginous fish
+          Sharks|Selachii
+          Rays & skates|Batoidea
+          Chimaeras|Holocephali
+         Bony vertebrates
+          Ray-finned fish
+           Bichirs|Polypteriformes
+           Sturgeons & paddlefish|Acipenseriformes
+           Gars|Lepisosteiformes
+           Bowfin|Amiiformes
+           Teleosts
+            Eels|Anguilliformes
+            Herrings & anchovies|Clupeiformes
+            Carps & minnows|Cypriniformes
+            Catfish|Siluriformes
+            Salmon & trout|Salmoniformes
+            Cod & haddock|Gadiformes
+            Seahorses & pipefish|Syngnathiformes
+            Cichlids|Cichlidae
+            Perches & basses|Perciformes
+            Tunas & mackerels|Scombriformes
+            Flatfish|Pleuronectiformes
+            Pufferfish|Tetraodontiformes
+          Lobe-finned lineage
+           Coelacanths|Actinistia
+           Lungfish|Dipnoi
+           Tetrapods
+            Amphibians
+             Frogs & toads|Anura
+             Salamanders & newts|Urodela
+             Caecilians|Gymnophiona
+            Amniotes
+             Mammals
+              Monotremes|Monotremata
+              Therians
+               Marsupials
+                Opossums|Didelphimorphia
+                Kangaroos, wombats & koalas|Diprotodontia
+                Quolls & Tasmanian devil|Dasyuromorphia
+               Placentals
+                Xenarthrans
+                 Sloths|Folivora
+                 Anteaters|Vermilingua
+                 Armadillos|Cingulata
+                Afrotherians
+                 Elephants|Proboscidea
+                 Manatees & dugongs|Sirenia
+                 Hyraxes|Hyracoidea
+                 Aardvark|Tubulidentata
+                 Tenrecs & golden moles|Afrosoricida
+                Boreoeutherians
+                 Euarchontoglires
+                  Primates
+                   Lemurs & lorises|Strepsirrhini
+                   Monkeys|Simiiformes
+                   Apes|Hominoidea
+                  Treeshrews|Scandentia
+                  Colugos|Dermoptera
+                  Rodents
+                   Mice & rats|Muridae
+                   Squirrels|Sciuridae
+                   Beavers|Castoridae
+                   Guinea pigs & capybaras|Caviomorpha
+                  Rabbits & hares|Lagomorpha
+                 Laurasiatherians
+                  Hedgehogs, shrews & moles|Eulipotyphla
+                  Bats|Chiroptera
+                  Pangolins|Pholidota
+                  Carnivorans
+                   Cats|Felidae
+                   Hyenas|Hyaenidae
+                   Mongooses|Herpestidae
+                   Dogs & foxes|Canidae
+                   Bears|Ursidae
+                   Seals & sea lions|Pinnipedia
+                   Weasels & otters|Mustelidae
+                   Raccoons|Procyonidae
+                  Odd-toed ungulates
+                   Horses & zebras|Equidae
+                   Rhinos|Rhinocerotidae
+                   Tapirs|Tapiridae
+                  Even-toed ungulates
+                   Camels & llamas|Camelidae
+                   Pigs|Suidae
+                   Deer|Cervidae
+                   Giraffes|Giraffidae
+                   Cattle, sheep & antelope|Bovidae
+                   Hippos|Hippopotamidae
+                   Whales & dolphins
+                    Baleen whales|Mysticeti
+                    Toothed whales & dolphins|Odontoceti
+             Reptiles
+              Turtles
+               Sea turtles|Chelonioidea
+               Tortoises & pond turtles|Testudinoidea
+               Softshell turtles|Trionychia
+              Lepidosaurs
+               Tuatara|Rhynchocephalia
+               Squamates
+                Geckos|Gekkota
+                Skinks|Scincomorpha
+                Iguanas & chameleons|Iguania
+                Monitor lizards|Varanidae
+                Snakes
+                 Boas & pythons|Booidea
+                 Vipers|Viperidae
+                 Cobras & mambas|Elapidae
+                 Colubrid snakes|Colubridae
+              Archosaurs
+               Crocodilians
+                Alligators & caimans|Alligatoridae
+                Crocodiles|Crocodylidae
+                Gharials|Gavialidae
+               Birds
+                Palaeognaths
+                 Ostriches|Struthioniformes
+                 Emus & cassowaries|Casuariiformes
+                 Kiwis|Apterygiformes
+                 Tinamous|Tinamiformes
+                Neognath birds
+                 Fowl & waterfowl
+                  Ducks, geese & swans|Anseriformes
+                  Chickens, turkeys & pheasants|Galliformes
+                 Neoaves
+                  Pigeons & doves|Columbiformes
+                  Cuckoos|Cuculiformes
+                  Nightjars|Caprimulgiformes
+                  Swifts & hummingbirds|Apodiformes
+                  Cranes & rails|Gruiformes
+                  Shorebirds, gulls & puffins|Charadriiformes
+                  Penguins|Sphenisciformes
+                  Albatrosses & petrels|Procellariiformes
+                  Storks|Ciconiiformes
+                  Herons, pelicans & ibises|Pelecaniformes
+                  Hawks, eagles & vultures|Accipitriformes
+                  Owls|Strigiformes
+                  Kingfishers & hornbills|Coraciiformes
+                  Woodpeckers & toucans|Piciformes
+                  Falcons|Falconiformes
+                  Parrots|Psittaciformes
+                  Songbirds
+                   Flycatchers & antbirds|Tyranni
+                   Crows, jays & magpies|Corvidae
+                   Larks & swallows|Hirundinidae
+                   Warblers & tits|Sylvioidea
+                   Thrushes & starlings|Muscicapoidea
+                   Finches, sparrows & buntings|Passeroidea
+`;
+const POOL_TXT=`# round 1
+Dog|Canis familiaris|Dogs & foxes|Furry, warm-blooded, born live, nursed on milk.
+House cat|Felis catus|Cats|Retractable claws, slit pupils, a rough tongue.
+Honeybee|Apis mellifera|Bees, wasps & ants|Six legs, four wings, a stinger, and a hive to feed.
+Common frog|Rana temporaria|Frogs & toads|Starts as a gilled tadpole, ends up breathing air through moist skin.
+Chicken|Gallus gallus|Chickens, turkeys & pheasants|Feathered, ground-nesting, lays hard-shelled eggs.
+Button mushroom|Agaricus bisporus|Gilled mushrooms|A fruiting body that drops spores from gills.
+Human|Homo sapiens|Apes|Upright, big-brained, opposable thumbs. You.
+Monarch butterfly|Danaus plexippus|Butterflies & moths|Scaled wings, a coiled straw for a mouth, a caterpillar past.
+Brown rat|Rattus norvegicus|Mice & rats|Ever-growing front teeth and a talent for living anywhere.
+Ladybird|Coccinellidae|Beetles|Hard wing cases hide the flying wings underneath.
+Atlantic salmon|Salmo salar|Salmon & trout|Hatches in rivers, grows at sea, returns to spawn.
+Giant sequoia|Sequoiadendron giganteum|Cypresses & redwoods|The most massive tree alive. Seeds in cones.
+Garden strawberry|Fragaria × ananassa|Roses, apples & strawberries|Five-petalled flowers, runners, seeds on the outside.
+Grey squirrel|Sciurus carolinensis|Squirrels|Bushy tail, buries acorns, chisel teeth.
+Mallard duck|Anas platyrhynchos|Ducks, geese & swans|Webbed feet, a flat bill, oily waterproof feathers.
+# round 2
+Red kangaroo|Osphranter rufus|Kangaroos, wombats & koalas|Born the size of a jellybean and finishes developing in a pouch.
+Common octopus|Octopus vulgaris|Octopuses|Eight arms, three hearts, a beak, no shell.
+American lobster|Homarus americanus|Crabs & lobsters|Armoured, ten-legged, gilled, with big claws.
+Tarantula|Theraphosidae|Spiders|Eight legs, no antennae, fangs.
+Great white shark|Carcharodon carcharias|Sharks|A cartilage skeleton, sandpaper skin, teeth on a conveyor belt.
+Earthworm|Lumbricus terrestris|Earthworms|A body of repeating ring-like segments.
+Moon jellyfish|Aurelia aurita|True jellyfish|A drifting bell with trailing stinging tentacles.
+Green sea turtle|Chelonia mydas|Sea turtles|A shell fused to its ribs, flippers, eggs laid on beaches.
+Emperor penguin|Aptenodytes forsteri|Penguins|Feathers for insulation, wings for swimming.
+Killer whale|Orcinus orca|Toothed whales & dolphins|Air-breathing, milk-producing, lives entirely at sea, hunts with echolocation.
+Bamboo|Bambusoideae|Grasses|Hollow jointed stems, can grow a metre a day, flowers once in decades.
+African elephant|Loxodonta africana|Elephants|Trunk, tusks, the largest land animal.
+Rattlesnake|Crotalus|Vipers|Legless, venomous, hinged fangs, heat-sensing pits.
+Sunflower|Helianthus annuus|Sunflowers & daisies|One 'flower' that is really hundreds of tiny ones packed together.
+Fruit bat|Pteropus|Bats|The only mammal with true powered flight.
+Grizzly bear|Ursus arctos|Bears|Huge, omnivorous, hibernates through winter.
+Cuttlefish|Sepia officinalis|Squid & cuttlefish|Skin that changes colour in a blink, an internal chalky bone, a beak.
+Bald eagle|Haliaeetus leucocephalus|Hawks, eagles & vultures|Hooked beak, huge talons, soars on broad wings.
+Barn owl|Tyto alba|Owls|Silent flight, a heart-shaped face, hunts by ear at night.
+Red fox|Vulpes vulpes|Dogs & foxes|Bushy tail, pointed muzzle, a wild cousin of your pet.
+# round 3
+Starfish|Asteroidea|Starfish|Five-fold symmetry and hydraulic tube feet.
+Bracken fern|Pteridium aquilinum|True ferns|Veins to move water, but spreads by spores, not seeds.
+Baker's yeast|Saccharomyces cerevisiae|Yeasts|A single cell that ferments sugar into alcohol.
+Nile crocodile|Crocodylus niloticus|Crocodiles|Armoured, cold-blooded, a four-chambered heart, a V-shaped snout.
+Slowworm|Anguis fragilis|Skinks|Legless, scaled, with eyelids and a tail it can drop. Not a snake.
+Sphagnum moss|Sphagnum|Mosses|No roots, no true veins, no seeds. Builds bogs.
+Bath sponge|Spongia officinalis|Demosponges|No organs, no nerves, no mouth. Filters water through pores.
+Sea anemone|Actiniaria|Corals & anemones|A stinging flower-like animal stuck to a rock.
+Barnacle|Cirripedia|Barnacles|Glued head-down to a rock inside a chalky shell, kicking food into its mouth.
+Woodlouse|Oniscidea|Woodlice & isopods|Fourteen legs, breathes through gills, rolls into a ball. Lives on land.
+Scallop|Pectinidae|Oysters & scallops|Two hinged shells, dozens of tiny blue eyes, a jet-propelled escape.
+Mosquito|Culicidae|Flies & mosquitoes|Two wings only; the second pair became balancing knobs.
+Cicada|Cicadidae|True bugs, aphids & cicadas|A piercing straw for a mouth and a 17-year wait underground.
+Firefly|Lampyridae|Beetles|Glows at night. Has hard wing cases.
+House centipede|Scutigera coleoptrata|Centipedes|One pair of legs per segment, venomous front claws.
+Three-toed sloth|Bradypus|Sloths|Hangs upside down and hosts algae in its fur.
+Walrus|Odobenus rosmarus|Seals & sea lions|Tusked, blubbery, hauls out on ice.
+Venus flytrap|Dionaea muscipula|Cacti, carnations & sundews|Snaps shut on insects. A flowering plant from the Carolinas.
+Vanilla|Vanilla planifolia|Orchids|A climbing vine whose seed pods flavour ice cream.
+Coconut palm|Cocos nucifera|Palms|No true wood, no branches, parallel-veined leaves.
+E. coli|Escherichia coli|Enterobacteria (E. coli, Salmonella)|No nucleus, one circular chromosome, divides every 20 minutes.
+Dragonfly|Anisoptera|Dragonflies|Wings that don't fold, huge eyes, a nymph stage underwater.
+Axolotl|Ambystoma mexicanum|Salamanders & newts|Keeps its gills for life and regrows lost limbs.
+Hummingbird|Trochilidae|Swifts & hummingbirds|Hovers, beats its wings 50 times a second, drinks nectar.
+Hippopotamus|Hippopotamus amphibius|Hippos|Spends its days in rivers. Its closest living relatives swim for a living.
+Seahorse|Hippocampus|Seahorses & pipefish|A fish that swims upright; the male carries the eggs.
+Koala|Phascolarctos cinereus|Kangaroos, wombats & koalas|Eats eucalyptus, sleeps 20 hours a day, raises young in a pouch.
+Broccoli|Brassica oleracea|Cabbages & mustards|Four-petalled flowers and a peppery bite.
+Dandelion|Taraxacum|Sunflowers & daisies|A yellow head of many tiny flowers that becomes a seed clock.
+Termite|Isoptera|Cockroaches & termites|Wood-eating colony builders. Not ants.
+# round 4
+Platypus|Ornithorhynchus anatinus|Monotremes|Fur and milk, but it lays eggs. Venomous spur on the hind leg.
+Giant kelp|Macrocystis pyrifera|Kelp & brown algae|Grows half a metre a day in undersea forests.
+Sea lamprey|Petromyzon marinus|Lampreys|A backbone but no jaws: a round sucker mouth ringed with teeth.
+C. elegans|Caenorhabditis elegans|Roundworms|A transparent 1 mm worm with exactly 959 body cells.
+Nori seaweed|Pyropia|Red algae|Wrapped around sushi. Photosynthetic, multicellular, not green.
+Paramecium|Paramecium caudatum|Ciliates|One slipper-shaped cell covered in beating hairs.
+Malaria parasite|Plasmodium falciparum|Apicomplexans|A single-celled parasite of red blood cells.
+Slime mould|Physarum polycephalum|Plasmodial slime moulds|One giant cell with millions of nuclei that can solve mazes.
+Horseshoe crab|Limulus polyphemus|Horseshoe crabs|Blue blood, a spiked tail, 450 million years of history.
+Sea cucumber|Holothuroidea|Sea cucumbers|A leathery tube that can eject its own organs in defence.
+Sea lettuce|Ulva lactuca|Chlorophyte green algae|Bright green and two cells thick.
+Manatee|Trichechus|Manatees & dugongs|A slow aquatic grazer with a paddle tail.
+Rock hyrax|Procavia capensis|Hyraxes|Looks like a large guinea pig. Tusk-like incisors, hooves on its toes.
+Ginkgo|Ginkgo biloba|Ginkgo|Fan-shaped leaves, fleshy seeds, no living relatives.
+Deer tick|Ixodes scapularis|Mites & ticks|Eight legs, no antennae, a taste for blood.
+Antarctic krill|Euphausia superba|Krill|A shrimp-like swarmer that feeds the whales.
+Tapeworm|Taenia|Flatworms|Flat, no gut, no body cavity, absorbs food through its skin.
+Portuguese man o' war|Physalia physalis|Hydras & siphonophores|A floating colony of stinging polyps. Not a true jellyfish.
+Ostrich|Struthio camelus|Ostriches|A flightless bird with a flat breastbone and two toes per foot.
+Beluga sturgeon|Huso huso|Sturgeons & paddlefish|Bony plates, a mostly cartilage skeleton, and caviar.
+Caecilian|Gymnophiona|Caecilians|A limbless burrowing animal with moist skin that looks like a worm.
+Black rhinoceros|Diceros bicornis|Rhinos|Three toes per foot and horns of keratin.
+Red-tide dinoflagellate|Karenia brevis|Dinoflagellates|A whirling single cell with two flagella that can glow at night.
+Comb jelly|Ctenophora|Comb jellies|Rows of beating cilia refract light into rainbows. No stinging cells.
+Quinoa|Chenopodium quinoa|Cacti, carnations & sundews|A grain-like seed from a broad-leaved plant, not a grass.
+Sand dollar|Clypeasteroida|Sea urchins & sand dollars|A flattened disc with a five-petal pattern, covered in tiny spines.
+Trypanosome|Trypanosoma brucei|Euglena & trypanosomes|A single cell with a whip-like tail that causes sleeping sickness.
+Pangolin|Manis|Pangolins|Covered in keratin scales, eats ants. Not an anteater.
+Aardvark|Orycteropus afer|Aardvark|Digs for termites with a pig-like snout. Not related to pigs.
+Nudibranch|Nudibranchia|Sea slugs|A shell-less sea creature with a crown of gills and stolen stinging cells.
+Falcon|Falco peregrinus|Falcons|The fastest animal alive. Closer to parrots than to hawks.
+Gharial|Gavialis gangeticus|Gharials|A needle-snouted fish-eater from Indian rivers.
+Chameleon|Chamaeleonidae|Iguanas & chameleons|Independent eyes, a ballistic tongue, colour-changing skin.
+Cordyceps|Ophiocordyceps unilateralis|Cordyceps & ergot|A fungus that hijacks ants and grows out of their heads.
+Toucan|Ramphastidae|Woodpeckers & toucans|A huge colourful bill; nests in tree holes.
+Salp|Salpidae|Salps|A transparent barrel that pumps water and forms chains. Has a notochord as a larva.
+# round 5
+Tardigrade|Hypsibius exemplaris|Tardigrades|Eight stubby legs, a moulting cuticle, survives vacuum.
+Coelacanth|Latimeria chalumnae|Coelacanths|Fleshy, limb-like fins. Thought extinct until 1938.
+Sea squirt|Ciona intestinalis|Sea squirts|Its larva has a stiff rod along its back and a tail. Then it glues down and eats its own brain.
+Black truffle|Tuber melanosporum|Truffles & morels|Spores form in sacs, not on gills, and spread by being eaten.
+Echidna|Tachyglossus aculeatus|Monotremes|Spiny, ant-eating, warm-blooded, hatched from a soft egg.
+Hagfish|Myxine glutinosa|Hagfish|Jawless, nearly blind, fills a bucket with slime in seconds.
+Diatom|Bacillariophyceae|Diatoms|A single photosynthetic cell in a glass shell.
+Gut methanogen|Methanobrevibacter smithii|Methanogens|Makes methane in your gut. No nucleus, but no bacterial cell wall either.
+Tuatara|Sphenodon punctatus|Tuatara|Lizard-like, with a third eye. Not a lizard.
+Toxoplasma|Toxoplasma gondii|Apicomplexans|A single-celled parasite that breeds in cats and infects a third of humans.
+Spirulina|Arthrospira platensis|Cyanobacteria|Photosynthetic, sold as a powder, no nucleus.
+Lancelet|Branchiostoma|Lancelets|Fish-shaped, with a stiff rod along its back but no skull and no bones.
+Velvet worm|Peripatus|Velvet worms|Soft, many-legged, sprays glue at prey.
+Acorn worm|Enteropneusta|Acorn worms|A burrowing marine worm with gill slits.
+Ratfish|Hydrolagus colliei|Chimaeras|Cartilage skeleton, but its upper jaw is fused to the skull.
+Alligator gar|Atractosteus spatula|Gars|Armoured diamond scales and a lung-like swim bladder.
+Australian lungfish|Neoceratodus forsteri|Lungfish|Breathes air with a true lung.
+Liverwort|Marchantia|Liverworts|A flat green thallus, no veins, reproduces by splashed sperm.
+Foraminiferan|Foraminifera|Forams|A single cell in a chambered shell. Their fossils build chalk cliffs.
+Euglena|Euglena gracilis|Euglena & trypanosomes|Swims with a whip, eats, and photosynthesises.
+Trichoplax|Trichoplax adhaerens|Placozoans|A flat blob of a few thousand cells; the simplest known animal.
+Choanoflagellate|Monosiga brevicollis|Choanoflagellates|A collared single cell with a whip. The nearest thing to an animal that isn't one.
+Coccolithophore|Emiliania huxleyi|Coccolithophores|A single cell armoured in chalk plates; turns whole seas milky.
+Lamp shell|Brachiopoda|Brachiopods|Two shells like a clam, but top and bottom rather than left and right.
+Sea lily|Crinoidea|Sea lilies|A feathery filter feeder on a stalk.
+Wheat rust|Puccinia graminis|Rusts & smuts|A fungus with five spore types and two host plants.
+Potato blight|Phytophthora infestans|Water moulds|Grows like a fungus. Isn't one.
+Welwitschia|Welwitschia mirabilis|Gnetophytes|Two leaves that grow for a thousand years. Cones, not flowers.
+Stonewort|Chara|Charophyte green algae|A green alga with a body plan closest to land plants.
+Lokiarchaeon|Lokiarchaeota|Asgard archaea|A deep-sea microbe with no nucleus, but genes that look eukaryotic.
+Chytrid fungus|Batrachochytrium dendrobatidis|Chytrids|A fungus with swimming spores. Devastates frogs.
+Sulfolobus|Sulfolobus acidocaldarius|Thermophilic archaea|Thrives in boiling acid hot springs. No nucleus.
+Moss animal|Bryozoa|Bryozoans|A colony of tiny tentacled filter feeders that looks like moss on a rock.
+Colugo|Cynocephalus volans|Colugos|A gliding mammal with a full-body membrane. Not a lemur, not a bat.
+Tenrec|Tenrecidae|Tenrecs & golden moles|Looks like a hedgehog, lives in Madagascar, related to elephants.
+Sea spider|Pycnogonida|Sea spiders|All legs and almost no body. Not a true spider.
+Priapulid worm|Priapulida|Priapulid worms|A mud-dwelling marine worm that moults its cuticle.
+Kiwi|Apteryx|Kiwis|Nocturnal, flightless, nostrils at the tip of its beak. Lays a giant egg.
+Tinamou|Tinamidae|Tinamous|A ground bird that can fly, weakly. Closer to ostriches than to chickens.
+Bichir|Polypterus|Bichirs|A fish with lungs and lobed fins that walks on land. Still ray-finned.
+Amborella|Amborella trichopoda|Amborella|A New Caledonian shrub that is the sister to all other flowering plants.
+Whisk fern|Psilotum nudum|Whisk ferns|No roots, no true leaves, just forking green stems.
+Reindeer lichen|Cladonia rangiferina|Lichen-forming fungi|A fungus farming algae inside itself.
+Deep-sea tube worm|Riftia pachyptila|Deep-sea tube worms|No mouth, no gut; fed by bacteria at hydrothermal vents.
+`;
+// ================= DATA =================
+const MAJOR = new Set(["Bacteria","Archaea","Eukaryotes","Land plants","Flowering plants","Monocots","Eudicots","Fungi","Animals","Arthropods","Insects","Molluscs","Vertebrates","Teleosts","Mammals","Placentals","Carnivorans","Reptiles","Birds","Neoaves","Songbirds","Echinoderms","Chordates","Cnidarians","Squamates"]);
+const ROUND_SECONDS=45, BLIND_FROM=3;
+const LEVELS=["Round 1 · warm-up","Round 2 · familiar","Round 3 · trickier","Round 4 · hard","Round 5 · expert"];
+let MODE="clades", LAYOUT="radial";
 
-const LATIN={"Cyanobacteria":"Cyanobacteria","E. coli & relatives":"Pseudomonadota","Bacillus & lactobacilli":"Bacillota","Streptomyces & relatives":"Actinomycetota","Spirochaetes":"Spirochaetota","Methanogens & halophiles":"Euryarchaeota","Thermophilic archaea":"Thermoproteota","Asgard archaea":"Asgardarchaeota","Euglena & trypanosomes":"Euglenozoa","Giardia & relatives":"Metamonada","Forams & radiolarians":"Retaria","Diatoms":"Bacillariophyta","Kelp & brown algae":"Phaeophyceae","Water moulds":"Oomycota","Ciliates":"Ciliophora","Dinoflagellates":"Dinoflagellata","Apicomplexans":"Apicomplexa","Coccolithophores":"Haptophyta","Red algae":"Rhodophyta","Chlorophyte green algae":"Chlorophyta","Charophyte green algae":"Charophyta","Liverworts":"Marchantiophyta","Mosses":"Bryophyta","Hornworts":"Anthocerotophyta","Clubmosses":"Lycopodiopsida","Ferns & horsetails":"Polypodiopsida","Cycads":"Cycadophyta","Ginkgo":"Ginkgophyta","Conifers":"Pinophyta","Gnetophytes":"Gnetophyta","Water lilies":"Nymphaeales","Magnolias & laurels":"Magnoliidae","Grasses":"Poales","Orchids":"Asparagales","Palms":"Arecales","Lilies & onions":"Liliales","Buttercups & poppies":"Ranunculales","Cacti & carnations":"Caryophyllales","Roses, beans & oaks":"Rosidae","Sunflowers, mints & tomatoes":"Asteridae","Amoebas":"Tubulinea","Slime moulds":"Myxogastria","Chytrids":"Chytridiomycota","Bread moulds":"Mucoromycota","Mycorrhizal fungi":"Glomeromycota","Yeasts":"Saccharomycotina","Penicillium & moulds":"Eurotiomycetes","Truffles & morels":"Pezizomycetes","Mushrooms":"Agaricomycetes","Rusts & smuts":"Pucciniomycotina","Choanoflagellates":"Choanoflagellatea","Sponges":"Porifera","Comb jellies":"Ctenophora","Placozoans":"Placozoa","Jellyfish":"Scyphozoa","Corals & anemones":"Anthozoa","Hydras":"Hydrozoa","Roundworms":"Nematoda","Tardigrades":"Tardigrada","Velvet worms":"Onychophora","Horseshoe crabs":"Xiphosura","Spiders":"Araneae","Scorpions":"Scorpiones","Mites & ticks":"Acari","Centipedes":"Chilopoda","Millipedes":"Diplopoda","Crabs, shrimp & lobsters":"Malacostraca","Barnacles":"Cirripedia","Copepods":"Copepoda","Krill":"Euphausiacea","Dragonflies":"Odonata","Grasshoppers & crickets":"Orthoptera","True bugs & aphids":"Hemiptera","Beetles":"Coleoptera","Butterflies & moths":"Lepidoptera","Flies & mosquitoes":"Diptera","Bees, wasps & ants":"Hymenoptera","Flatworms":"Platyhelminthes","Rotifers":"Rotifera","Bryozoans":"Bryozoa","Brachiopods":"Brachiopoda","Earthworms":"Crassiclitellata","Leeches":"Hirudinea","Bristle worms":"Polychaeta","Chitons":"Polyplacophora","Snails & slugs":"Gastropoda","Clams, mussels & oysters":"Bivalvia","Octopus, squid & nautilus":"Cephalopoda","Sea lilies":"Crinoidea","Starfish":"Asteroidea","Brittle stars":"Ophiuroidea","Sea urchins":"Echinoidea","Sea cucumbers":"Holothuroidea","Acorn worms":"Enteropneusta","Lancelets":"Cephalochordata","Sea squirts":"Tunicata","Hagfish":"Myxini","Lampreys":"Petromyzontida","Sharks & rays":"Elasmobranchii","Chimaeras":"Holocephali","Sturgeons & paddlefish":"Acipenseriformes","Gars & bowfin":"Holostei","Teleost fish":"Teleostei","Coelacanths":"Actinistia","Lungfish":"Dipnoi","Frogs & toads":"Anura","Salamanders & newts":"Urodela","Caecilians":"Gymnophiona","Monotremes":"Monotremata","Marsupials":"Marsupialia","Sloths & armadillos":"Xenarthra","Elephants, manatees & aardvarks":"Afrotheria","Primates":"Primates","Rodents":"Rodentia","Rabbits & hares":"Lagomorpha","Bats":"Chiroptera","Carnivorans":"Carnivora","Even-toed ungulates & whales":"Artiodactyla","Horses, rhinos & tapirs":"Perissodactyla","Turtles":"Testudines","Tuatara":"Rhynchocephalia","Lizards":"Lacertilia","Snakes":"Serpentes","Crocodilians":"Crocodylia","Ostriches & kiwis":"Palaeognathae","Ducks, chickens & pheasants":"Galloanserae","Penguins":"Sphenisciformes","Hawks & eagles":"Accipitriformes","Parrots":"Psittaciformes","Songbirds":"Passeriformes"};
-let MODE="clades"; // "clades": tips unlabelled, clade names shown · "latin": tips labelled in Latin only
-const MAJOR = new Set(["Bacteria","Archaea","Eukaryotes","Land plants","Flowering plants","Fungi","Animals","Arthropods","Insects","Molluscs","Vertebrates","Mammals","Reptiles","Birds","Placentals","Echinoderms","Chordates","Cnidarians"]);
+// parse indented tree: depth = leading spaces; leaves are "Common name|Latin"
+const LATIN={};
+function parseTree(txt){
+  const stack=[]; let root=null;
+  txt.split("\n").forEach(line=>{ if(!line.trim()) return;
+    const d=line.length-line.trimStart().length; const [name,lat]=line.trim().split("|");
+    const n=[name]; if(lat) LATIN[name]=lat;
+    if(d===0){root=n;} else { const p=stack[d-1]; (p[1]=p[1]||[]).push(n); }
+    stack[d]=n; stack.length=d+1; });
+  return root;
+}
+const T=parseTree(TREE_TXT);
+const POOLS=[]; { let cur=null; POOL_TXT.split("\n").forEach(l=>{ l=l.trim(); if(!l) return; if(l.startsWith("#")){cur=[];POOLS.push(cur);return;} const [name,sci,leaf,blurb]=l.split("|"); cur.push({name,sci,leaf,blurb}); }); }
 
-// ================= ORGANISMS =================
-const O = (name,sci,blurb,leaf)=>({name,sci,blurb,leaf});
-const POOLS = [
- [ O("Dog","Canis familiaris","Furry, warm-blooded, born live, nursed on milk.","Carnivorans"),
-   O("Honeybee","Apis mellifera","Six legs, four wings, a stinger, and a hive to feed.","Bees, wasps & ants"),
-   O("Rose","Rosa","Thorny stems and showy petals.","Roses, beans & oaks"),
-   O("Common frog","Rana temporaria","Starts as a gilled tadpole, ends up breathing air through moist skin.","Frogs & toads"),
-   O("Chicken","Gallus gallus","Feathered, warm-blooded, lays hard-shelled eggs.","Ducks, chickens & pheasants"),
-   O("Button mushroom","Agaricus bisporus","A fruiting body that drops spores from gills.","Mushrooms"),
-   O("Human","Homo sapiens","Upright, big-brained, opposable thumbs. You.","Primates"),
-   O("Monarch butterfly","Danaus plexippus","Scaled wings, a coiled straw for a mouth, a caterpillar past.","Butterflies & moths"),
-   O("Brown rat","Rattus norvegicus","Ever-growing front teeth and a talent for living anywhere.","Rodents"),
-   O("Ladybird","Coccinellidae","Hard wing cases hide the flying wings underneath.","Beetles"),
-   O("Atlantic salmon","Salmo salar","Fins held up by thin rays. Hatches in rivers, grows at sea.","Teleost fish"),
-   O("Giant sequoia","Sequoiadendron giganteum","The most massive tree alive. Seeds in cones.","Conifers"),
-   O("Tulip","Tulipa","A bulb, strap-like leaves with parallel veins, flower parts in threes.","Lilies & onions") ],
- [ O("Red kangaroo","Osphranter rufus","Born the size of a jellybean and finishes developing in a pouch.","Marsupials"),
-   O("Common octopus","Octopus vulgaris","Eight arms, three hearts, a beak, no shell.","Octopus, squid & nautilus"),
-   O("American lobster","Homarus americanus","Armoured, ten-legged, gilled, with big claws.","Crabs, shrimp & lobsters"),
-   O("Tarantula","Theraphosidae","Eight legs, no antennae, fangs.","Spiders"),
-   O("Great white shark","Carcharodon carcharias","A skeleton of cartilage, sandpaper skin, teeth on a conveyor belt.","Sharks & rays"),
-   O("Earthworm","Lumbricus terrestris","A body of repeating ring-like segments.","Earthworms"),
-   O("Moon jellyfish","Aurelia aurita","Radially symmetric, no brain, stinging cells, drifts.","Jellyfish"),
-   O("Green sea turtle","Chelonia mydas","A shell fused to its ribs, eggs laid on beaches.","Turtles"),
-   O("Emperor penguin","Aptenodytes forsteri","Feathers for insulation, wings for swimming.","Penguins"),
-   O("Killer whale","Orcinus orca","Air-breathing, milk-producing, lives entirely at sea.","Even-toed ungulates & whales"),
-   O("Bamboo","Bambusoideae","Hollow jointed stems, can grow a metre a day, flowers once in decades.","Grasses"),
-   O("African elephant","Loxodonta africana","Trunk, tusks, and the largest land animal.","Elephants, manatees & aardvarks"),
-   O("Rattlesnake","Crotalus","Legless, scaled, venomous, with heat-sensing pits.","Snakes"),
-   O("Sunflower","Helianthus annuus","One 'flower' that is really hundreds of tiny ones packed together.","Sunflowers, mints & tomatoes"),
-   O("Fruit bat","Pteropus","The only mammal with true powered flight.","Bats"),
-   O("Peanut","Arachis hypogaea","A pod that ripens underground. Fixes nitrogen with root bacteria.","Roses, beans & oaks"),
-   O("Cuttlefish","Sepia officinalis","Skin that changes colour in a blink, an internal chalky bone, a beak.","Octopus, squid & nautilus") ],
- [ O("Starfish","Asteroidea","Five-fold symmetry and hydraulic tube feet.","Starfish"),
-   O("Bracken fern","Pteridium aquilinum","Veins to move water, but spreads by spores, not seeds.","Ferns & horsetails"),
-   O("Baker's yeast","Saccharomyces cerevisiae","A single cell that ferments sugar into alcohol.","Yeasts"),
-   O("Nile crocodile","Crocodylus niloticus","Armoured, cold-blooded, four-chambered heart.","Crocodilians"),
-   O("Slowworm","Anguis fragilis","Legless, scaled, with eyelids and a tail it can drop. Not a snake.","Lizards"),
-   O("Sphagnum moss","Sphagnum","No roots, no true veins, no seeds. Builds bogs.","Mosses"),
-   O("Bath sponge","Spongia officinalis","No organs, no nerves, no mouth. Filters water through pores.","Sponges"),
-   O("Sea anemone","Actiniaria","A stinging flower-like animal stuck to a rock.","Corals & anemones"),
-   O("Barnacle","Cirripedia","Glued head-down to a rock inside a chalky shell, kicking food into its mouth.","Barnacles"),
-   O("Woodlouse","Oniscidea","Fourteen legs, breathes through gills, rolls into a ball. Lives on land.","Crabs, shrimp & lobsters"),
-   O("Scallop","Pectinidae","Two hinged shells, dozens of tiny blue eyes, a jet-propelled escape.","Clams, mussels & oysters"),
-   O("Mosquito","Culicidae","Two wings only; the second pair became balancing knobs.","Flies & mosquitoes"),
-   O("Cicada","Cicadidae","A piercing straw for a mouth and a 17-year wait underground.","True bugs & aphids"),
-   O("Firefly","Lampyridae","Glows at night. Has hard wing cases.","Beetles"),
-   O("House centipede","Scutigera coleoptrata","One pair of legs per segment, venomous front claws.","Centipedes"),
-   O("Three-toed sloth","Bradypus","Hangs upside down and hosts algae in its fur.","Sloths & armadillos"),
-   O("Walrus","Odobenus rosmarus","Tusked, blubbery, hauls out on ice. Descended from bear-like ancestors.","Carnivorans"),
-   O("Venus flytrap","Dionaea muscipula","Snaps shut on insects. A flowering plant from the Carolinas.","Cacti & carnations"),
-   O("Vanilla","Vanilla planifolia","A climbing vine whose seed pods flavour ice cream.","Orchids"),
-   O("Coconut palm","Cocos nucifera","No true wood, no branches, parallel-veined leaves.","Palms"),
-   O("E. coli","Escherichia coli","No nucleus, one circular chromosome, divides every 20 minutes.","E. coli & relatives"),
-   O("Dragonfly","Anisoptera","Wings that don't fold, huge eyes, a nymph stage underwater.","Dragonflies"),
-   O("Axolotl","Ambystoma mexicanum","Keeps its gills for life and regrows lost limbs.","Salamanders & newts") ],
- [ O("Platypus","Ornithorhynchus anatinus","Fur and milk, but it lays eggs. Venomous spur on the hind leg.","Monotremes"),
-   O("Giant kelp","Macrocystis pyrifera","Grows half a metre a day in undersea forests.","Kelp & brown algae"),
-   O("Sea lamprey","Petromyzon marinus","A backbone but no jaws: a round sucker mouth ringed with teeth.","Lampreys"),
-   O("C. elegans","Caenorhabditis elegans","A transparent 1 mm worm with exactly 959 body cells.","Roundworms"),
-   O("Nori seaweed","Pyropia","Wrapped around sushi. Photosynthetic, multicellular, not green.","Red algae"),
-   O("Paramecium","Paramecium caudatum","One slipper-shaped cell covered in beating hairs.","Ciliates"),
-   O("Malaria parasite","Plasmodium falciparum","A single-celled parasite of red blood cells.","Apicomplexans"),
-   O("Slime mould","Physarum polycephalum","One giant cell with millions of nuclei that can solve mazes.","Slime moulds"),
-   O("Horseshoe crab","Limulus polyphemus","Blue blood, a spiked tail, 450 million years of history.","Horseshoe crabs"),
-   O("Sea cucumber","Holothuroidea","A leathery tube that can eject its own organs in defence.","Sea cucumbers"),
-   O("Sea lettuce","Ulva lactuca","Bright green and two cells thick.","Chlorophyte green algae"),
-   O("Manatee","Trichechus","A slow aquatic grazer with a paddle tail.","Elephants, manatees & aardvarks"),
-   O("Hyrax","Procavia capensis","Looks like a large guinea pig. Has tusk-like incisors and hooves on its toes.","Elephants, manatees & aardvarks"),
-   O("Ginkgo","Ginkgo biloba","Fan-shaped leaves, fleshy seeds, no living relatives.","Ginkgo"),
-   O("Deer tick","Ixodes scapularis","Eight legs, no antennae, a taste for blood.","Mites & ticks"),
-   O("Antarctic krill","Euphausia superba","A shrimp-like swarmer that feeds the whales.","Krill"),
-   O("Tapeworm","Taenia","Flat, no gut, no body cavity, absorbs food through its skin.","Flatworms"),
-   O("Portuguese man o' war","Physalia physalis","A floating colony of stinging polyps. Not a true jellyfish.","Hydras"),
-   O("Ostrich","Struthio camelus","A flightless bird with a flat breastbone.","Ostriches & kiwis"),
-   O("Beluga sturgeon","Huso huso","Bony plates, a mostly cartilage skeleton, and caviar.","Sturgeons & paddlefish"),
-   O("Caecilian","Gymnophiona","A limbless, burrowing animal with moist skin that looks like a worm.","Caecilians"),
-   O("Black rhinoceros","Diceros bicornis","Three toes per foot and horns of keratin.","Horses, rhinos & tapirs"),
-   O("Red-tide dinoflagellate","Karenia brevis","A whirling single cell with two flagella that can glow at night.","Dinoflagellates"),
-   O("Comb jelly","Ctenophora","Rows of beating cilia refract light into rainbows. No stinging cells.","Comb jellies"),
-   O("Quinoa","Chenopodium quinoa","A grain-like seed from a broad-leaved plant, not a grass.","Cacti & carnations"),
-   O("Sand dollar","Clypeasteroida","A flattened disc with a five-petal pattern, covered in tiny spines.","Sea urchins"),
-   O("Trypanosome","Trypanosoma brucei","A single cell with a whip-like tail that causes sleeping sickness.","Euglena & trypanosomes") ],
- [ O("Tardigrade","Hypsibius exemplaris","Eight stubby legs, a moulting cuticle, survives vacuum.","Tardigrades"),
-   O("Coelacanth","Latimeria chalumnae","Fleshy, limb-like fins. Thought extinct until 1938.","Coelacanths"),
-   O("Sea squirt","Ciona intestinalis","Its larva has a stiff rod along its back and a tail. Then it glues down and eats its own brain.","Sea squirts"),
-   O("Black truffle","Tuber melanosporum","Spores form in sacs, not on gills, and spread by being eaten.","Truffles & morels"),
-   O("Echidna","Tachyglossus aculeatus","Spiny, ant-eating, warm-blooded, hatched from a soft egg.","Monotremes"),
-   O("Hagfish","Myxine glutinosa","Jawless, nearly blind, fills a bucket with slime in seconds.","Hagfish"),
-   O("Diatom","Bacillariophyceae","A single photosynthetic cell in a glass shell.","Diatoms"),
-   O("Gut methanogen","Methanobrevibacter smithii","No nucleus, but a cell chemistry unlike any bacterium.","Methanogens & halophiles"),
-   O("Tuatara","Sphenodon punctatus","Lizard-like, with a third eye. Not a lizard.","Tuatara"),
-   O("Toxoplasma","Toxoplasma gondii","A single-celled parasite that breeds in cats and infects a third of humans.","Apicomplexans"),
-   O("Spirulina","Arthrospira platensis","Photosynthetic, sold as a powder, no nucleus.","Cyanobacteria"),
-   O("Lancelet","Branchiostoma","Fish-shaped, with a stiff rod along its back but no skull and no bones.","Lancelets"),
-   O("Velvet worm","Peripatus","Soft, many-legged, sprays glue at prey.","Velvet worms"),
-   O("Acorn worm","Enteropneusta","A burrowing marine worm with gill slits.","Acorn worms"),
-   O("Ratfish","Hydrolagus colliei","Cartilage skeleton, but its upper jaw is fused to the skull.","Chimaeras"),
-   O("Alligator gar","Atractosteus spatula","Armoured diamond scales and a lung-like swim bladder.","Gars & bowfin"),
-   O("Australian lungfish","Neoceratodus forsteri","Breathes air with a true lung.","Lungfish"),
-   O("Liverwort","Marchantia","A flat green thallus, no veins, reproduces by splashed sperm.","Liverworts"),
-   O("Foraminiferan","Foraminifera","A single cell in a chambered shell. Their fossils build chalk cliffs.","Forams & radiolarians"),
-   O("Euglena","Euglena gracilis","Swims with a whip, eats, and photosynthesises.","Euglena & trypanosomes"),
-   O("Trichoplax","Trichoplax adhaerens","A flat blob of a few thousand cells; the simplest known animal.","Placozoans"),
-   O("Choanoflagellate","Monosiga brevicollis","A collared single cell with a whip. The nearest thing to an animal that isn't one.","Choanoflagellates"),
-   O("Coccolithophore","Emiliania huxleyi","A single cell armoured in chalk plates; turns whole seas milky.","Coccolithophores"),
-   O("Lamp shell","Brachiopoda","Two shells like a clam, but top and bottom rather than left and right.","Brachiopods"),
-   O("Sea lily","Crinoidea","A feathery filter feeder on a stalk.","Sea lilies"),
-   O("Wheat rust","Puccinia graminis","A fungus with five spore types and two host plants.","Rusts & smuts"),
-   O("Potato blight","Phytophthora infestans","Grows like a fungus. Isn't one.","Water moulds"),
-   O("Welwitschia","Welwitschia mirabilis","Two leaves that grow for a thousand years. Cones, not flowers.","Gnetophytes"),
-   O("Stonewort","Chara","A green alga with a body plan closest to land plants.","Charophyte green algae"),
-   O("Lokiarchaeon","Lokiarchaeota","A deep-sea microbe with no nucleus, but genes that look eukaryotic.","Asgard archaea"),
-   O("Magnolia","Magnolia grandiflora","Flowers with no clear petals or sepals, pollinated by beetles.","Magnolias & laurels"),
-   O("Chytrid fungus","Batrachochytrium dendrobatidis","A fungus with swimming spores. Devastates frogs.","Chytrids"),
-   O("Sulfolobus","Sulfolobus acidocaldarius","Thrives in boiling acid hot springs. No nucleus.","Thermophilic archaea"),
-   O("Moss animal","Bryozoa","A colony of tiny tentacled filter feeders that looks like moss on a rock.","Bryozoans"),
-   O("Bristlecone pine","Pinus longaeva","The oldest known living individual organisms.","Conifers") ]
-];
-const LEVELS = ["Round 1 · warm-up","Round 2 · familiar","Round 3 · trickier","Round 4 · hard · clade names hidden","Round 5 · expert · clade names hidden"];
-const ROUND_SECONDS = 45;
-const BLIND_FROM = 3; // rounds 4-5: clade names hidden, tips only
-
-// ================= GRAPH + LAYOUT =================
+// ================= GRAPH =================
 const nodes=[], leaves=[], byName={};
 function build(a,parent,depth){const n={name:a[0],parent,depth,children:[]};nodes.push(n);byName[n.name]=n;
   if(a[1]) n.children=a[1].map(c=>build(c,n,depth+1)); else leaves.push(n); return n;}
 const root=build(T,null,0);
-function height(n){ n.h = n.children.length ? 1+Math.max(...n.children.map(height)) : 0; return n.h; }
-height(root); const MAXH=root.h;
-const R=300, N=leaves.length;
-leaves.forEach((l,i)=>{ l.i=i; l.a=-Math.PI/2 + i*2*Math.PI/N; });
-function span(n){ if(!n.children.length){n.lo=n.hi=n.i;return;} n.children.forEach(span); n.lo=n.children[0].lo; n.hi=n.children[n.children.length-1].hi; n.a=-Math.PI/2+((n.lo+n.hi)/2)*2*Math.PI/N; }
-span(root);
-nodes.forEach(n=>{ n.r = n===root?0:R*Math.pow((MAXH-n.h)/MAXH,.7); n.x=n.r*Math.cos(n.a); n.y=n.r*Math.sin(n.a); });
+function height(n){ n.h=n.children.length?1+Math.max(...n.children.map(height)):0; return n.h; } height(root); const MAXH=root.h;
+leaves.forEach((l,i)=>l.i=i);
+(function span(n){ if(!n.children.length){n.lo=n.hi=n.i;return;} n.children.forEach(span); n.lo=n.children[0].lo; n.hi=n.children[n.children.length-1].hi; })(root);
 const ancestors=n=>{const a=[];while(n){a.push(n);n=n.parent;}return a;};
 function pathBetween(a,b){const A=new Set(ancestors(a));let l=b;while(!A.has(l))l=l.parent;const up=[],down=[];for(let n=a;n!==l;n=n.parent)up.push(n);for(let n=b;n!==l;n=n.parent)down.push(n);return{lca:l,up,down,dist:up.length+down.length};}
 
-const view=document.getElementById("view");
-const ns="http://www.w3.org/2000/svg";
+// ================= LAYOUT =================
+const N=leaves.length, R=Math.round(N*14.5/(2*Math.PI)), ROW=14, XW=Math.round(MAXH*34);
+let BBOX;
+const rad=n=>n===root?0:Math.pow((MAXH-n.h)/MAXH,.7);
+function layout(){
+  if(LAYOUT==="radial"){
+    nodes.forEach(n=>{ n.a=-Math.PI/2+((n.lo+n.hi)/2)*2*Math.PI/N; n.r=R*rad(n); n.x=n.r*Math.cos(n.a); n.y=n.r*Math.sin(n.a); n.ux=Math.cos(n.a); n.uy=Math.sin(n.a); });
+    const m=MODE==="clades"?24:110; BBOX={x0:-R-m,y0:-R-m,x1:R+m,y1:R+m};
+  } else {
+    nodes.forEach(n=>{ n.y=((n.lo+n.hi)/2)*ROW; n.x=XW*rad(n); n.ux=1; n.uy=0; });
+    BBOX={x0:-8,y0:-10,x1:XW+(MODE==="clades"?24:190),y1:(N-1)*ROW+10};
+  }
+}
+const view=document.getElementById("view"), ns="http://www.w3.org/2000/svg";
 const el=(t,attrs)=>{const e=document.createElementNS(ns,t);for(const k in attrs)e.setAttribute(k,attrs[k]);return e;};
 function render(){
-  view.innerHTML="";
-  const gE=el("g",{}),gN=el("g",{}),gL=el("g",{});
-  nodes.forEach(n=>{ if(!n.parent) return;
-    const p=n.parent; let d;
-    if(p.r===0) d=`M0 0 L${n.x} ${n.y}`;
-    else{ const sx=p.r*Math.cos(n.a), sy=p.r*Math.sin(n.a); const sweep=n.a>p.a?1:0;
-      d=`M${p.x} ${p.y} A${p.r} ${p.r} 0 0 ${sweep} ${sx} ${sy} L${n.x} ${n.y}`; }
-    const e=el("path",{class:"edge",d,"data-edge":n.name}); n.edge=e; gE.appendChild(e); });
+  layout(); view.innerHTML="";
+  const gE=el("g",{}),gN=el("g",{}),gL=el("g",{}); const radial=LAYOUT==="radial";
+  nodes.forEach(n=>{ if(!n.parent) return; const p=n.parent; let d;
+    if(radial){ if(p.r===0) d=`M0 0 L${n.x} ${n.y}`; else { const sx=p.r*Math.cos(n.a), sy=p.r*Math.sin(n.a); d=`M${p.x} ${p.y} A${p.r} ${p.r} 0 0 ${n.a>p.a?1:0} ${sx} ${sy} L${n.x} ${n.y}`; } }
+    else d=`M${p.x} ${p.y} V${n.y} H${n.x}`;
+    n.edge=el("path",{class:"edge",d}); gE.appendChild(n.edge); });
   nodes.forEach(n=>{
-    const g=el("g",{class:"node"+(n.children.length?" clade":""),"data-name":n.name});
-    g.appendChild(el("circle",{cx:n.x,cy:n.y,r:n.children.length?2.6:3.2})); n.g=g; gN.appendChild(g);
-    const deg=n.a*180/Math.PI, left=Math.cos(n.a)<0;
+    const g=el("g",{class:"node"+(n.children.length?" clade":"")}); g.appendChild(el("circle",{cx:n.x,cy:n.y,r:n.children.length?2.6:3.2})); n.g=g; gN.appendChild(g);
     if(!n.children.length){
-      const tk=el("line",{class:"tick",x1:n.x,y1:n.y,x2:(R+10)*Math.cos(n.a),y2:(R+10)*Math.sin(n.a)}); n.tick=tk; gE.appendChild(tk);
-      const t=el("text",{class:"lbl",transform:`rotate(${left?deg+180:deg})`,x:left?-(R+13):R+13,y:3.5,"text-anchor":left?"end":"start"}); t.textContent=MODE==="latin"?(LATIN[n.name]||n.name):n.name; n.lbl=t; gL.appendChild(t);
+      const L=radial?R:XW; const tip=[L*n.ux,(radial?L*n.uy:n.y)];
+      n.tick=el("line",{class:"tick",x1:n.x,y1:n.y,x2:radial?(R+10)*n.ux:XW+10,y2:radial?(R+10)*n.uy:n.y}); gE.appendChild(n.tick);
+      const txt=MODE==="latin"?LATIN[n.name]:n.name; let t;
+      if(radial){ const deg=n.a*180/Math.PI, left=Math.cos(n.a)<0; t=el("text",{class:"lbl",transform:`rotate(${left?deg+180:deg})`,x:left?-(R+13):R+13,y:3.5,"text-anchor":left?"end":"start"}); }
+      else t=el("text",{class:"lbl",x:XW+13,y:n.y+3.5});
+      t.textContent=txt; n.lbl=t; gL.appendChild(t);
     } else if(n!==root){
-      const bottom=Math.sin(n.a)>0; const rr=n.r-7;
-      const t=el("text",{class:"clbl"+(MAJOR.has(n.name)?" major":""),transform:`rotate(${bottom?deg-90:deg+90}) translate(0 ${bottom?rr:-rr})`,x:0,y:bottom?-2:5,"text-anchor":"middle"}); t.textContent=n.name; n.lbl=t; gL.appendChild(t);
+      let t; const cls="clbl"+(MAJOR.has(n.name)?" major":"");
+      if(radial){ const deg=n.a*180/Math.PI, bottom=Math.sin(n.a)>0, rr=n.r-7; t=el("text",{class:cls,transform:`rotate(${bottom?deg-90:deg+90}) translate(0 ${bottom?rr:-rr})`,x:0,y:bottom?-2:5,"text-anchor":"middle"}); }
+      else t=el("text",{class:cls,x:n.x-4,y:n.y-3,"text-anchor":"end"});
+      t.textContent=n.name; n.lbl=t; gL.appendChild(t);
     }
   });
   view.append(gE,gN,gL);
 }
-render();
 
 // ================= PAN / ZOOM =================
 const stage=document.getElementById("stage"), svg=document.getElementById("svg"), chip=document.getElementById("chip");
-let W=0,H=0,s=1,tx=0,ty=0, raf=null;
+let W=0,H=0,s=1,tx=0,ty=0,raf=null,chipNode=null;
 function size(){W=stage.clientWidth;H=stage.clientHeight;svg.setAttribute("viewBox",`0 0 ${W} ${H}`);}
-function apply(){ if(raf) return; raf=requestAnimationFrame(()=>{raf=null;
-  view.setAttribute("transform",`translate(${W/2+tx} ${H/2+ty}) scale(${s})`);
-  view.classList.toggle("zoomed",s>1.9); placeChip(); }); }
+function apply(){ if(raf) return; raf=requestAnimationFrame(()=>{raf=null; view.setAttribute("transform",`translate(${W/2+tx} ${H/2+ty}) scale(${s})`); view.classList.toggle("zoomed",s>1.6); placeChip(); }); }
 function sheetH(){ const sh=document.getElementById("sheet"); return sh.classList.contains("hide")?0:sh.offsetHeight; }
-function fit(){ size(); const Hv=H-sheetH()-60; const target=Math.min(W-10,Hv)/(2*(R+95)); s=target; tx=0; ty=-sheetH()/2+30; apply(); }
-function zoomTo(node,scale){ s=scale; tx=-node.x*s; ty=-node.y*s+ (H*0.12); apply(); }
+function fit(){ size(); const Hv=H-sheetH()-70, bw=BBOX.x1-BBOX.x0, bh=BBOX.y1-BBOX.y0; s=Math.min((W-16)/bw, Hv/bh); if(LAYOUT!=="radial") s=Math.max(s,(W-16)/bw*0.999); s=Math.max(.08,Math.min(s,3));
+  const cx=(BBOX.x0+BBOX.x1)/2, cy=LAYOUT==="radial"?(BBOX.y0+BBOX.y1)/2:Math.min((BBOX.y0+BBOX.y1)/2, BBOX.y0+Hv/(2*s)); tx=-cx*s; ty=-cy*s-sheetH()/2+35; apply(); }
 function toWorld(cx,cy){const b=stage.getBoundingClientRect();return{x:(cx-b.left-W/2-tx)/s,y:(cy-b.top-H/2-ty)/s};}
 function toScreen(x,y){return{x:W/2+tx+x*s,y:H/2+ty+y*s};}
+function placeChip(){ if(!chipNode) return; const p=toScreen(chipNode.x,chipNode.y); chip.style.left=p.x+"px"; chip.style.top=p.y+"px"; }
 window.addEventListener("resize",()=>{size();apply();});
-
 const ptrs=new Map(); let start=null, pinch=null;
 stage.addEventListener("pointerdown",e=>{ stage.setPointerCapture(e.pointerId); ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
-  if(ptrs.size===1){ start={x:e.clientX,y:e.clientY,tx,ty,t:Date.now(),moved:false}; }
-  if(ptrs.size===2){ const [a,b]=[...ptrs.values()]; pinch={d:Math.hypot(a.x-b.x,a.y-b.y),s,mid:{x:(a.x+b.x)/2,y:(a.y+b.y)/2},world:toWorld((a.x+b.x)/2,(a.y+b.y)/2)}; start=null; }
+  if(ptrs.size===1) start={x:e.clientX,y:e.clientY,tx,ty,t:Date.now(),moved:false};
+  if(ptrs.size===2){ const [a,b]=[...ptrs.values()]; pinch={d:Math.hypot(a.x-b.x,a.y-b.y),s,world:toWorld((a.x+b.x)/2,(a.y+b.y)/2)}; start=null; }
   stage.classList.add("dragging"); });
 stage.addEventListener("pointermove",e=>{ if(!ptrs.has(e.pointerId)) return; ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
   if(ptrs.size===1&&start){ const dx=e.clientX-start.x, dy=e.clientY-start.y; if(Math.hypot(dx,dy)>6) start.moved=true; tx=start.tx+dx; ty=start.ty+dy; apply(); }
-  else if(ptrs.size===2&&pinch){ const [a,b]=[...ptrs.values()]; const d=Math.hypot(a.x-b.x,a.y-b.y); s=Math.min(8,Math.max(.25,pinch.s*d/pinch.d));
-    const mid={x:(a.x+b.x)/2,y:(a.y+b.y)/2}; const bx=stage.getBoundingClientRect(); tx=mid.x-bx.left-W/2-pinch.world.x*s; ty=mid.y-bx.top-H/2-pinch.world.y*s; apply(); } });
-function up(e){ const wasTap = ptrs.size===1 && start && !start.moved && Date.now()-start.t<400; ptrs.delete(e.pointerId);
-  if(ptrs.size<2) pinch=null; if(ptrs.size===0){ stage.classList.remove("dragging"); if(wasTap) tap(e.clientX,e.clientY); start=null; } }
+  else if(ptrs.size===2&&pinch){ const [a,b]=[...ptrs.values()]; s=Math.min(8,Math.max(.08,pinch.s*Math.hypot(a.x-b.x,a.y-b.y)/pinch.d));
+    const bx=stage.getBoundingClientRect(); tx=(a.x+b.x)/2-bx.left-W/2-pinch.world.x*s; ty=(a.y+b.y)/2-bx.top-H/2-pinch.world.y*s; apply(); } });
+function up(e){ const wasTap=ptrs.size===1&&start&&!start.moved&&Date.now()-start.t<400; ptrs.delete(e.pointerId); if(ptrs.size<2) pinch=null;
+  if(ptrs.size===0){ stage.classList.remove("dragging"); if(wasTap) tap(e.clientX,e.clientY); start=null; } }
 stage.addEventListener("pointerup",up); stage.addEventListener("pointercancel",up);
-stage.addEventListener("wheel",e=>{ e.preventDefault(); const w=toWorld(e.clientX,e.clientY); s=Math.min(8,Math.max(.25,s*Math.exp(-e.deltaY*0.0015)));
+stage.addEventListener("wheel",e=>{ e.preventDefault(); const w=toWorld(e.clientX,e.clientY); s=Math.min(8,Math.max(.08,s*Math.exp(-e.deltaY*0.0015)));
   const b=stage.getBoundingClientRect(); tx=e.clientX-b.left-W/2-w.x*s; ty=e.clientY-b.top-H/2-w.y*s; apply(); },{passive:false});
 document.getElementById("fit").onclick=()=>fit();
-
-function nearest(cx,cy){ const w=toWorld(cx,cy); const th=Math.max(16,22/s); let best=null,bd=th;
+function nearest(cx,cy){ const w=toWorld(cx,cy); const th=Math.max(14,22/s); let best=null,bd=th;
   nodes.forEach(n=>{ let d=Math.hypot(n.x-w.x,n.y-w.y);
-    if(!n.children.length){ 
-      // distance to label segment approx: check along the label line
-      const ux=Math.cos(n.a),uy=Math.sin(n.a); const proj=(w.x-n.x)*ux+(w.y-n.y)*uy; const clamped=Math.max(0,Math.min(n.name.length*5.2+13,proj)); const px=n.x+ux*clamped, py=n.y+uy*clamped; d=Math.min(d,Math.hypot(px-w.x,py-w.y)*0.9); }
-    if(d<bd){bd=d;best=n;} });
-  return best; }
+    if(!n.children.length && !(MODE==="clades")){ const len=(n.lbl.textContent.length*5.2)+13; const proj=(w.x-n.x)*n.ux+(w.y-n.y)*n.uy; const c=Math.max(0,Math.min(len,proj)); d=Math.min(d,Math.hypot(n.x+n.ux*c-w.x,n.y+n.uy*c-w.y)*0.9); }
+    if(d<bd){bd=d;best=n;} }); return best; }
 
 // ================= GAME =================
 const $=id=>document.getElementById(id);
 let round=0,picked=null,locked=false,hist=[],orgs=[],timerId=null,tLeft=0,roundStart=0,totalMs=0;
 const rand=a=>a[Math.floor(Math.random()*a.length)];
 function toast(m){const t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove("on"),1800);}
+const dn=n=>(MODE==="latin"&&!n.children.length)?LATIN[n.name]:n.name;
 
-function newGame(){ $("sheet").classList.add("hide"); fit();
-  $("card").innerHTML=`<p class="rank" style="font-size:26px;margin:0">Tree Tap</p><p class="sub" style="margin-bottom:0">Five organisms, easy to expert. Tap where each belongs on the tree of life. Score is branches off; lower is better. Pick your difficulty:</p>
-    <div class="mode">
-      <button id="m-clades"><b>Clade names only</b><span>Branch tips are unlabelled. Navigate by the named groups and commit to a tip blind.</span></button>
-      <button id="m-latin"><b>Latin tips</b><span>Tips carry their scientific group names only. Clade names disappear in rounds 4 and 5.</span></button>
-    </div>`;
-  $("overlay").classList.add("on");
-  $("m-clades").onclick=()=>begin("clades"); $("m-latin").onclick=()=>begin("latin"); }
-function begin(mode){ MODE=mode; render(); view.classList.toggle("notips",MODE==="clades"); round=0;hist=[];totalMs=0; orgs=POOLS.map(p=>rand(p));
-  $("overlay").classList.remove("on"); $("sheet").classList.remove("hide"); fit(); startRound();
-  toast("Drag to pan · pinch or scroll to zoom"); }
+function newGame(){ $("sheet").classList.add("hide"); render(); fit();
+  $("card").innerHTML=`<p class="rank" style="font-size:26px;margin:0">Tree Tap</p><p class="sub" style="margin-bottom:0">Five organisms, easy to expert. Tap where each belongs on the tree of life. Score is branches off; lower is better.</p>
+    <p class="opt">Tree shape</p><div class="seg" id="segL"><button data-v="radial"><b>Circular</b><span>Life radiates from the centre; ${N} tips around the rim.</span></button><button data-v="rect"><b>Cladogram</b><span>Classic left-to-right tree; scroll down through the tips.</span></button></div>
+    <p class="opt">Labels</p><div class="seg" id="segM"><button data-v="clades"><b>Clade names only</b><span>Tips are unlabelled. Navigate by the named groups and commit blind.</span></button><button data-v="latin"><b>Latin tips</b><span>Tips carry scientific group names only. Clade names vanish in rounds 4–5.</span></button></div>
+    <button class="go" id="start" style="margin-top:16px">Start</button>`;
+  const seg=(id,cur,set)=>{ const box=$(id); [...box.children].forEach(b=>{ b.classList.toggle("on",b.dataset.v===cur); b.onclick=()=>{ set(b.dataset.v); [...box.children].forEach(x=>x.classList.toggle("on",x===b)); }; }); };
+  seg("segL",LAYOUT,v=>{LAYOUT=v;render();fit();}); seg("segM",MODE,v=>MODE=v);
+  $("overlay").classList.add("on"); $("start").onclick=begin; }
+function begin(){ render(); view.classList.toggle("notips",MODE==="clades"); round=0;hist=[];totalMs=0; orgs=POOLS.map(p=>rand(p));
+  $("overlay").classList.remove("on"); $("sheet").classList.remove("hide"); fit(); startRound(); toast("Drag to pan · pinch or scroll to zoom"); }
 function dots(){ $("dots").innerHTML=orgs.map((_,i)=>`<i class="${i<round?'done'+(hist[i]&&hist[i].dist>0?' miss':''):i===round?'now':''}"></i>`).join(""); }
-function clearMarks(){ nodes.forEach(n=>{ n.g.classList.remove("picked","correct","lca"); n.edge&&n.edge.classList.remove("path","draw"); n.lbl&&n.lbl.classList.remove("picked","correct","lca"); n.tick&&n.tick.classList.remove("show"); }); chip.classList.remove("on","green"); }
-
+function clearMarks(){ nodes.forEach(n=>{ n.g.classList.remove("picked","correct","lca"); n.edge&&n.edge.classList.remove("path","draw"); n.lbl&&n.lbl.classList.remove("picked","correct","lca"); n.tick&&n.tick.classList.remove("show"); }); chip.classList.remove("on","green"); chipNode=null; }
 function startRound(){
-  picked=null;locked=false; clearMarks(); stage.classList.remove("locked");
+  picked=null;locked=false; clearMarks(); stage.classList.remove("locked"); view.classList.remove("revealed");
+  view.classList.toggle("nolabels",MODE==="latin"&&round>=BLIND_FROM);
   const o=orgs[round];
-  $("lvl").textContent=MODE==="clades"?LEVELS[round].replace(" · clade names hidden",""):LEVELS[round]; $("oname").innerHTML=`${o.name}<i>${o.sci}</i>`; $("blurb").textContent=o.blurb;
+  $("lvl").textContent=LEVELS[round]+(MODE==="latin"&&round>=BLIND_FROM?" · clade names hidden":"");
+  $("oname").innerHTML=`${o.name}<i>${o.sci}</i>`; $("blurb").textContent=o.blurb;
   $("status").innerHTML=`Tap the branch where <b>${o.name}</b> belongs. A tip is exact; a clade is a safe hedge.`;
   const go=$("go"); go.disabled=true; go.className="go"; go.textContent="Tap a branch to place it"; go.onclick=()=>confirm(false);
-  view.classList.toggle("nolabels",MODE==="latin"&&round>=BLIND_FROM); view.classList.remove("revealed");
   dots(); startTimer();
 }
 function startTimer(){ clearInterval(timerId); tLeft=ROUND_SECONDS; roundStart=Date.now(); tick();
   timerId=setInterval(()=>{ tLeft=ROUND_SECONDS-(Date.now()-roundStart)/1000; if(tLeft<=0){tLeft=0;tick();clearInterval(timerId);timeout();} else tick(); },100); }
 function tick(){ const m=Math.floor(tLeft/60), sec=Math.floor(tLeft%60); $("tval").textContent=`${m}:${String(sec).padStart(2,"0")}`; $("tbar").style.width=(tLeft/ROUND_SECONDS*100)+"%"; $("timer").classList.toggle("low",tLeft<=10); }
-function timeout(){ if(locked) return; if(picked) confirm(); else { picked=root.name; confirm(true); } }
-
-function tap(cx,cy){ if(locked) return; const n=nearest(cx,cy); if(!n) return; pick(n); }
+function timeout(){ if(locked) return; if(picked) confirm(false); else { picked=root.name; confirm(true); } }
+function tap(cx,cy){ if(locked) return; const n=nearest(cx,cy); if(n) pick(n); }
 function pick(n){ picked=n.name; nodes.forEach(m=>{m.g.classList.toggle("picked",m===n); m.lbl&&m.lbl.classList.toggle("picked",m===n);});
-  const hide=MODE==="clades"&&!n.children.length; const dn=(MODE==="latin"&&!n.children.length)?LATIN[n.name]:n.name; chip.textContent=hide?"Branch tip":dn; chip.classList.remove("green"); chip.classList.add("on"); chipNode=n; placeChip();
+  const hide=MODE==="clades"&&!n.children.length; chip.textContent=hide?"Branch tip":dn(n); chip.classList.remove("green"); chip.classList.add("on"); chipNode=n; placeChip();
   const o=orgs[round]; const go=$("go"); go.disabled=false; go.className="go orange"; go.textContent=`Place ${o.name} here`;
-  $("status").innerHTML = n.children.length ? `Placing in the <b>${n.name}</b> clade — a hedge, so at least ${n.h} branch${n.h>1?"es":""} off.` : hide?`Placing <b>${o.name}</b> at an unlabelled tip, inside <b>${n.parent.name}</b>.`:`Placing <b>${o.name}</b> with <b>${dn}</b>.`; }
-let chipNode=null;
-function placeChip(){ if(!chipNode) return; const p=toScreen(chipNode.x,chipNode.y); chip.style.left=p.x+"px"; chip.style.top=p.y+"px"; }
-
+  $("status").innerHTML=n.children.length?`Placing in the <b>${n.name}</b> clade — a hedge, so at least ${n.h} branch${n.h>1?"es":""} off.`:hide?`Placing <b>${o.name}</b> at an unlabelled tip, inside <b>${n.parent.name}</b>.`:`Placing <b>${o.name}</b> with <b>${dn(n)}</b>.`; }
 function confirm(timedOut){
-  if(!picked||locked) return; locked=true; clearInterval(timerId); stage.classList.add("locked");
-  totalMs+=Date.now()-roundStart;
+  if(!picked||locked) return; locked=true; clearInterval(timerId); stage.classList.add("locked"); totalMs+=Date.now()-roundStart;
   const o=orgs[round], g=byName[picked], c=byName[o.leaf], p=pathBetween(g,c);
   hist.push({o,guess:g.name,dist:p.dist,timedOut:!!timedOut});
   c.g.classList.add("correct"); c.lbl.classList.add("correct"); c.tick&&c.tick.classList.add("show"); g.tick&&g.tick.classList.add("show"); view.classList.add("revealed");
   if(p.dist>0){ p.lca.g.classList.add("lca"); p.lca.lbl&&p.lca.lbl.classList.add("lca"); }
-  [...p.up,...p.down].forEach((n,i)=>{ const e=n.edge; const len=e.getTotalLength(); e.style.setProperty("--len",len); e.classList.add("path","draw"); e.style.animationDelay=(i*0.06)+"s"; e.parentNode.appendChild(e); });
+  [...p.up,...p.down].forEach((n,i)=>{ const e=n.edge; const len=e.getTotalLength(); e.style.setProperty("--len",len); e.classList.add("path","draw"); e.style.animationDelay=(i*0.05)+"s"; e.parentNode.appendChild(e); });
   chipNode=c; chip.textContent=o.leaf; chip.classList.add("on","green"); placeChip();
-  // zoom toward the correct answer
-  const mid={x:(g.x+c.x)/2,y:(g.y+c.y)/2}; const Hv=H-sheetH()-70; const spread=Math.hypot(g.x-c.x,g.y-c.y)+140; const target=Math.max(.3,Math.min(2.4,Math.min(W,Hv)/spread));
-  s=target; tx=-mid.x*s; ty=-mid.y*s-sheetH()/2+35; apply();
-
+  const mid={x:(g.x+c.x)/2,y:(g.y+c.y)/2}, Hv=H-sheetH()-70, spread=Math.hypot(g.x-c.x,g.y-c.y)+140;
+  s=Math.max(.15,Math.min(2.4,Math.min(W,Hv)/spread)); tx=-mid.x*s; ty=-mid.y*s-sheetH()/2+35; apply();
   let msg;
   if(timedOut) msg=`Time's up — counted from the root. <b>${p.dist} branches</b> off.`;
   else if(p.dist===0) msg=`<span class="ok">Exactly right.</span>`;
   else if(p.dist<=2) msg=`<b>${p.dist} branch${p.dist>1?"es":""}</b> off. Very close.`;
   else if(p.dist<=5) msg=`<b>${p.dist} branches</b> off.`;
   else msg=`<b>${p.dist} branches</b> off. Last shared ancestor: ${p.lca.name}.`;
-  const lin=ancestors(c).slice(0,4).map(n=>n.name).join(" ‹ ");
-  $("status").innerHTML=`${msg} <span class="path">${o.name} sits at ${lin}.</span>`;
+  $("status").innerHTML=`${msg} <span class="path">${o.name} sits at ${ancestors(c).slice(0,4).map(n=>n.name).join(" ‹ ")}.</span>`;
   const go=$("go"); go.className="go"+(p.dist===0?" green":""); go.textContent=round===orgs.length-1?"See results":"Next organism";
-  go.onclick=()=>{ round++; round<orgs.length?startRound():results(); };
-  dots();
+  go.onclick=()=>{ round++; round<orgs.length?startRound():results(); }; dots();
 }
-
 const pip=d=>d===0?"🟩":d<=2?"🟨":d<=5?"🟧":"🟥";
 const fmt=ms=>{const t=Math.round(ms/1000);return`${Math.floor(t/60)}:${String(t%60).padStart(2,"0")}`;};
 function results(){
-  $("sheet").classList.add("hide"); round=orgs.length; dots(); fit(); view.classList.remove("nolabels");
+  $("sheet").classList.add("hide"); round=orgs.length; dots(); view.classList.remove("nolabels"); fit();
   const total=hist.reduce((a,h)=>a+h.dist,0);
-  const [rank,sub]= total===0?["Perfect cladist","Every organism on the right tip. Willi Hennig salutes you."]:
+  const [rank,sub]=total===0?["Perfect cladist","Every organism on the right tip. Willi Hennig salutes you."]:
     total<=3?["Systematist","You know your clades. Misses were a branch or two at most."]:
     total<=8?["Field naturalist","Solid instincts, with a slip in the deep branches."]:
     total<=16?["Curious amateur","The big groups are there; the fine structure needs another look."]:
     ["Cambrian explosion","Lots of branches in play. The tree makes more sense every run."];
-  $("card").innerHTML=`
-    <p class="big">${total}<small>branches off · ${fmt(totalMs)}</small></p>
-    <p class="rank">${rank}</p><p class="sub">${sub} Lower is better; zero means every placement was exact.</p>
+  const modeTxt=`${LAYOUT==="radial"?"circular":"cladogram"} · ${MODE==="clades"?"clades only":"latin tips"}`;
+  $("card").innerHTML=`<p class="big">${total}<small>branches off · ${fmt(totalMs)}</small></p><p class="rank">${rank}</p><p class="sub">${sub} ${modeTxt}.</p>
     <div class="pips">${hist.map(h=>pip(h.dist)).join("")}</div>
-    ${hist.map(h=>`<div class="rr"><div><div class="n">${h.o.name}</div><div class="w">${h.dist===0?`<span>${h.o.leaf}</span>`:`${h.timedOut?"no placement":"you chose "+(MODE==="latin"&&LATIN[h.guess]?LATIN[h.guess]+" ("+h.guess+")":h.guess)} · belongs with <span>${h.o.leaf}</span>`}</div></div><div class="d ${h.dist===0?'z':''}">${h.dist}</div></div>`).join("")}
+    ${hist.map(h=>`<div class="rr"><div><div class="n">${h.o.name}</div><div class="w">${h.dist===0?`<span>${h.o.leaf}</span>`:`${h.timedOut?"no placement":"you chose "+(LATIN[h.guess]?LATIN[h.guess]+" ("+h.guess+")":h.guess)} · belongs with <span>${h.o.leaf}</span>`}</div></div><div class="d ${h.dist===0?'z':''}">${h.dist}</div></div>`).join("")}
     <div class="row"><button class="go ghost" id="again">Play again</button><button class="go green" id="share">Share score</button></div>`;
-  $("overlay").classList.add("on");
-  $("again").onclick=newGame;
-  $("share").onclick=async()=>{
-    const text=`Tree Tap 🌳 ${MODE==="clades"?"clades-only":"latin"} · ${total} branches off · ${fmt(totalMs)}\n${hist.map(h=>pip(h.dist)).join("")}\n${hist.map(h=>`${h.o.name} ${h.dist===0?"✓":h.dist}`).join(" · ")}\n${location.href.split("#")[0]}`;
+  $("overlay").classList.add("on"); $("again").onclick=newGame;
+  $("share").onclick=async()=>{ const text=`Tree Tap 🌳 ${modeTxt} · ${total} branches off · ${fmt(totalMs)}\n${hist.map(h=>pip(h.dist)).join("")}\n${hist.map(h=>`${h.o.name} ${h.dist===0?"✓":h.dist}`).join(" · ")}\n${location.href.split("#")[0]}`;
     try{ if(navigator.share) await navigator.share({title:"Tree Tap",text}); else { await navigator.clipboard.writeText(text); toast("Copied to clipboard"); } }
     catch(e){ try{await navigator.clipboard.writeText(text);toast("Copied to clipboard");}catch(_){toast("Couldn't share");} } };
 }
-
 new ResizeObserver(()=>document.body.style.setProperty("--sheetH",document.getElementById("sheet").offsetHeight+"px")).observe(document.querySelector("#sheet .inner"));
-size(); render(); newGame();
+size(); newGame();
 </script>
 </body>
 </html>
