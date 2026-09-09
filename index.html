@@ -38,6 +38,16 @@
   .clbl{font-family:"Instrument Sans",system-ui,sans-serif;font-size:6px;fill:#5b6f65;pointer-events:none;opacity:0;transition:opacity .2s;paint-order:stroke;stroke:#fff;stroke-width:2.6px;stroke-linejoin:round;font-weight:600}
   .tick{stroke:#d3dcd6;stroke-width:1;vector-effect:non-scaling-stroke;stroke-dasharray:2 3}
   #view.nolabels .clbl{opacity:0!important}
+  #view.notips .lbl{opacity:0}
+  #view.notips.revealed .lbl.correct,#view.notips.revealed .lbl.picked{opacity:1}
+  #view.notips .tick{opacity:0}
+  #view.notips.revealed .tick.show{opacity:1}
+  #view.notips .clbl{opacity:1}
+  .mode{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+  .mode button{text-align:left;border:2px solid var(--soft);background:#fff;border-radius:16px;padding:14px 16px;cursor:pointer;font-family:inherit;color:var(--ink)}
+  .mode button:hover,.mode button:focus-visible{border-color:var(--ink);outline:none}
+  .mode b{display:block;font-family:"Bricolage Grotesque",sans-serif;font-size:18px;margin-bottom:2px}
+  .mode span{font-size:13px;color:var(--muted);line-height:1.4}
   .clbl.major{font-size:7.5px;fill:#40554b;opacity:1}
   #view.zoomed .clbl{opacity:1}
   #view.nolabels .clbl.picked,#view.nolabels .clbl.lca{opacity:1!important}
@@ -208,6 +218,8 @@ const T = ["Life",[
                               ["Neognath birds",[["Ducks, chickens & pheasants"],
                                 ["Neoaves",[["Penguins"],["Hawks & eagles"],["Parrots"],["Songbirds"]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]];
 
+const LATIN={"Cyanobacteria":"Cyanobacteria","E. coli & relatives":"Pseudomonadota","Bacillus & lactobacilli":"Bacillota","Streptomyces & relatives":"Actinomycetota","Spirochaetes":"Spirochaetota","Methanogens & halophiles":"Euryarchaeota","Thermophilic archaea":"Thermoproteota","Asgard archaea":"Asgardarchaeota","Euglena & trypanosomes":"Euglenozoa","Giardia & relatives":"Metamonada","Forams & radiolarians":"Retaria","Diatoms":"Bacillariophyta","Kelp & brown algae":"Phaeophyceae","Water moulds":"Oomycota","Ciliates":"Ciliophora","Dinoflagellates":"Dinoflagellata","Apicomplexans":"Apicomplexa","Coccolithophores":"Haptophyta","Red algae":"Rhodophyta","Chlorophyte green algae":"Chlorophyta","Charophyte green algae":"Charophyta","Liverworts":"Marchantiophyta","Mosses":"Bryophyta","Hornworts":"Anthocerotophyta","Clubmosses":"Lycopodiopsida","Ferns & horsetails":"Polypodiopsida","Cycads":"Cycadophyta","Ginkgo":"Ginkgophyta","Conifers":"Pinophyta","Gnetophytes":"Gnetophyta","Water lilies":"Nymphaeales","Magnolias & laurels":"Magnoliidae","Grasses":"Poales","Orchids":"Asparagales","Palms":"Arecales","Lilies & onions":"Liliales","Buttercups & poppies":"Ranunculales","Cacti & carnations":"Caryophyllales","Roses, beans & oaks":"Rosidae","Sunflowers, mints & tomatoes":"Asteridae","Amoebas":"Tubulinea","Slime moulds":"Myxogastria","Chytrids":"Chytridiomycota","Bread moulds":"Mucoromycota","Mycorrhizal fungi":"Glomeromycota","Yeasts":"Saccharomycotina","Penicillium & moulds":"Eurotiomycetes","Truffles & morels":"Pezizomycetes","Mushrooms":"Agaricomycetes","Rusts & smuts":"Pucciniomycotina","Choanoflagellates":"Choanoflagellatea","Sponges":"Porifera","Comb jellies":"Ctenophora","Placozoans":"Placozoa","Jellyfish":"Scyphozoa","Corals & anemones":"Anthozoa","Hydras":"Hydrozoa","Roundworms":"Nematoda","Tardigrades":"Tardigrada","Velvet worms":"Onychophora","Horseshoe crabs":"Xiphosura","Spiders":"Araneae","Scorpions":"Scorpiones","Mites & ticks":"Acari","Centipedes":"Chilopoda","Millipedes":"Diplopoda","Crabs, shrimp & lobsters":"Malacostraca","Barnacles":"Cirripedia","Copepods":"Copepoda","Krill":"Euphausiacea","Dragonflies":"Odonata","Grasshoppers & crickets":"Orthoptera","True bugs & aphids":"Hemiptera","Beetles":"Coleoptera","Butterflies & moths":"Lepidoptera","Flies & mosquitoes":"Diptera","Bees, wasps & ants":"Hymenoptera","Flatworms":"Platyhelminthes","Rotifers":"Rotifera","Bryozoans":"Bryozoa","Brachiopods":"Brachiopoda","Earthworms":"Crassiclitellata","Leeches":"Hirudinea","Bristle worms":"Polychaeta","Chitons":"Polyplacophora","Snails & slugs":"Gastropoda","Clams, mussels & oysters":"Bivalvia","Octopus, squid & nautilus":"Cephalopoda","Sea lilies":"Crinoidea","Starfish":"Asteroidea","Brittle stars":"Ophiuroidea","Sea urchins":"Echinoidea","Sea cucumbers":"Holothuroidea","Acorn worms":"Enteropneusta","Lancelets":"Cephalochordata","Sea squirts":"Tunicata","Hagfish":"Myxini","Lampreys":"Petromyzontida","Sharks & rays":"Elasmobranchii","Chimaeras":"Holocephali","Sturgeons & paddlefish":"Acipenseriformes","Gars & bowfin":"Holostei","Teleost fish":"Teleostei","Coelacanths":"Actinistia","Lungfish":"Dipnoi","Frogs & toads":"Anura","Salamanders & newts":"Urodela","Caecilians":"Gymnophiona","Monotremes":"Monotremata","Marsupials":"Marsupialia","Sloths & armadillos":"Xenarthra","Elephants, manatees & aardvarks":"Afrotheria","Primates":"Primates","Rodents":"Rodentia","Rabbits & hares":"Lagomorpha","Bats":"Chiroptera","Carnivorans":"Carnivora","Even-toed ungulates & whales":"Artiodactyla","Horses, rhinos & tapirs":"Perissodactyla","Turtles":"Testudines","Tuatara":"Rhynchocephalia","Lizards":"Lacertilia","Snakes":"Serpentes","Crocodilians":"Crocodylia","Ostriches & kiwis":"Palaeognathae","Ducks, chickens & pheasants":"Galloanserae","Penguins":"Sphenisciformes","Hawks & eagles":"Accipitriformes","Parrots":"Psittaciformes","Songbirds":"Passeriformes"};
+let MODE="clades"; // "clades": tips unlabelled, clade names shown · "latin": tips labelled in Latin only
 const MAJOR = new Set(["Bacteria","Archaea","Eukaryotes","Land plants","Flowering plants","Fungi","Animals","Arthropods","Insects","Molluscs","Vertebrates","Mammals","Reptiles","Birds","Placentals","Echinoderms","Chordates","Cnidarians"]);
 
 // ================= ORGANISMS =================
@@ -365,8 +377,8 @@ function render(){
     g.appendChild(el("circle",{cx:n.x,cy:n.y,r:n.children.length?2.6:3.2})); n.g=g; gN.appendChild(g);
     const deg=n.a*180/Math.PI, left=Math.cos(n.a)<0;
     if(!n.children.length){
-      const tk=el("line",{class:"tick",x1:n.x,y1:n.y,x2:(R+10)*Math.cos(n.a),y2:(R+10)*Math.sin(n.a)}); gE.appendChild(tk);
-      const t=el("text",{class:"lbl",transform:`rotate(${left?deg+180:deg})`,x:left?-(R+13):R+13,y:3.5,"text-anchor":left?"end":"start"}); t.textContent=n.name; n.lbl=t; gL.appendChild(t);
+      const tk=el("line",{class:"tick",x1:n.x,y1:n.y,x2:(R+10)*Math.cos(n.a),y2:(R+10)*Math.sin(n.a)}); n.tick=tk; gE.appendChild(tk);
+      const t=el("text",{class:"lbl",transform:`rotate(${left?deg+180:deg})`,x:left?-(R+13):R+13,y:3.5,"text-anchor":left?"end":"start"}); t.textContent=MODE==="latin"?(LATIN[n.name]||n.name):n.name; n.lbl=t; gL.appendChild(t);
     } else if(n!==root){
       const bottom=Math.sin(n.a)>0; const rr=n.r-7;
       const t=el("text",{class:"clbl"+(MAJOR.has(n.name)?" major":""),transform:`rotate(${bottom?deg-90:deg+90}) translate(0 ${bottom?rr:-rr})`,x:0,y:bottom?-2:5,"text-anchor":"middle"}); t.textContent=n.name; n.lbl=t; gL.appendChild(t);
@@ -420,18 +432,27 @@ let round=0,picked=null,locked=false,hist=[],orgs=[],timerId=null,tLeft=0,roundS
 const rand=a=>a[Math.floor(Math.random()*a.length)];
 function toast(m){const t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove("on"),1800);}
 
-function newGame(){ round=0;hist=[];totalMs=0; orgs=POOLS.map(p=>rand(p)); $("overlay").classList.remove("on"); $("sheet").classList.remove("hide"); fit(); startRound();
+function newGame(){ $("sheet").classList.add("hide"); fit();
+  $("card").innerHTML=`<p class="rank" style="font-size:26px;margin:0">Tree Tap</p><p class="sub" style="margin-bottom:0">Five organisms, easy to expert. Tap where each belongs on the tree of life. Score is branches off; lower is better. Pick your difficulty:</p>
+    <div class="mode">
+      <button id="m-clades"><b>Clade names only</b><span>Branch tips are unlabelled. Navigate by the named groups and commit to a tip blind.</span></button>
+      <button id="m-latin"><b>Latin tips</b><span>Tips carry their scientific group names only. Clade names disappear in rounds 4 and 5.</span></button>
+    </div>`;
+  $("overlay").classList.add("on");
+  $("m-clades").onclick=()=>begin("clades"); $("m-latin").onclick=()=>begin("latin"); }
+function begin(mode){ MODE=mode; render(); view.classList.toggle("notips",MODE==="clades"); round=0;hist=[];totalMs=0; orgs=POOLS.map(p=>rand(p));
+  $("overlay").classList.remove("on"); $("sheet").classList.remove("hide"); fit(); startRound();
   toast("Drag to pan · pinch or scroll to zoom"); }
 function dots(){ $("dots").innerHTML=orgs.map((_,i)=>`<i class="${i<round?'done'+(hist[i]&&hist[i].dist>0?' miss':''):i===round?'now':''}"></i>`).join(""); }
-function clearMarks(){ nodes.forEach(n=>{ n.g.classList.remove("picked","correct","lca"); n.edge&&n.edge.classList.remove("path","draw"); n.lbl&&n.lbl.classList.remove("picked","correct","lca"); }); chip.classList.remove("on","green"); }
+function clearMarks(){ nodes.forEach(n=>{ n.g.classList.remove("picked","correct","lca"); n.edge&&n.edge.classList.remove("path","draw"); n.lbl&&n.lbl.classList.remove("picked","correct","lca"); n.tick&&n.tick.classList.remove("show"); }); chip.classList.remove("on","green"); }
 
 function startRound(){
   picked=null;locked=false; clearMarks(); stage.classList.remove("locked");
   const o=orgs[round];
-  $("lvl").textContent=LEVELS[round]; $("oname").innerHTML=`${o.name}<i>${o.sci}</i>`; $("blurb").textContent=o.blurb;
+  $("lvl").textContent=MODE==="clades"?LEVELS[round].replace(" · clade names hidden",""):LEVELS[round]; $("oname").innerHTML=`${o.name}<i>${o.sci}</i>`; $("blurb").textContent=o.blurb;
   $("status").innerHTML=`Tap the branch where <b>${o.name}</b> belongs. A tip is exact; a clade is a safe hedge.`;
   const go=$("go"); go.disabled=true; go.className="go"; go.textContent="Tap a branch to place it"; go.onclick=()=>confirm(false);
-  view.classList.toggle("nolabels",round>=BLIND_FROM);
+  view.classList.toggle("nolabels",MODE==="latin"&&round>=BLIND_FROM); view.classList.remove("revealed");
   dots(); startTimer();
 }
 function startTimer(){ clearInterval(timerId); tLeft=ROUND_SECONDS; roundStart=Date.now(); tick();
@@ -441,9 +462,9 @@ function timeout(){ if(locked) return; if(picked) confirm(); else { picked=root.
 
 function tap(cx,cy){ if(locked) return; const n=nearest(cx,cy); if(!n) return; pick(n); }
 function pick(n){ picked=n.name; nodes.forEach(m=>{m.g.classList.toggle("picked",m===n); m.lbl&&m.lbl.classList.toggle("picked",m===n);});
-  chip.textContent=n.name; chip.classList.remove("green"); chip.classList.add("on"); chipNode=n; placeChip();
+  const hide=MODE==="clades"&&!n.children.length; const dn=(MODE==="latin"&&!n.children.length)?LATIN[n.name]:n.name; chip.textContent=hide?"Branch tip":dn; chip.classList.remove("green"); chip.classList.add("on"); chipNode=n; placeChip();
   const o=orgs[round]; const go=$("go"); go.disabled=false; go.className="go orange"; go.textContent=`Place ${o.name} here`;
-  $("status").innerHTML = n.children.length ? `Placing in the <b>${n.name}</b> clade — a hedge, so at least ${n.h} branch${n.h>1?"es":""} off.` : `Placing <b>${o.name}</b> with <b>${n.name}</b>.`; }
+  $("status").innerHTML = n.children.length ? `Placing in the <b>${n.name}</b> clade — a hedge, so at least ${n.h} branch${n.h>1?"es":""} off.` : hide?`Placing <b>${o.name}</b> at an unlabelled tip, inside <b>${n.parent.name}</b>.`:`Placing <b>${o.name}</b> with <b>${dn}</b>.`; }
 let chipNode=null;
 function placeChip(){ if(!chipNode) return; const p=toScreen(chipNode.x,chipNode.y); chip.style.left=p.x+"px"; chip.style.top=p.y+"px"; }
 
@@ -452,7 +473,7 @@ function confirm(timedOut){
   totalMs+=Date.now()-roundStart;
   const o=orgs[round], g=byName[picked], c=byName[o.leaf], p=pathBetween(g,c);
   hist.push({o,guess:g.name,dist:p.dist,timedOut:!!timedOut});
-  c.g.classList.add("correct"); c.lbl.classList.add("correct");
+  c.g.classList.add("correct"); c.lbl.classList.add("correct"); c.tick&&c.tick.classList.add("show"); g.tick&&g.tick.classList.add("show"); view.classList.add("revealed");
   if(p.dist>0){ p.lca.g.classList.add("lca"); p.lca.lbl&&p.lca.lbl.classList.add("lca"); }
   [...p.up,...p.down].forEach((n,i)=>{ const e=n.edge; const len=e.getTotalLength(); e.style.setProperty("--len",len); e.classList.add("path","draw"); e.style.animationDelay=(i*0.06)+"s"; e.parentNode.appendChild(e); });
   chipNode=c; chip.textContent=o.leaf; chip.classList.add("on","green"); placeChip();
@@ -487,18 +508,18 @@ function results(){
     <p class="big">${total}<small>branches off · ${fmt(totalMs)}</small></p>
     <p class="rank">${rank}</p><p class="sub">${sub} Lower is better; zero means every placement was exact.</p>
     <div class="pips">${hist.map(h=>pip(h.dist)).join("")}</div>
-    ${hist.map(h=>`<div class="rr"><div><div class="n">${h.o.name}</div><div class="w">${h.dist===0?`<span>${h.o.leaf}</span>`:`${h.timedOut?"no placement":"you chose "+h.guess} · belongs with <span>${h.o.leaf}</span>`}</div></div><div class="d ${h.dist===0?'z':''}">${h.dist}</div></div>`).join("")}
+    ${hist.map(h=>`<div class="rr"><div><div class="n">${h.o.name}</div><div class="w">${h.dist===0?`<span>${h.o.leaf}</span>`:`${h.timedOut?"no placement":"you chose "+(MODE==="latin"&&LATIN[h.guess]?LATIN[h.guess]+" ("+h.guess+")":h.guess)} · belongs with <span>${h.o.leaf}</span>`}</div></div><div class="d ${h.dist===0?'z':''}">${h.dist}</div></div>`).join("")}
     <div class="row"><button class="go ghost" id="again">Play again</button><button class="go green" id="share">Share score</button></div>`;
   $("overlay").classList.add("on");
   $("again").onclick=newGame;
   $("share").onclick=async()=>{
-    const text=`Tree Tap 🌳 ${total} branches off · ${fmt(totalMs)}\n${hist.map(h=>pip(h.dist)).join("")}\n${hist.map(h=>`${h.o.name} ${h.dist===0?"✓":h.dist}`).join(" · ")}\n${location.href.split("#")[0]}`;
+    const text=`Tree Tap 🌳 ${MODE==="clades"?"clades-only":"latin"} · ${total} branches off · ${fmt(totalMs)}\n${hist.map(h=>pip(h.dist)).join("")}\n${hist.map(h=>`${h.o.name} ${h.dist===0?"✓":h.dist}`).join(" · ")}\n${location.href.split("#")[0]}`;
     try{ if(navigator.share) await navigator.share({title:"Tree Tap",text}); else { await navigator.clipboard.writeText(text); toast("Copied to clipboard"); } }
     catch(e){ try{await navigator.clipboard.writeText(text);toast("Copied to clipboard");}catch(_){toast("Couldn't share");} } };
 }
 
 new ResizeObserver(()=>document.body.style.setProperty("--sheetH",document.getElementById("sheet").offsetHeight+"px")).observe(document.querySelector("#sheet .inner"));
-size(); newGame();
+size(); render(); newGame();
 </script>
 </body>
 </html>
