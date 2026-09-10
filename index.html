@@ -19,7 +19,7 @@
   #stage.dragging{cursor:grabbing}
   #svg{width:100%;height:100%;display:block;user-select:none;-webkit-user-select:none;will-change:transform;transform-origin:0 0;text-rendering:optimizeSpeed}
   #view.lowzoom .lbl,#view.lowzoom .tick{visibility:hidden}
-  #view:not(.zoomed) .clbl:not(.major):not(.picked):not(.lca){visibility:hidden}
+  
   .dots-static{fill:#fff;stroke:var(--dc,var(--line));stroke-width:1.2;vector-effect:non-scaling-stroke}
   .mark{fill:#fff;stroke:var(--line);stroke-width:1.2;vector-effect:non-scaling-stroke;transform-box:fill-box;transform-origin:center}
   .mark.picked{fill:var(--orange);stroke:var(--orange)}
@@ -43,7 +43,8 @@
   .lbl.picked{fill:var(--orange-ink);font-weight:600}
   .lbl.correct{fill:var(--green-ink);font-weight:600}
   .clbl{font-size:6px;fill:var(--dk,#5b6f65);opacity:0;stroke-width:2.6px;font-weight:600}
-  .clbl.major{font-size:9.5px;opacity:1;font-weight:700}
+  .clbl.major{font-size:var(--fs,10px);opacity:1;font-weight:700;stroke-width:calc(var(--fs,10px) * .32);fill:var(--dk,#40554b)}
+  .clbl.major.l2{display:none} #view.z2 .clbl.major.l2{display:block}
   .wedge{stroke:none;opacity:.07}
   .hold{position:absolute;width:44px;height:44px;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;opacity:0;border:3px solid var(--orange);box-sizing:border-box}
   .hold.on{opacity:1;animation:holdfill .45s linear forwards}
@@ -2808,6 +2809,7 @@ const WIKI={"Dog": "Dog", "House cat": "Cat", "Honeybee": "Western honey bee", "
 // ================= DATA =================
 const MAJOR = new Set(["Bacteria","Archaea","Eukaryotes","Cyanobacteria","Firmicutes","Actinobacteria","Proteobacteria","Spirochaetes","PVC group","FCB group","Euryarchaeota","TACK archaea","Asgard archaea","DPANN archaea","Excavates","SAR supergroup","Rhizarians","Stramenopiles","Alveolates","Haptophytes & cryptophytes","Archaeplastids","Red algae","Green plants","Land plants","Liverworts","Mosses","Lycophytes","Ferns & horsetails","Gymnosperms","Flowering plants","Amoebozoans","Fungi","Sac fungi","Club fungi","Animals","Sponges","Cnidarians","Roundworms","Tardigrades","Arthropods","Chelicerates","Insects","Flatworms","Annelids","Molluscs","Echinoderms","Hemichordates","Chordates","Tunicates","Vertebrates","Cartilaginous fish","Teleosts","Amphibians","Mammals","Reptiles","Birds"]);
 const ROUND_SECONDS=45, BLIND_FROM=3;
+const L1=new Set(["Bacteria","Archaea","Cyanobacteria","Firmicutes","Actinobacteria","Proteobacteria","Euryarchaeota","TACK archaea","Asgard archaea","Excavates","SAR supergroup","Archaeplastids","Land plants","Flowering plants","Amoebozoans","Fungi","Animals","Cnidarians","Arthropods","Insects","Molluscs","Echinoderms","Chordates","Vertebrates","Teleosts","Amphibians","Mammals","Reptiles","Birds"]);
 const DOM={"Bacteria":{c:"#3f7fcf",k:"#2b5a99"},"Archaea":{c:"#d39a2a",k:"#8a6216"},"Eukaryotes":{c:"#8f6fd0",k:"#5a3f96"}};
 const mix=(hex,t)=>{const n=parseInt(hex.slice(1),16),r=n>>16,gg=n>>8&255,b=n&255;const f=v=>Math.round(v+(255-v)*t);return `rgb(${f(r)},${f(gg)},${f(b)})`;};
 const LEVELS=["Round 1 · warm-up","Round 2 · familiar","Round 3 · trickier","Round 4 · hard","Round 5 · expert"];
@@ -2879,13 +2881,20 @@ function render(){
       t.textContent=MODE==="latin"?LATIN[n.name]:n.name; n.lbl=t; gL.appendChild(t);
     } else if(n!==root && MAJOR.has(n.name)){
       const deg=n.a*180/Math.PI, bottom=Math.sin(n.a)>0, rr=n.r-7;
-      const t=el("text",{class:"clbl major",style:n.style,transform:`rotate(${(bottom?deg-90:deg+90).toFixed(2)}) translate(0 ${(bottom?rr:-rr).toFixed(1)})`,x:0,y:bottom?-2:5,"text-anchor":"middle"});
-      t.textContent=n.name; n.lbl=t; gL.appendChild(t);
+      const t=el("text",{class:"clbl major"+(L1.has(n.name)?"":" l2"),style:n.style,"text-anchor":"middle"});
+      t.textContent=n.name; n.lbl=t; n.major=true; gL.appendChild(t);
     }
   });
-  view.append(gW,gE,gD,gH,gL,gM);
+  view.append(gW,gE,gD,gH,gL,gM); placeMajors();
   $("legend").innerHTML=root.children.map(d=>`<span><i style="background:${DOM[d.name].c}"></i>${d.name}</span>`).join("");
 }
+function placeMajors(){ const fs=Math.max(9,Math.min(14/s,160)); view.style.setProperty("--fs",fs+"px"); view.classList.toggle("z2",s>0.42);
+  nodes.forEach(n=>{ if(!n.major) return; const deg=n.a*180/Math.PI, bottom=Math.sin(n.a)>0, left=Math.cos(n.a)<0;
+    const width=n.name.length*fs*0.58, arc=(n.hi-n.lo+1)*2*Math.PI/N*Math.max(n.r,40), sector=(n.hi-n.lo+1)*2*Math.PI/N*R;
+    const room = n.depth<=1 || sector>=fs*1.15; n.lbl.style.display=room?"":"none"; if(!room) return;
+    if(width<arc*0.95||n.dom===null){ const rr=Math.max(n.r-fs*0.55,fs*0.6); n.lbl.setAttribute("transform",`rotate(${(bottom?deg-90:deg+90).toFixed(2)}) translate(0 ${(bottom?rr:-rr).toFixed(1)})`); n.lbl.setAttribute("x",0); n.lbl.setAttribute("y",bottom?-fs*0.25:fs*0.6); n.lbl.setAttribute("text-anchor","middle"); }
+    else { n.lbl.setAttribute("transform",`rotate(${(left?deg+180:deg).toFixed(2)})`); n.lbl.setAttribute("x",left?-(n.r-6):n.r-6); n.lbl.setAttribute("y",fs*0.35); n.lbl.setAttribute("text-anchor",left?"start":"end"); }
+  }); }
 function mark(n,cls){ const c=el("circle",{class:"mark "+cls,cx:n.x,cy:n.y,r:cls.includes("lca")?4.2:6}); $("marks").appendChild(c); n.marks=(n.marks||[]); n.marks.push(c); return c; }
 function hl(n,i){ const e=el("path",{class:"edge path draw",d:n.d}); $("hl").appendChild(e); const len=e.getTotalLength(); e.style.setProperty("--len",len); e.style.animationDelay=(i*0.05)+"s"; return e; }
 // ================= PAN / ZOOM =================
@@ -2899,7 +2908,7 @@ function apply(){ if(raf) return; raf=requestAnimationFrame(()=>{raf=null;
   const dx=(W/2+tx)-(W/2+ctx)*k, dy=(H/2+ty)-(H/2+cty)*k;
   svg.style.transform=`translate(${dx}px,${dy}px) scale(${k})`;
   placeChip(); }); }
-function commit(){ cs=s;ctx=tx;cty=ty; svg.style.transform=""; view.setAttribute("transform",`translate(${W/2+tx} ${H/2+ty}) scale(${s})`); view.classList.toggle("zoomed",s>1.6); view.classList.toggle("lowzoom",s<0.55); if(raf){cancelAnimationFrame(raf);raf=null;} placeChip(); }
+function commit(){ cs=s;ctx=tx;cty=ty; svg.style.transform=""; view.setAttribute("transform",`translate(${W/2+tx} ${H/2+ty}) scale(${s})`); view.classList.toggle("zoomed",s>1.6); view.classList.toggle("lowzoom",s<0.55); placeMajors(); if(raf){cancelAnimationFrame(raf);raf=null;} placeChip(); }
 function sheetH(){ const sh=document.getElementById("sheet"); return sh.classList.contains("hide")?0:sh.offsetHeight; }
 function fit(){ size(); const _c=commit; const Hv=H-sheetH()-70, bw=BBOX.x1-BBOX.x0, bh=BBOX.y1-BBOX.y0; s=Math.min((W-16)/bw, Hv/bh); if(LAYOUT!=="radial") s=Math.max(s,(W-16)/bw*0.999); s=Math.max(.08,Math.min(s,3));
   const cx=(BBOX.x0+BBOX.x1)/2, cy=LAYOUT==="radial"?(BBOX.y0+BBOX.y1)/2:Math.min((BBOX.y0+BBOX.y1)/2, BBOX.y0+Hv/(2*s)); tx=-cx*s; ty=-cy*s-sheetH()/2+35; commit(); }
@@ -2926,7 +2935,7 @@ stage.addEventListener("wheel",e=>{ e.preventDefault(); const w=toWorld(e.client
   const b=stage.getBoundingClientRect(); tx=e.clientX-b.left-W/2-w.x*s; ty=e.clientY-b.top-H/2-w.y*s; apply(); clearTimeout(wheelT); wheelT=setTimeout(commit,120); },{passive:false});
 let wheelT=null;
 document.getElementById("fit").onclick=()=>{ if(SCOPE==="bacteria"&&!$("overlay").classList.contains("on")) fitTo(byName["Bacteria"]); else fit(); };
-function nearest(cx,cy){ const w=toWorld(cx,cy); const th=Math.max(14,22/s); let best=null,bd=th;
+function nearest(cx,cy){ const w=toWorld(cx,cy); let best=null,bd=Infinity;
   nodes.forEach(n=>{ let d=Math.hypot(n.x-w.x,n.y-w.y);
     if(!n.children.length && !(MODE==="clades")){ const len=(n.lbl.textContent.length*5.2)+13; const proj=(w.x-n.x)*n.ux+(w.y-n.y)*n.uy; const c=Math.max(0,Math.min(len,proj)); d=Math.min(d,Math.hypot(n.x+n.ux*c-w.x,n.y+n.uy*c-w.y)*0.9); }
     if(d<bd){bd=d;best=n;} }); return best; }
@@ -2960,8 +2969,8 @@ function startRound(){
   const o=orgs[round];
   $("lvl").textContent=LEVELS[round]+(SCOPE==="bacteria"?" · bacteria":"");
   $("oname").innerHTML=`${o.name}<i>${o.sci}</i>`; $("blurb").textContent=o.blurb; loadImage(o);
-  $("status").innerHTML=`${SELECT==="hold"?"Press and hold":"Tap"} the branch where <b>${o.name}</b> belongs. A tip is exact; a clade is a safe hedge.`;
-  const go=$("go"); go.disabled=true; go.className="go"; go.textContent=SELECT==="hold"?"Hold on a branch to place it":"Tap a branch to place it"; go.onclick=()=>confirm(false);
+  $("status").innerHTML=`${SELECT==="hold"?"Press and hold":"Tap"} where <b>${o.name}</b> belongs. Anywhere counts — it snaps to the nearest branch. A tip is exact; a labelled group is a safe hedge.`;
+  const go=$("go"); go.disabled=true; go.className="go"; go.textContent=SELECT==="hold"?"Hold on the tree to place it":"Tap the tree to place it"; go.onclick=()=>confirm(false);
   dots(); startTimer();
 }
 let imgSeq=0;
