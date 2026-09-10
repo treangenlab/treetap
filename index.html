@@ -140,46 +140,112 @@
 <script>
 const TREE_TXT=`Life
  Bacteria
-  Aquificae (hot-spring bacteria)|Aquificota
+  Aquificae|Aquificota
+  Thermotogae|Thermotogota
   Terrabacteria
-   Cyanobacteria|Cyanobacteria
-   Deinococcus & Thermus|Deinococcota
-   Chloroflexi (green non-sulfur bacteria)|Chloroflexota
+   Cyanobacteria
+    Nostoc & Anabaena (filament fixers)|Nostocales
+    Synechococcus & Prochlorococcus|Synechococcales
+    Oscillatoria & Spirulina|Oscillatoriales
+    Microcystis (bloom-formers)|Chroococcales
+   Deinococcus|Deinococcales
+   Thermus|Thermales
+   Chloroflexi|Chloroflexota
    Firmicutes
     Bacillus & anthrax|Bacillaceae
-    Lactobacilli & streptococci|Lactobacillales
-    Clostridia (botulism, tetanus)|Clostridia
+    Listeria|Listeriaceae
+    Staphylococci|Staphylococcaceae
+    Streptococci|Streptococcaceae
+    Lactobacilli|Lactobacillaceae
+    Clostridia|Clostridia
     Mycoplasmas|Mollicutes
    Actinobacteria
     Streptomyces|Streptomycetales
-    Mycobacteria & corynebacteria|Mycobacteriales
+    Mycobacteria|Mycobacteriaceae
+    Corynebacteria|Corynebacteriaceae
     Bifidobacteria|Bifidobacteriales
+    Cutibacterium (acne)|Propionibacteriales
+    Frankia (root-nodule fixers)|Frankiales
+    Actinomyces|Actinomycetales
   Gracilicutes
    Proteobacteria
-    Rhizobia & rickettsias|Alphaproteobacteria
-    Neisseria & Bordetella|Betaproteobacteria
-    Enterobacteria (E. coli, Salmonella)|Enterobacterales
-    Pseudomonads|Pseudomonadales
-    Vibrios (cholera)|Vibrionales
+    Alphaproteobacteria
+     Rhizobia|Rhizobiales
+     Agrobacterium (crown gall)|Agrobacterium
+     Rickettsias|Rickettsiales
+     Wolbachia (insect symbionts)|Wolbachia
+     Caulobacter|Caulobacterales
+     Rhodobacter (purple non-sulfur)|Rhodobacterales
+     Pelagibacter (SAR11)|Pelagibacterales
+    Betaproteobacteria
+     Neisseria|Neisseriaceae
+     Bordetella|Alcaligenaceae
+     Burkholderia|Burkholderiaceae
+     Nitrosomonas (ammonia oxidisers)|Nitrosomonadales
+    Gammaproteobacteria
+     Enterobacteria (E. coli, Salmonella)|Enterobacterales
+     Yersinia (plague)|Yersiniaceae
+     Vibrios (cholera)|Vibrionales
+     Pseudomonads|Pseudomonadales
+     Acinetobacter|Moraxellaceae
+     Legionella|Legionellales
+     Haemophilus & Pasteurella|Pasteurellales
+     Xanthomonas & Xylella (plant pathogens)|Xanthomonadales
+     Chromatium (purple sulfur)|Chromatiales
+     Thiomargarita (giant sulfur bacteria)|Thiotrichales
+     Shewanella (metal-breathers)|Alteromonadales
     Helicobacter & Campylobacter|Campylobacterota
     Myxobacteria|Myxococcota
-   Bacteroides|Bacteroidota
-   Chlamydiae|Chlamydiota
-   Planctomycetes|Planctomycetota
-   Spirochaetes|Spirochaetota
+    Desulfovibrio (sulfate reducers)|Desulfobacterota
+    Bdellovibrio (bacterial predators)|Bdellovibrionota
+   Acidobacteria|Acidobacteriota
+   Nitrospira (nitrite oxidisers)|Nitrospirota
+   FCB group
+    Bacteroides|Bacteroidales
+    Flavobacteria|Flavobacteriales
+    Chlorobi (green sulfur)|Chlorobiota
+    Fibrobacters (rumen cellulose digesters)|Fibrobacterota
+   PVC group
+    Planctomycetes|Planctomycetota
+    Chlamydiae|Chlamydiota
+    Verrucomicrobia (Akkermansia)|Verrucomicrobiota
+   Spirochaetes
+    Borrelia (Lyme, relapsing fever)|Borreliaceae
+    Treponema (syphilis)|Treponemataceae
+    Leptospira|Leptospiraceae
+   Fusobacteria|Fusobacteriota
+   CPR ultrasmall bacteria|Patescibacteria
  Archaea
   Euryarchaeota
-   Methanogens|Methanomicrobia
-   Halophiles (salt-lovers)|Halobacteria
-   Thermococci (deep-vent heat-lovers)|Thermococci
-   Thermoplasmata (acid-lovers)|Thermoplasmata
-  DPANN nanoarchaea|Nanoarchaeota
+   Methanogens
+    Methanobacteria (gut & rumen)|Methanobacteria
+    Methanococci (vent methanogens)|Methanococci
+    Methanomicrobia (Methanosarcina)|Methanomicrobia
+    Methanopyri (hottest methanogens)|Methanopyri
+   Anaerobic methane oxidisers (ANME)|ANME archaea
+   Halophiles|Halobacteria
+   Thermococci|Thermococci
+   Thermoplasmata|Thermoplasmata
+   Archaeoglobi (hot sulfate reducers)|Archaeoglobi
+  DPANN archaea
+   Nanoarchaea|Nanoarchaeota
+   Woesearchaea|Woesearchaeota
+   Micrarchaea|Micrarchaeota
   TACK archaea
-   Crenarchaea (Sulfolobus)|Thermoproteota
-   Ammonia-oxidising archaea|Nitrososphaerota
+   Crenarchaea
+    Sulfolobales|Sulfolobales
+    Thermoproteales (Pyrobaculum)|Thermoproteales
+    Desulfurococcales (Pyrolobus)|Desulfurococcales
+   Thaumarchaea
+    Marine ammonia-oxidisers|Nitrosopumilales
+    Soil ammonia-oxidisers|Nitrososphaerales
    Korarchaea|Korarchaeota
+   Bathyarchaea|Bathyarchaeota
+   Aigarchaea|Aigarchaeota
   Asgard archaea
    Lokiarchaea|Lokiarchaeota
+   Thorarchaea|Thorarchaeota
+   Odinarchaea|Odinarchaeota
    Heimdallarchaea|Heimdallarchaeota
  Eukaryotes
   Excavates
@@ -762,6 +828,9 @@ Wasp|Vespula vulgaris|Wasps|A narrow waist, a papery nest, and a reusable sting.
 Scots pine|Pinus sylvestris|Pines, firs & spruces|Needles in pairs, resin, seeds on the scales of a cone.
 Garden snail|Cornu aspersum|Land snails & slugs|A rasping tongue, a coiled shell and a muscular foot.
 Lily|Lilium|Lilies|Six-petalled trumpet flowers from a bulb.
+Nostoc|Nostoc|Nostoc & Anabaena (filament fixers)|Green jelly-like colonies of bead-chain filaments that fix nitrogen.
+Staphylococcus|Staphylococcus aureus|Staphylococci|Grape-like clusters of round cells; the 'staph' of skin infections.
+Yoghurt bacterium|Streptococcus thermophilus|Streptococci|Chains of round cells that thicken milk into yoghurt.
 # round 2
 Red kangaroo|Osphranter rufus|Kangaroos, wombats & koalas|Born the size of a jellybean and finishes developing in a pouch.
 Common octopus|Octopus vulgaris|Octopuses|Eight arms, three hearts, a beak, no shell.
@@ -824,7 +893,7 @@ Avocado|Persea americana|Laurels & avocado|A single huge seed in creamy flesh; e
 Banana|Musa|Gingers & bananas|A giant herb, not a tree; the fruit is seedless.
 Grapevine|Vitis vinifera|Grapes|A woody climber with tendrils and clusters of berries.
 Poppy|Papaver|Buttercups & poppies|Papery petals and a seed capsule that shakes like a pepper pot.
-Lactobacillus|Lactobacillus|Lactobacilli & streptococci|Turns milk into yoghurt. A rod-shaped cell with no nucleus.
+Lactobacillus|Lactobacillus|Lactobacilli|Turns milk into yoghurt. A rod-shaped cell with no nucleus.
 Loon|Gavia immer|Loons|A dagger-billed diver with a haunting call; legs set far back.
 Cormorant|Phalacrocorax carbo|Cormorants, gannets & frigatebirds|Dives for fish, then dries its wings spread wide.
 Great crested grebe|Podiceps cristatus|Grebes|Lobed toes and a dancing courtship on water.
@@ -862,9 +931,17 @@ Chlorella|Chlorella vulgaris|Chlorella & lichen algae|A single green cell sold a
 Bolete|Boletus edulis|Boletes|A mushroom with a sponge of tubes instead of gills.
 Puffball|Lycoperdon|Gilled mushrooms & puffballs|A ball that puffs out spores when squeezed.
 Stinkhorn|Phallus impudicus|Coral fungi & stinkhorns|Smells of carrion so flies spread its spores.
-Streptococcus|Streptococcus pyogenes|Lactobacilli & streptococci|Chains of round cells; causes strep throat.
+Streptococcus|Streptococcus pyogenes|Streptococci|Chains of round cells; causes strep throat.
 Salmonella|Salmonella enterica|Enterobacteria (E. coli, Salmonella)|A gut bacterium with tails all over; causes food poisoning.
 Helicobacter|Helicobacter pylori|Helicobacter & Campylobacter|A spiral cell that lives in stomach acid and causes ulcers.
+Prochlorococcus|Prochlorococcus marinus|Synechococcus & Prochlorococcus|The smallest and most abundant photosynthetic cell on Earth.
+Plague bacterium|Yersinia pestis|Yersinia (plague)|Spread by fleas; caused the Black Death.
+Listeria|Listeria monocytogenes|Listeria|Grows in the fridge and rockets through cells on actin tails.
+Acne bacterium|Cutibacterium acnes|Cutibacterium (acne)|Lives in hair follicles and eats sebum.
+Legionella|Legionella pneumophila|Legionella|Lurks in amoebae and air-conditioning water; causes Legionnaires' disease.
+Syphilis spirochaete|Treponema pallidum|Treponema (syphilis)|A corkscrew so thin it is invisible under an ordinary microscope.
+Microcystis|Microcystis aeruginosa|Microcystis (bloom-formers)|Forms toxic green scums on warm lakes.
+Salt-lake archaeon|Haloferax volcanii|Halophiles|Square-ish pink cells from the Dead Sea. No nucleus, no peptidoglycan.
 # round 3
 Starfish|Asteroidea|Starfish|Five-fold symmetry and hydraulic tube feet.
 Bracken fern|Pteridium aquilinum|Polypod ferns|Veins to move water, but spreads by spores, not seeds.
@@ -1030,13 +1107,34 @@ Corn smut|Ustilago maydis|Smuts|Turns corn kernels into grey galls; a Mexican de
 Powdery mildew|Erysiphales|Powdery mildews|A white dusting on leaves from a fungus.
 Naegleria|Naegleria fowleri|Heteroloboseans (Naegleria)|The 'brain-eating amoeba' of warm lakes; also grows a whip.
 Entamoeba|Entamoeba histolytica|Entamoeba (dysentery)|An amoeba that causes dysentery and has no mitochondria.
-Clostridium|Clostridium botulinum|Clostridia (botulism, tetanus)|A spore-former that makes the deadliest toxin known.
+Clostridium|Clostridium botulinum|Clostridia|A spore-former that makes the deadliest toxin known.
 Mycoplasma|Mycoplasma pneumoniae|Mycoplasmas|A bacterium with no cell wall and one of the smallest genomes.
 Bifidobacterium|Bifidobacterium|Bifidobacteria|A Y-shaped probiotic that colonises babies' guts.
-Neisseria|Neisseria meningitidis|Neisseria & Bordetella|Paired round cells that can cause meningitis.
+Neisseria|Neisseria meningitidis|Neisseria|Paired round cells that can cause meningitis.
 Cichlid|Cichlidae|Cichlids|African lake fish that brood eggs in their mouths; a thousand species from one ancestor.
 Anthrax bacterium|Bacillus anthracis|Bacillus & anthrax|A spore-forming rod that survives decades in soil.
 Streptomyces|Streptomyces coelicolor|Streptomyces|Soil filaments that smell of rain and make most antibiotics.
+Agrobacterium|Agrobacterium tumefaciens|Agrobacterium (crown gall)|Injects its own DNA into plants; the original genetic engineer.
+Wolbachia|Wolbachia pipientis|Wolbachia (insect symbionts)|Lives inside insect cells and manipulates their sex ratios.
+Caulobacter|Caulobacter crescentus|Caulobacter|A stalked cell that glues itself to surfaces with the strongest known adhesive.
+Rhodobacter|Rhodobacter sphaeroides|Rhodobacter (purple non-sulfur)|A purple photosynthesiser that makes no oxygen.
+Burkholderia|Burkholderia cepacia|Burkholderia|A soil rod that rots onions and infects lungs.
+Nitrosomonas|Nitrosomonas europaea|Nitrosomonas (ammonia oxidisers)|Eats ammonia for energy; a keystone of the nitrogen cycle.
+Haemophilus|Haemophilus influenzae|Haemophilus & Pasteurella|The first free-living organism to have its genome sequenced.
+Acinetobacter|Acinetobacter baumannii|Acinetobacter|A hospital superbug that shrugs off most antibiotics.
+Xylella|Xylella fastidiosa|Xanthomonas & Xylella (plant pathogens)|Clogs the plumbing of olive trees; spread by spittlebugs.
+Desulfovibrio|Desulfovibrio vulgaris|Desulfovibrio (sulfate reducers)|Breathes sulfate and makes rotten-egg gas.
+Bdellovibrio|Bdellovibrio bacteriovorus|Bdellovibrio (bacterial predators)|A tiny predator that burrows into other bacteria and eats them from inside.
+Flavobacterium|Flavobacterium|Flavobacteria|Yellow gliding cells that digest dead algae in lakes and seas.
+Green sulfur bacterium|Chlorobium|Chlorobi (green sulfur)|Photosynthesises with sulfide in the dimmest light known.
+Akkermansia|Akkermansia muciniphila|Verrucomicrobia (Akkermansia)|Eats gut mucus and is linked to a healthy weight.
+Leptospira|Leptospira interrogans|Leptospira|A hooked corkscrew spread in rat urine.
+Fusobacterium|Fusobacterium nucleatum|Fusobacteria|A spindle-shaped mouth bacterium behind gum disease.
+Corynebacterium|Corynebacterium diphtheriae|Corynebacteria|Club-shaped rods; the cause of diphtheria.
+Actinomyces|Actinomyces israelii|Actinomyces|Branching filaments that form 'sulfur granules' in jaw abscesses.
+Methanococcus|Methanococcus jannaschii|Methanococci (vent methanogens)|The first archaeon to have its genome sequenced; from a Pacific vent.
+Pyrobaculum|Pyrobaculum aerophilum|Thermoproteales (Pyrobaculum)|A rod that grows at 100 °C and can breathe nitrate.
+Thorarchaeon|Thorarchaeota|Thorarchaea|An Asgard archaeon from estuary mud.
 # round 4
 Platypus|Ornithorhynchus anatinus|Monotremes|Fur and milk, but it lays eggs. Venomous spur on the hind leg.
 Giant kelp|Macrocystis pyrifera|Kelp & brown algae|Grows half a metre a day in undersea forests.
@@ -1111,23 +1209,23 @@ Treeshrew|Tupaia|Treeshrews|Looks like a squirrel, is not a shrew, and is close 
 Porcupine|Hystrix|Guinea pigs & capybaras|Quilled, gnawing, with ever-growing incisors.
 Pika|Ochotona|Rabbits, hares & pikas|A round-eared mountain haymaker. Not a rodent.
 Sea snake|Hydrophiinae|Cobras, mambas & sea snakes|A paddle-tailed reef snake with fixed front fangs.
-Deinococcus|Deinococcus radiodurans|Deinococcus & Thermus|Survives a thousand times the radiation that kills a human.
+Deinococcus|Deinococcus radiodurans|Deinococcus|Survives a thousand times the radiation that kills a human.
 Pseudomonas|Pseudomonas aeruginosa|Pseudomonads|A rod with a polar tail that forms slimy biofilms.
-Lyme spirochaete|Borrelia burgdorferi|Spirochaetes|A corkscrew-shaped cell spread by ticks.
+Lyme spirochaete|Borrelia burgdorferi|Borrelia (Lyme, relapsing fever)|A corkscrew-shaped cell spread by ticks.
 Chlamydia|Chlamydia trachomatis|Chlamydiae|Lives only inside other cells; among the smallest bacteria.
-Rhizobium|Rhizobium leguminosarum|Rhizobia & rickettsias|Lives in root nodules and turns air into fertiliser.
-Halobacterium|Halobacterium salinarum|Halophiles (salt-lovers)|Turns salt lakes pink with a light-harvesting purple pigment. No nucleus.
-Methanosarcina|Methanosarcina barkeri|Methanogens|Makes methane in swamps and cattle. No nucleus, no bacterial cell wall.
-Tuberculosis bacterium|Mycobacterium tuberculosis|Mycobacteria & corynebacteria|A waxy-walled rod that hides inside immune cells.
-Aquifex|Aquifex aeolicus|Aquificae (hot-spring bacteria)|Grows at 95 °C and breathes hydrogen; near the root of bacteria.
-Thermus|Thermus aquaticus|Deinococcus & Thermus|A Yellowstone hot-spring microbe that gave us the PCR enzyme.
+Rhizobium|Rhizobium leguminosarum|Rhizobia|Lives in root nodules and turns air into fertiliser.
+Halobacterium|Halobacterium salinarum|Halophiles|Turns salt lakes pink with a light-harvesting purple pigment. No nucleus.
+Methanosarcina|Methanosarcina barkeri|Methanomicrobia (Methanosarcina)|Makes methane in swamps and cattle. No nucleus, no bacterial cell wall.
+Tuberculosis bacterium|Mycobacterium tuberculosis|Mycobacteria|A waxy-walled rod that hides inside immune cells.
+Aquifex|Aquifex aeolicus|Aquificae|Grows at 95 °C and breathes hydrogen; near the root of bacteria.
+Thermus|Thermus aquaticus|Thermus|A Yellowstone hot-spring microbe that gave us the PCR enzyme.
 Myxobacterium|Myxococcus xanthus|Myxobacteria|Bacteria that swarm and build fruiting bodies together.
 Planctomycete|Gemmata obscuriglobus|Planctomycetes|A bacterium with a membrane around its DNA.
-Whooping cough bacterium|Bordetella pertussis|Neisseria & Bordetella|A small rod that clings to the windpipe.
-Chloroflexus|Chloroflexus aurantiacus|Chloroflexi (green non-sulfur bacteria)|A gliding, photosynthetic filament in hot-spring mats.
-Pyrococcus|Pyrococcus furiosus|Thermococci (deep-vent heat-lovers)|Grows best at 100 °C on the sea floor.
-Thermoplasma|Thermoplasma acidophilum|Thermoplasmata (acid-lovers)|Lives in hot acid coal waste with no cell wall.
-Ammonia-oxidising archaeon|Nitrosopumilus maritimus|Ammonia-oxidising archaea|One of the most abundant cells in the ocean.
+Whooping cough bacterium|Bordetella pertussis|Bordetella|A small rod that clings to the windpipe.
+Chloroflexus|Chloroflexus aurantiacus|Chloroflexi|A gliding, photosynthetic filament in hot-spring mats.
+Pyrococcus|Pyrococcus furiosus|Thermococci|Grows best at 100 °C on the sea floor.
+Thermoplasma|Thermoplasma acidophilum|Thermoplasmata|Lives in hot acid coal waste with no cell wall.
+Ammonia-oxidising archaeon|Nitrosopumilus maritimus|Marine ammonia-oxidisers|One of the most abundant cells in the ocean.
 Korarchaeon|Korarchaeum cryptofilum|Korarchaea|A thread-like hot-spring archaeon known mostly from DNA.
 Heimdallarchaeon|Heimdallarchaeota|Heimdallarchaea|The archaeal lineage closest to eukaryotes.
 Clubroot|Plasmodiophora brassicae|Plasmodiophorids (clubroot)|A cabbage-root parasite once called a slime mould.
@@ -1187,6 +1285,22 @@ Capuchin|Cebus|New World monkeys|A tool-using monkey with a semi-prehensile tail
 Bacteroides|Bacteroides fragilis|Bacteroides|A dominant gut bacterium that digests plant fibre for you.
 Cercozoan|Euglypha|Cercozoans|A shelled amoeba with thread-like false feet.
 Tyrant flycatcher|Tyrannus|Flycatchers & antbirds|A New World perching bird that sallies out for insects and doesn't truly sing.
+Thermotoga|Thermotoga maritima|Thermotogae|A rod in a loose 'toga' sheath that grows at 80 °C.
+Frankia|Frankia alni|Frankia (root-nodule fixers)|Fixes nitrogen in alder roots; a filamentous actinomycete.
+Pelagibacter|Pelagibacter ubique|Pelagibacter (SAR11)|Possibly the most numerous organism on Earth, with a tiny streamlined genome.
+Rickettsia|Rickettsia prowazekii|Rickettsias|An obligate cell parasite spread by lice; closest bacterial relative of mitochondria.
+Purple sulfur bacterium|Chromatium okenii|Chromatium (purple sulfur)|Stores sulfur globules inside and photosynthesises without oxygen.
+Thiomargarita|Thiomargarita namibiensis|Thiomargarita (giant sulfur bacteria)|A bacterium visible to the naked eye; a 'sulfur pearl'.
+Shewanella|Shewanella oneidensis|Shewanella (metal-breathers)|Breathes metal and can pass electrons along nanowires.
+Acidobacterium|Acidobacteria|Acidobacteria|Among the most common soil bacteria, almost never cultured.
+Nitrospira|Nitrospira|Nitrospira (nitrite oxidisers)|Finishes the nitrification job that Nitrosomonas starts.
+Fibrobacter|Fibrobacter succinogenes|Fibrobacters (rumen cellulose digesters)|Digests grass cellulose in a cow's rumen.
+Relapsing fever spirochaete|Borrelia recurrentis|Borrelia (Lyme, relapsing fever)|Changes its coat to dodge antibodies, again and again.
+Archaeoglobus|Archaeoglobus fulgidus|Archaeoglobi (hot sulfate reducers)|Breathes sulfate at 83 °C in oil wells.
+Pyrolobus|Pyrolobus fumarii|Desulfurococcales (Pyrolobus)|Grows at 113 °C inside a black smoker chimney.
+Woesearchaeon|Woesearchaeota|Woesearchaea|A tiny DPANN archaeon living off other cells.
+Bathyarchaeon|Bathyarchaeota|Bathyarchaea|One of the most abundant archaea in seafloor sediment.
+Odinarchaeon|Odinarchaeota|Odinarchaea|An Asgard archaeon from hot springs with eukaryote-like genes.
 # round 5
 Tardigrade|Hypsibius exemplaris|Tardigrades|Eight stubby legs, a moulting cuticle, survives vacuum.
 Coelacanth|Latimeria chalumnae|Coelacanths|Fleshy, limb-like fins. Thought extinct until 1938.
@@ -1195,10 +1309,10 @@ Black truffle|Tuber melanosporum|Truffles & morels|Spores form in sacs, not on g
 Echidna|Tachyglossus aculeatus|Monotremes|Spiny, ant-eating, warm-blooded, hatched from a soft egg.
 Hagfish|Myxine glutinosa|Hagfish|Jawless, nearly blind, fills a bucket with slime in seconds.
 Diatom|Bacillariophyceae|Diatoms|A single photosynthetic cell in a glass shell.
-Gut methanogen|Methanobrevibacter smithii|Methanogens|Makes methane in your gut. No nucleus, but no bacterial cell wall either.
+Gut methanogen|Methanobrevibacter smithii|Methanobacteria (gut & rumen)|Makes methane in your gut. No nucleus, but no bacterial cell wall either.
 Tuatara|Sphenodon punctatus|Tuatara|Lizard-like, with a third eye. Not a lizard.
 Toxoplasma|Toxoplasma gondii|Apicomplexans|A single-celled parasite that breeds in cats and infects a third of humans.
-Spirulina|Arthrospira platensis|Cyanobacteria|Photosynthetic, sold as a powder, no nucleus.
+Spirulina|Arthrospira platensis|Oscillatoria & Spirulina|Photosynthetic, sold as a powder, no nucleus.
 Lancelet|Branchiostoma|Lancelets|Fish-shaped, with a stiff rod along its back but no skull and no bones.
 Velvet worm|Peripatus|Velvet worms|Soft, many-legged, sprays glue at prey.
 Acorn worm|Enteropneusta|Acorn worms|A burrowing marine worm with gill slits.
@@ -1219,7 +1333,7 @@ Welwitschia|Welwitschia mirabilis|Welwitschia|Two leaves that grow for a thousan
 Stonewort|Chara|Stoneworts|A green alga with a body plan closest to land plants.
 Lokiarchaeon|Lokiarchaeota|Lokiarchaea|A deep-sea microbe with no nucleus, but genes that look eukaryotic.
 Chytrid fungus|Batrachochytrium dendrobatidis|Chytrids|A fungus with swimming spores. Devastates frogs.
-Sulfolobus|Sulfolobus acidocaldarius|Crenarchaea (Sulfolobus)|Thrives in boiling acid hot springs. No nucleus.
+Sulfolobus|Sulfolobus acidocaldarius|Sulfolobales|Thrives in boiling acid hot springs. No nucleus.
 Moss animal|Bryozoa|Bryozoans|A colony of tiny tentacled filter feeders that looks like moss on a rock.
 Colugo|Cynocephalus volans|Colugos|A gliding mammal with a full-body membrane. Not a lemur, not a bat.
 Tenrec|Tenrecidae|Tenrecs & golden moles|Looks like a hedgehog, lives in Madagascar, related to elephants.
@@ -1232,7 +1346,7 @@ Amborella|Amborella trichopoda|Amborella|A New Caledonian shrub that is the sist
 Whisk fern|Psilotum nudum|Whisk ferns|No roots, no true leaves, just forking green stems.
 Reindeer lichen|Cladonia rangiferina|Lichen-forming fungi|A fungus farming algae inside itself.
 Deep-sea tube worm|Riftia pachyptila|Deep-sea tube worms|No mouth, no gut; fed by bacteria at hydrothermal vents.
-Nanoarchaeum|Nanoarchaeum equitans|DPANN nanoarchaea|A tiny cell that rides on another archaeon's surface.
+Nanoarchaeum|Nanoarchaeum equitans|Nanoarchaea|A tiny cell that rides on another archaeon's surface.
 Cyanophora|Cyanophora paradoxa|Glaucophytes|A cell whose chloroplasts still keep a bacterial wall.
 Cryptomonad|Cryptomonas|Cryptomonads|A flagellate carrying a shrunken second nucleus from a captured alga.
 Nosema|Nosema apis|Microsporidia|A spore that fires a coiled tube into a bee's gut cell. Once thought a protist; a fungus.
@@ -1269,10 +1383,10 @@ Rafflesia|Rafflesia arnoldii|Cucumbers & squashes|The largest flower alive, smel
 Dictyostelium slug|Dictyostelium|Social amoebas|Independent amoebas that merge into a crawling slug when starved.
 Riftia|Riftia pachyptila|Deep-sea tube worms|No mouth, no gut; fed by bacteria at hydrothermal vents.
 Loki|Candidatus Prometheoarchaeum|Lokiarchaea|A tentacled deep-sea microbe closest to the ancestor of all eukaryotes.
-Nitrososphaera|Nitrososphaera viennensis|Ammonia-oxidising archaea|A soil archaeon that oxidises ammonia.
-Methanopyrus|Methanopyrus kandleri|Methanogens|Makes methane at 122 °C, the hottest life known.
-Ferroplasma|Ferroplasma acidiphilum|Thermoplasmata (acid-lovers)|Lives in pH 0 mine drainage with no cell wall.
-Halococcus|Halococcus|Halophiles (salt-lovers)|Round pink cells in salt pans.
+Nitrososphaera|Nitrososphaera viennensis|Soil ammonia-oxidisers|A soil archaeon that oxidises ammonia.
+Methanopyrus|Methanopyrus kandleri|Methanopyri (hottest methanogens)|Makes methane at 122 °C, the hottest life known.
+Ferroplasma|Ferroplasma acidiphilum|Thermoplasmata|Lives in pH 0 mine drainage with no cell wall.
+Halococcus|Halococcus|Halophiles|Round pink cells in salt pans.
 Heimdall|Heimdallarchaeota|Heimdallarchaea|A sister to eukaryotes found in marine sediment.
 Vaucheria|Vaucheria|Yellow-green algae|A green felt of tubes; a stramenopile, not a plant.
 Reclinomonas|Reclinomonas americana|Jakobids|A tiny flagellate with a very bacteria-like mitochondrial genome.
@@ -1320,10 +1434,16 @@ Weaver|Ploceus cucullatus|Sparrows & weavers|Knots grass into hanging basket nes
 Tanager|Tangara|Buntings, cardinals & tanagers|A jewel-coloured songbird of the Neotropics.
 Babbler|Turdoides|Warblers & babblers|A gregarious, chattering bird that raises young cooperatively.
 Gemmata|Gemmata obscuriglobus|Planctomycetes|A budding bacterium with DNA wrapped in membrane.
+ANME archaeon|Candidatus Methanoperedens|Anaerobic methane oxidisers (ANME)|Runs methane production in reverse, eating methane in seafloor mud.
+Micrarchaeon|Micrarchaeota|Micrarchaea|An ultrasmall parasitic archaeon from acid mine drainage.
+Aigarchaeon|Caldiarchaeum subterraneum|Aigarchaea|A hot-spring archaeon with a eukaryote-like ubiquitin system.
+CPR bacterium|Candidatus Saccharibacteria|CPR ultrasmall bacteria|Ultra-small bacteria with no ability to make their own amino acids.
+Heliobacterium|Heliobacterium modesticaldum|Clostridia|A photosynthetic Firmicute from rice paddies that also makes spores.
+Anabaena|Anabaena|Nostoc & Anabaena (filament fixers)|Bead-chain filaments with special nitrogen-fixing cells every tenth bead.
 `;
 const WIKI={"Dog": "Dog", "House cat": "Cat", "Honeybee": "Western honey bee", "Common frog": "Common frog", "Chicken": "Red junglefowl", "Button mushroom": "Agaricus bisporus", "Human": "Human", "Monarch butterfly": "Monarch butterfly", "Brown rat": "Brown rat", "Ladybird": "Coccinellidae", "Atlantic salmon": "Atlantic salmon", "Giant sequoia": "Sequoiadendron giganteum", "Garden strawberry": "Strawberry", "Grey squirrel": "Eastern gray squirrel", "Mallard duck": "Mallard", "Crow": "Carrion crow", "Goldfish": "Goldfish", "Giraffe": "Northern giraffe", "Green sea urchin": "Strongylocentrotus", "Garden pea": "Pea", "Zebra": "Plains zebra", "Robin": "American robin", "Oak tree": "Quercus robur", "Lemon": "Lemon", "Bottlenose dolphin": "Common bottlenose dolphin", "Blue whale": "Blue whale", "Pigeon": "Rock dove", "Lion": "Lion", "Cabbage white butterfly": "Pieris rapae", "Grasshopper": "Caelifera", "Apple tree": "Apple", "Swan": "Mute swan", "Grey wolf": "Wolf", "Potato": "Potato", "Red kangaroo": "Red kangaroo", "Common octopus": "Common octopus", "American lobster": "American lobster", "Tarantula": "Tarantula", "Great white shark": "Great white shark", "Earthworm": "Lumbricus terrestris", "Moon jellyfish": "Aurelia aurita", "Green sea turtle": "Green sea turtle", "Emperor penguin": "Emperor penguin", "Killer whale": "Orca", "Bamboo": "Bamboo", "African elephant": "African bush elephant", "Rattlesnake": "Crotalus", "Sunflower": "Common sunflower", "Fruit bat": "Pteropus", "Grizzly bear": "Brown bear", "Cuttlefish": "Common cuttlefish", "Bald eagle": "Bald eagle", "Barn owl": "Western barn owl", "Red fox": "Red fox", "Meerkat": "Meerkat", "Beaver": "Beaver", "Sea otter": "Sea otter", "Capybara": "Capybara", "Ring-tailed lemur": "Ring-tailed lemur", "Baboon": "Baboon", "Hedgehog": "European hedgehog", "Opossum": "Opossum", "Tasmanian devil": "Tasmanian devil", "Armadillo": "Nine-banded armadillo", "Giant anteater": "Giant anteater", "Dromedary camel": "Dromedary", "Red deer": "Red deer", "Wild boar": "Wild boar", "Bison": "American bison", "Tapir": "Tapir", "Spotted hyena": "Spotted hyena", "Gecko": "Gecko", "Reticulated python": "Reticulated python", "King cobra": "King cobra", "American alligator": "American alligator", "Galápagos tortoise": "Galápagos tortoise", "Atlantic puffin": "Atlantic puffin", "Wandering albatross": "Snowy albatross", "Pelican": "Pelican", "White stork": "White stork", "Kingfisher": "Common kingfisher", "Macaw": "Macaw", "European eel": "European eel", "Bluefin tuna": "Atlantic bluefin tuna", "Manta ray": "Giant oceanic manta ray", "Praying mantis": "Mantis", "Scorpion": "Scorpion", "Millipede": "Millipede", "Nautilus": "Chambered nautilus", "Coral": "Coral", "Monkey puzzle tree": "Araucaria araucana", "Avocado": "Avocado", "Banana": "Banana", "Grapevine": "Vitis", "Poppy": "Papaver", "Lactobacillus": "Lactobacillus", "Starfish": "Starfish", "Bracken fern": "Pteridium aquilinum", "Baker's yeast": "Saccharomyces cerevisiae", "Nile crocodile": "Nile crocodile", "Slowworm": "Common slow worm", "Sphagnum moss": "Sphagnum", "Bath sponge": "Spongia officinalis", "Sea anemone": "Sea anemone", "Barnacle": "Barnacle", "Woodlouse": "Woodlouse", "Scallop": "Scallop", "Mosquito": "Mosquito", "Cicada": "Cicadidae", "Firefly": "Firefly", "House centipede": "Scutigera coleoptrata", "Three-toed sloth": "Three-toed sloth", "Walrus": "Walrus", "Venus flytrap": "Venus flytrap", "Vanilla": "Vanilla planifolia", "Coconut palm": "Coconut", "E. coli": "Escherichia coli", "Dragonfly": "Dragonfly", "Axolotl": "Axolotl", "Hummingbird": "Hummingbird", "Hippopotamus": "Hippopotamus", "Seahorse": "Hippocampus", "Koala": "Koala", "Broccoli": "Broccoli", "Dandelion": "Taraxacum", "Termite": "Termite", "Great crested newt": "Northern crested newt", "Clownfish": "Clownfish", "Catfish": "Catfish", "Cod": "Atlantic cod", "Plaice": "European plaice", "Pufferfish": "Tetraodontidae", "Herring": "Atlantic herring", "Mayfly": "Mayfly", "Silverfish": "Silverfish", "Stick insect": "Phasmatodea", "Earwig": "Earwig", "Head louse": "Head louse", "Cat flea": "Cat flea", "Green lacewing": "Chrysopidae", "Caddisfly": "Caddisfly", "Water flea": "Daphnia", "Copepod": "Copepod", "Sand hopper": "Talitridae", "Tiger prawn": "Penaeus monodon", "Blue mussel": "Blue mussel", "Giant clam": "Giant clam", "Common whelk": "Buccinum undatum", "Squid": "European squid", "Brittle star": "Brittle star", "Rotifer": "Rotifer", "Leech": "Hirudo medicinalis", "Lugworm": "Blow lugworm", "Bootlace worm": "Lineus longissimus", "Box jellyfish": "Chironex fleckeri", "Glass sponge": "Hexactinellid", "Nightjar": "Nightjar", "House sparrow": "House sparrow", "Chameleon": "Chameleon", "Lemur": "Lemur", "Otter": "Otter", "Raccoon": "Raccoon", "Horsetail": "Equisetum", "Pineapple": "Pineapple", "Agave": "Agave americana", "Coffee": "Coffee", "Peppermint": "Mentha", "Carrot": "Carrot", "Chanterelle": "Chanterelle", "Platypus": "Platypus", "Slime mould": "Physarum polycephalum", "Sea cucumber": "Sea cucumber", "Manatee": "Manatee", "Rock hyrax": "Rock hyrax", "Antarctic krill": "Antarctic krill", "Ostrich": "Ostrich", "Comb jelly": "Ctenophora", "Pangolin": "Pangolin", "Aardvark": "Aardvark", "Nudibranch": "Nudibranch", "Falcon": "Falcon", "Gharial": "Gharial", "Giardia": "Giardia duodenalis", "Radiolarian": "Radiolaria", "Podocarp": "Podocarpus", "Oyster": "Oyster", "Ostracod": "Ostracod", "Hummingbird hawk-moth": "Hummingbird hawk-moth", "Coral snake": "Micrurus", "Caiman": "Spectacled caiman", "Dugong": "Dugong", "Porcupine": "Porcupine", "Tuberculosis bacterium": "Tuberculosis", "Echidna": "Echidna", "Tuatara": "Tuatara", "Toxoplasma": "Toxoplasma gondii", "Liverwort": "Liverwort", "Foraminiferan": "Foraminifera", "Kiwi": "Kiwi (bird)", "Bichir": "Bichir", "Acoel flatworm": "Symsagittifera roscoffensis", "Mite": "Mite", "Aye-aye": "Aye-aye", "Springhare": "Pedetes", "Pronghorn": "Pronghorn", "Loki": "Loki"};
 // ================= DATA =================
-const MAJOR = new Set(["Bacteria","Archaea","Eukaryotes","Proteobacteria","Firmicutes","SAR supergroup","Green plants","Land plants","Ferns & horsetails","Conifers","Flowering plants","Monocots","Eudicots","Rosids","Asterids","Fungi","Sac fungi","Club fungi","Animals","Cnidarians","Arthropods","Chelicerates","Pancrustaceans","Insects","Lophotrochozoans","Molluscs","Gastropods","Cephalopods","Echinoderms","Chordates","Vertebrates","Cartilaginous fish","Teleosts","Mammals","Marsupials","Placentals","Primates","Rodents","Carnivorans","Even-toed ungulates","Reptiles","Squamates","Snakes","Birds","Neoaves","Songbirds"]);
+const MAJOR = new Set(["Bacteria","Archaea","Eukaryotes","Terrabacteria","Gracilicutes","Proteobacteria","Firmicutes","Actinobacteria","Cyanobacteria","Euryarchaeota","TACK archaea","Asgard archaea","DPANN archaea","SAR supergroup","Green plants","Land plants","Ferns & horsetails","Conifers","Flowering plants","Monocots","Eudicots","Rosids","Asterids","Fungi","Sac fungi","Club fungi","Animals","Cnidarians","Arthropods","Chelicerates","Pancrustaceans","Insects","Lophotrochozoans","Molluscs","Gastropods","Cephalopods","Echinoderms","Chordates","Vertebrates","Cartilaginous fish","Teleosts","Mammals","Marsupials","Placentals","Primates","Rodents","Carnivorans","Even-toed ungulates","Reptiles","Squamates","Snakes","Birds","Neoaves","Songbirds"]);
 const ROUND_SECONDS=45, BLIND_FROM=3;
 const DOM={"Bacteria":{c:"#3f7fcf",k:"#2b5a99"},"Archaea":{c:"#d39a2a",k:"#8a6216"},"Eukaryotes":{c:"#8f6fd0",k:"#5a3f96"}};
 const mix=(hex,t)=>{const n=parseInt(hex.slice(1),16),r=n>>16,gg=n>>8&255,b=n&255;const f=v=>Math.round(v+(255-v)*t);return `rgb(${f(r)},${f(gg)},${f(b)})`;};
