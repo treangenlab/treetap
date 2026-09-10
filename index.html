@@ -64,6 +64,13 @@
   .sheet{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;pointer-events:none}
   .sheet > .inner{pointer-events:auto;width:100%;max-width:520px;margin:0 8px;background:var(--paper);border-radius:22px 22px 0 0;box-shadow:0 -6px 30px rgba(18,32,25,.12),0 0 0 1px rgba(18,32,25,.05);padding:14px 18px calc(14px + env(safe-area-inset-bottom));transition:transform .3s var(--ease)}
   .sheet.hide > .inner{transform:translateY(120%)}
+  .head{display:grid;grid-template-columns:1fr 96px;gap:14px;align-items:start}
+  .pic{width:96px;height:96px;border-radius:16px;background:var(--soft);overflow:hidden;position:relative;box-shadow:0 0 0 1px rgba(18,32,25,.06)}
+  .pic img{width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .3s}
+  .pic img.ok{opacity:1}
+  .pic .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:34px;color:#a9b9af}
+  .pic .cr{position:absolute;right:0;bottom:0;font-size:9px;background:rgba(255,255,255,.85);color:var(--muted);padding:2px 5px;border-radius:6px 0 0 0;text-decoration:none;opacity:0}
+  .pic img.ok + .cr, .pic .cr.on{opacity:1}
   .lvl{font-size:12px;color:var(--muted);font-weight:600;margin:0 0 4px}
   .oname{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:28px;line-height:1;margin:0;letter-spacing:-.02em}
   .oname i{font-family:"Instrument Sans",sans-serif;font-style:italic;font-weight:400;font-size:14px;color:var(--muted);margin-left:8px;letter-spacing:0}
@@ -112,9 +119,11 @@
   <button class="pill icon" id="fit" title="Fit whole tree" aria-label="Fit whole tree">⤢</button>
 </div>
 <div class="sheet" id="sheet"><div class="inner">
-  <p class="lvl" id="lvl"></p>
-  <h2 class="oname" id="oname"></h2>
-  <p class="blurb" id="blurb"></p>
+  <div class="head"><div>
+    <p class="lvl" id="lvl"></p>
+    <h2 class="oname" id="oname"></h2>
+    <p class="blurb" id="blurb"></p>
+  </div><div class="pic" id="pic"><div class="ph" id="ph"></div><img id="img" alt=""><a class="cr" id="cr" target="_blank" rel="noopener">Wikipedia</a></div></div>
   <p class="status" id="status"></p>
   <button class="go" id="go" disabled>Tap a branch to place it</button>
 </div></div>
@@ -517,6 +526,25 @@ Giant sequoia|Sequoiadendron giganteum|Cypresses & redwoods|The most massive tre
 Garden strawberry|Fragaria × ananassa|Roses, apples & strawberries|Five-petalled flowers, runners, seeds on the outside.
 Grey squirrel|Sciurus carolinensis|Squirrels|Bushy tail, buries acorns, chisel teeth.
 Mallard duck|Anas platyrhynchos|Ducks, geese & swans|Webbed feet, a flat bill, oily waterproof feathers.
+Crow|Corvus corone|Crows, jays & magpies|Black, clever, uses tools, remembers faces.
+Goldfish|Carassius auratus|Carps & minnows|A domesticated carp bred for colour; no stomach, no teeth in its jaws.
+Giraffe|Giraffa camelopardalis|Giraffes|Two-metre neck with the same seven neck bones you have.
+Green sea urchin|Strongylocentrotus|Sea urchins & sand dollars|A spiny ball with a five-toothed mouth underneath.
+Garden pea|Pisum sativum|Beans & peas|Climbs by tendrils and fixes nitrogen in root nodules.
+Zebra|Equus quagga|Horses & zebras|Striped, single hoof on each foot, grazes in herds.
+Robin|Turdus migratorius|Thrushes & starlings|A red-breasted songbird that hunts worms on lawns.
+Oak tree|Quercus robur|Oaks, birches & walnuts|Wind-pollinated catkins; seeds wrapped in acorns.
+Lemon|Citrus limon|Citrus & maples|Glossy evergreen leaves, fragrant white flowers, sour fruit.
+Bottlenose dolphin|Tursiops truncatus|Toothed whales & dolphins|Air-breathing and warm-blooded; finds fish by clicking.
+Blue whale|Balaenoptera musculus|Baleen whales|The largest animal ever. Sieves krill through plates in its mouth.
+Pigeon|Columba livia|Pigeons & doves|Feeds its chicks 'milk' from its crop; navigates by magnetism.
+Lion|Panthera leo|Cats|The only cat that lives in groups. Retractable claws.
+Cabbage white butterfly|Pieris rapae|Butterflies & moths|A white flutterer whose caterpillars eat brassicas.
+Grasshopper|Caelifera|Grasshoppers & crickets|Jumps with spring-loaded hind legs and sings by rubbing them.
+Apple tree|Malus domestica|Roses, apples & strawberries|Five-petalled blossom; the fruit is a swollen flower base.
+Swan|Cygnus olor|Ducks, geese & swans|Long-necked, webbed-footed, mates for life.
+Grey wolf|Canis lupus|Dogs & foxes|Pack hunter with a long muzzle and non-retractable claws.
+Potato|Solanum tuberosum|Tomatoes & potatoes|Grown from underground stem tubers; its green parts are toxic.
 # round 2
 Red kangaroo|Osphranter rufus|Kangaroos, wombats & koalas|Born the size of a jellybean and finishes developing in a pouch.
 Common octopus|Octopus vulgaris|Octopuses|Eight arms, three hearts, a beak, no shell.
@@ -538,6 +566,48 @@ Cuttlefish|Sepia officinalis|Squid & cuttlefish|Skin that changes colour in a bl
 Bald eagle|Haliaeetus leucocephalus|Hawks, eagles & vultures|Hooked beak, huge talons, soars on broad wings.
 Barn owl|Tyto alba|Owls|Silent flight, a heart-shaped face, hunts by ear at night.
 Red fox|Vulpes vulpes|Dogs & foxes|Bushy tail, pointed muzzle, a wild cousin of your pet.
+Meerkat|Suricata suricatta|Mongooses|Stands sentry on hind legs in the Kalahari.
+Beaver|Castor canadensis|Beavers|Orange iron-hardened teeth, a flat tail, builds dams.
+Sea otter|Enhydra lutris|Weasels & otters|Floats on its back and cracks shells with a rock.
+Capybara|Hydrochoerus hydrochaeris|Guinea pigs & capybaras|The world's largest rodent. Semi-aquatic, sociable.
+Ring-tailed lemur|Lemur catta|Lemurs & lorises|A wet-nosed primate from Madagascar with a striped tail.
+Baboon|Papio|Monkeys|Dog-faced, ground-dwelling, lives in troops of dozens.
+Hedgehog|Erinaceus europaeus|Hedgehogs, shrews & moles|Spines, a pointed snout, rolls into a ball.
+Opossum|Didelphis virginiana|Opossums|Plays dead, has a prehensile tail, raises young in a pouch.
+Tasmanian devil|Sarcophilus harrisii|Quolls & Tasmanian devil|A bone-crunching pouched carnivore with a scream.
+Armadillo|Dasypus novemcinctus|Armadillos|Armoured in bony plates; always gives birth to identical quadruplets.
+Giant anteater|Myrmecophaga tridactyla|Anteaters|A 60 cm tongue and no teeth at all.
+Dromedary camel|Camelus dromedarius|Camels & llamas|One hump, padded feet, closes its nostrils in sandstorms.
+Red deer|Cervus elaphus|Deer|Antlers regrown from scratch every year.
+Wild boar|Sus scrofa|Pigs|Tusks, a flat snout for rooting, cloven hooves.
+Bison|Bison bison|Cattle, sheep & antelope|Horns on both sexes, a shoulder hump, chews cud.
+Tapir|Tapirus|Tapirs|A short trunk, splayed toes, and a lineage close to horses.
+Spotted hyena|Crocuta crocuta|Hyenas|Bone-crushing jaws; closer to cats than to dogs.
+Gecko|Gekkota|Geckos|Sticky toe pads and no eyelids; licks its eyes clean.
+Reticulated python|Malayopython reticulatus|Boas & pythons|The longest snake. Squeezes rather than bites; has vestigial hind limbs.
+King cobra|Ophiophagus hannah|Cobras & mambas|A hooded snake with fixed front fangs that eats other snakes.
+American alligator|Alligator mississippiensis|Alligators & caimans|Broad U-shaped snout; lower teeth hidden when the mouth is closed.
+Galápagos tortoise|Chelonoidis niger|Tortoises & pond turtles|A domed shell, columnar legs, and a century-long life.
+Atlantic puffin|Fratercula arctica|Shorebirds, gulls & puffins|A striped bill, burrow nester, 'flies' underwater.
+Wandering albatross|Diomedea exulans|Albatrosses & petrels|The longest wingspan of any bird; glides for hours.
+Pelican|Pelecanus|Herons, pelicans & ibises|A throat pouch that scoops up fish.
+White stork|Ciconia ciconia|Storks|Nests on chimneys; carries no babies.
+Kingfisher|Alcedo atthis|Kingfishers & hornbills|An electric-blue dagger of a bird that dives for minnows.
+Macaw|Ara|Parrots|A hooked beak, two toes forward and two back, lives for decades.
+European eel|Anguilla anguilla|Eels|Born in the Sargasso Sea, grows up in rivers.
+Bluefin tuna|Thunnus thynnus|Tunas & mackerels|Warm-blooded, torpedo-shaped, crosses oceans.
+Manta ray|Mobula birostris|Rays & skates|A flattened cartilaginous giant that filters plankton.
+Praying mantis|Mantodea|Mantises|Spiked forelegs, a swivelling head, an ambush hunter.
+Scorpion|Scorpiones|Scorpions|Pincers and a venomous tail sting.
+Millipede|Diplopoda|Millipedes|Two pairs of legs per segment; curls into a spiral.
+Nautilus|Nautilus pompilius|Nautilus|A coiled chambered shell and ninety tentacles.
+Coral|Scleractinia|Corals & anemones|A colony of stinging polyps that builds a limestone skeleton.
+Monkey puzzle tree|Araucaria araucana|Araucarias|Spiky armour-like leaves; a conifer from the age of dinosaurs.
+Avocado|Persea americana|Laurels & avocado|A single huge seed in creamy flesh; evolved for giant sloths.
+Banana|Musa|Gingers & bananas|A giant herb, not a tree; the fruit is seedless.
+Grapevine|Vitis vinifera|Grapes|A woody climber with tendrils and clusters of berries.
+Poppy|Papaver|Buttercups & poppies|Papery petals and a seed capsule that shakes like a pepper pot.
+Lactobacillus|Lactobacillus|Bacillus & lactobacilli|Turns milk into yoghurt. A rod-shaped cell with no nucleus.
 # round 3
 Starfish|Asteroidea|Starfish|Five-fold symmetry and hydraulic tube feet.
 Bracken fern|Pteridium aquilinum|True ferns|Veins to move water, but spreads by spores, not seeds.
@@ -569,6 +639,68 @@ Koala|Phascolarctos cinereus|Kangaroos, wombats & koalas|Eats eucalyptus, sleeps
 Broccoli|Brassica oleracea|Cabbages & mustards|Four-petalled flowers and a peppery bite.
 Dandelion|Taraxacum|Sunflowers & daisies|A yellow head of many tiny flowers that becomes a seed clock.
 Termite|Isoptera|Cockroaches & termites|Wood-eating colony builders. Not ants.
+Great crested newt|Triturus cristatus|Salamanders & newts|A tailed amphibian that returns to ponds to breed.
+Clownfish|Amphiprion|Cichlids|Lives among anemone tentacles unharmed. A perch-like reef fish.
+Catfish|Siluriformes|Catfish|Whiskers for tasting mud; no scales.
+Cod|Gadus morhua|Cod & haddock|A chin barbel, three dorsal fins, once fed Europe.
+Plaice|Pleuronectes platessa|Flatfish|Both eyes migrate to one side of the head as it grows.
+Pufferfish|Tetraodontidae|Pufferfish|Inflates into a spiny ball; its liver carries a deadly toxin.
+Herring|Clupea harengus|Herrings & anchovies|Silvery, schooling in millions, communicates with bubbles.
+Mayfly|Ephemeroptera|Mayflies|Adults live a day; the only insects that moult with wings.
+Silverfish|Lepisma saccharinum|Silverfish|A wingless, scaly insect that eats book glue.
+Stick insect|Phasmatodea|Stick insects|A twig that walks. Some species are all female.
+Earwig|Dermaptera|Earwigs|Pincers on the tail, wings folded like origami.
+Head louse|Pediculus humanus capitis|Lice|A wingless parasite that glues its eggs to hair.
+Cat flea|Ctenocephalides felis|Fleas|Wingless, laterally flattened, jumps 100 times its length.
+Green lacewing|Chrysopidae|Lacewings & antlions|Gauzy wings; its larvae impale aphids.
+Caddisfly|Trichoptera|Caddisflies|Its larvae build cases from sand and twigs underwater.
+Water flea|Daphnia|Ostracods|A transparent see-through crustacean that swims in jerks.
+Copepod|Copepoda|Copepods|A one-eyed crustacean; possibly the most numerous animal on Earth.
+Sand hopper|Talitridae|Amphipods|A sideways-flattened crustacean that leaps on the strandline.
+Tiger prawn|Penaeus monodon|Shrimp & prawns|A long-bodied crustacean with a fan tail; swims backwards.
+Blue mussel|Mytilus edulis|Mussels|Anchored to rocks by protein threads; filters seawater.
+Giant clam|Tridacna gigas|Clams & cockles|A metre-wide hinged shell that farms algae in its mantle.
+Common whelk|Buccinum undatum|Sea snails|A spiral shell and a drill-like tongue for boring into clams.
+Squid|Loligo vulgaris|Squid & cuttlefish|Ten arms, jet propulsion, and ink.
+Brittle star|Ophiuroidea|Brittle stars|Five whip-like arms that snap off and regrow.
+Rotifer|Rotifera|Rotifers|A microscopic animal with a spinning crown of cilia.
+Leech|Hirudo medicinalis|Leeches|A segmented blood-sucker with a sucker at each end.
+Lugworm|Arenicola marina|Bristle worms|Leaves coiled casts on beaches; bristles on every segment.
+Bootlace worm|Lineus longissimus|Ribbon worms|Possibly the longest animal; fires a harpoon-like proboscis.
+Box jellyfish|Chironex fleckeri|Box jellies|Cube-shaped bell, 24 eyes, and one of the deadliest stings.
+Glass sponge|Hexactinellida|Glass sponges|A lattice skeleton of silica that can live for thousands of years.
+Harvestman|Opiliones|Harvestmen|Long legs and a one-piece body. No silk, no venom, not a spider.
+Emu|Dromaius novaehollandiae|Emus & cassowaries|Australia's tallest bird; the male incubates the eggs.
+Cuckoo|Cuculus canorus|Cuckoos|Lays its eggs in other birds' nests.
+Nightjar|Caprimulgidae|Nightjars|A moth-eating bird that vanishes against tree bark by day.
+Crane|Grus grus|Cranes & rails|A tall grey dancer with a trumpeting call.
+Great tit|Parus major|Warblers & tits|A bold yellow-breasted acrobat that learns to open milk bottles.
+House sparrow|Passer domesticus|Finches, sparrows & buntings|A seed-eating songbird with a thick conical bill.
+Skink|Scincidae|Skinks|Smooth glossy scales and short legs; some are legless.
+Softshell turtle|Trionychidae|Softshell turtles|A leathery pancake of a turtle with a snorkel nose.
+Komodo dragon|Varanus komodoensis|Monitor lizards|A giant scaled predator with a forked tongue and venom glands.
+Chameleon|Chamaeleonidae|Iguanas & chameleons|Independent eyes, a ballistic tongue, colour-changing skin.
+Lemur|Eulemur|Lemurs & lorises|A wet-nosed primate with a toothcomb, from Madagascar.
+Otter|Lutra lutra|Weasels & otters|A sleek river hunter with webbed feet and dense fur.
+Raccoon|Procyon lotor|Raccoons|A masked, dextrous forager that washes its food.
+Mole|Talpa europaea|Hedgehogs, shrews & moles|Velvet fur, shovel hands, nearly blind.
+Cycad|Cycas revoluta|Cycads|Looks like a palm, but bears cones and has swimming sperm.
+Yew|Taxus baccata|Yews|Dark needles and red fleshy cones. Every part but the aril is poisonous.
+Horsetail|Equisetum|Horsetails|Jointed hollow stems rough with silica; spreads by spores.
+Duckweed|Lemna|Aroids & duckweed|The smallest flowering plant; floats as a single leaf-like frond.
+Pineapple|Ananas comosus|Sedges, rushes & bromeliads|A bromeliad whose fruit is many berries fused together.
+Agave|Agave americana|Asparagus, onions & agaves|A rosette of sword leaves that flowers once, then dies.
+Cucumber|Cucumis sativus|Cucumbers & squashes|A trailing vine with tendrils and a watery berry.
+Eucalyptus|Eucalyptus|Eucalyptus & myrtles|Oily aromatic leaves; flowers that are all stamens.
+Blueberry|Vaccinium|Blueberries & heathers|Urn-shaped flowers, acid soil, blue berries.
+Coffee|Coffea arabica|Coffee & gentians|Glossy shrub whose 'beans' are seeds of a red cherry.
+Peppermint|Mentha × piperita|Mints & sages|Square stems, opposite leaves, oily scent.
+Carrot|Daucus carota|Carrots & parsley|Umbrella-shaped flower heads and a swollen taproot.
+Protea|Protea cynaroides|Proteas & planes|A goblet-sized flower head from the Cape fynbos.
+Penicillium|Penicillium chrysogenum|Penicillium & moulds|The blue-green mould that gave us penicillin.
+Chanterelle|Cantharellus cibarius|Chanterelles|A golden funnel-shaped mushroom with ridges, not gills.
+Amoeba|Amoeba proteus|Amoebas|A single cell that crawls and engulfs prey with false feet.
+Cholera bacterium|Vibrio cholerae|Enterobacteria (E. coli, Salmonella)|A comma-shaped cell with a single tail. Causes cholera.
 # round 4
 Platypus|Ornithorhynchus anatinus|Monotremes|Fur and milk, but it lays eggs. Venomous spur on the hind leg.
 Giant kelp|Macrocystis pyrifera|Kelp & brown algae|Grows half a metre a day in undersea forests.
@@ -602,10 +734,55 @@ Aardvark|Orycteropus afer|Aardvark|Digs for termites with a pig-like snout. Not 
 Nudibranch|Nudibranchia|Sea slugs|A shell-less sea creature with a crown of gills and stolen stinging cells.
 Falcon|Falco peregrinus|Falcons|The fastest animal alive. Closer to parrots than to hawks.
 Gharial|Gavialis gangeticus|Gharials|A needle-snouted fish-eater from Indian rivers.
-Chameleon|Chamaeleonidae|Iguanas & chameleons|Independent eyes, a ballistic tongue, colour-changing skin.
 Cordyceps|Ophiocordyceps unilateralis|Cordyceps & ergot|A fungus that hijacks ants and grows out of their heads.
 Toucan|Ramphastidae|Woodpeckers & toucans|A huge colourful bill; nests in tree holes.
 Salp|Salpidae|Salps|A transparent barrel that pumps water and forms chains. Has a notochord as a larva.
+Giardia|Giardia duodenalis|Giardia & relatives|A two-nucleus parasite that looks like a smiling face under the microscope.
+Trichomonas|Trichomonas vaginalis|Trichomonads|A single flagellated cell with no mitochondria.
+Radiolarian|Radiolaria|Radiolarians|A single cell in an intricate silica skeleton.
+Volvox|Volvox|Chlorophyte green algae|A hollow rolling sphere of flagellated green cells.
+Golden alga|Dinobryon|Golden algae|A branching colony of single cells in vase-shaped cups.
+Social amoeba|Dictyostelium discoideum|Social amoebas|Thousands of amoebas gather into a slug, then a fruiting stalk.
+Bread mould|Rhizopus stolonifer|Bread moulds|Fuzzy black mould with sporangia on stalks.
+Witches' butter|Tremella mesenterica|Jelly fungi|A yellow jelly on dead wood that dries to a crust and revives in rain.
+Bracket fungus|Ganoderma applanatum|Bracket fungi|A woody shelf on tree trunks; spores drop from pores underneath.
+Hornwort|Anthoceros|Hornworts|A flat green plant with horn-shaped spore capsules.
+Clubmoss|Lycopodium|Clubmosses & quillworts|A tiny 'pine' with spores in club-shaped cones. Not a moss.
+Water lily|Nymphaea|Water lilies|Floating leaves and a flower near the base of the flowering-plant tree.
+Black pepper|Piper nigrum|Black pepper|A climbing vine whose dried berries season food.
+Podocarp|Podocarpus|Podocarps|A southern conifer with fleshy seed stalks that birds eat.
+Sea slug|Chromodoris|Sea slugs|A shell-less mollusc with its gills in a tuft on its back.
+Chiton|Polyplacophora|Chitons|Eight overlapping shell plates on a rock-hugging foot.
+Tusk shell|Scaphopoda|Tusk shells|A hollow curved shell open at both ends, buried in sand.
+Oyster|Ostrea edulis|Oysters & scallops|Cemented to rock, builds pearls around irritants.
+Peacock mantis shrimp|Odontodactylus scyllarus|Crabs & lobsters|Punches with the acceleration of a bullet. A crustacean, not a shrimp in the strict sense.
+Ostracod|Ostracoda|Ostracods|A tiny crustacean sealed in a hinged bivalve-like shell.
+Hummingbird hawk-moth|Macroglossum stellatarum|Butterflies & moths|Hovers at flowers and hums like a hummingbird.
+Antlion|Myrmeleontidae|Lacewings & antlions|Its larva digs a sand pit to trap ants.
+Woodpecker|Picidae|Woodpeckers & toucans|Drums on trees; a tongue that wraps around its skull.
+Hornbill|Bucerotidae|Kingfishers & hornbills|A casqued bill; the female is sealed into the nest hole.
+Secretary bird|Sagittarius serpentarius|Hawks, eagles & vultures|A long-legged raptor that stamps snakes to death.
+Cassowary|Casuarius|Emus & cassowaries|A helmeted, dagger-clawed flightless bird of the rainforest.
+Rail|Rallus aquaticus|Cranes & rails|A skulking marsh bird 'thin as a rail'.
+Swift|Apus apus|Swifts & hummingbirds|Sleeps on the wing; lands only to nest.
+Iguana|Iguana iguana|Iguanas & chameleons|A vegetarian lizard with a dewlap and a spiny crest.
+Coral snake|Micrurus|Cobras & mambas|Red, yellow and black bands; fixed front fangs.
+Grass snake|Natrix natrix|Colubrid snakes|Non-venomous; plays dead and smells terrible when caught.
+Caiman|Caiman crocodilus|Alligators & caimans|A small broad-snouted crocodilian of South American rivers.
+Dugong|Dugong dugon|Manatees & dugongs|A sea-grass grazer with a whale-like fluked tail.
+Golden mole|Chrysochloridae|Tenrecs & golden moles|A blind, iridescent burrower. Not a mole.
+Treeshrew|Tupaia|Treeshrews|Looks like a squirrel, is not a shrew, and is close to primates.
+Porcupine|Hystrix|Guinea pigs & capybaras|Quilled, gnawing, with ever-growing incisors.
+Pika|Ochotona|Rabbits & hares|A round-eared mountain haymaker. Not a rodent.
+Sea snake|Hydrophiinae|Cobras & mambas|A paddle-tailed reef snake with fixed front fangs.
+Deinococcus|Deinococcus radiodurans|Deinococcus (radiation-proof)|Survives a thousand times the radiation that kills a human.
+Pseudomonas|Pseudomonas aeruginosa|Pseudomonads|A rod with a polar tail that forms slimy biofilms.
+Lyme spirochaete|Borrelia burgdorferi|Spirochaetes|A corkscrew-shaped cell spread by ticks.
+Chlamydia|Chlamydia trachomatis|Chlamydiae|Lives only inside other cells; among the smallest bacteria.
+Rhizobium|Rhizobium leguminosarum|Rhizobia & rickettsias|Lives in root nodules and turns air into fertiliser.
+Halobacterium|Halobacterium salinarum|Halophiles (salt-lovers)|Turns salt lakes pink with a light-harvesting purple pigment. No nucleus.
+Methanosarcina|Methanosarcina barkeri|Methanogens|Makes methane in swamps and cattle. No nucleus, no bacterial cell wall.
+Tuberculosis bacterium|Mycobacterium tuberculosis|Streptomyces & mycobacteria|A waxy-walled rod that hides inside immune cells.
 # round 5
 Tardigrade|Hypsibius exemplaris|Tardigrades|Eight stubby legs, a moulting cuticle, survives vacuum.
 Coelacanth|Latimeria chalumnae|Coelacanths|Fleshy, limb-like fins. Thought extinct until 1938.
@@ -651,12 +828,52 @@ Amborella|Amborella trichopoda|Amborella|A New Caledonian shrub that is the sist
 Whisk fern|Psilotum nudum|Whisk ferns|No roots, no true leaves, just forking green stems.
 Reindeer lichen|Cladonia rangiferina|Lichen-forming fungi|A fungus farming algae inside itself.
 Deep-sea tube worm|Riftia pachyptila|Deep-sea tube worms|No mouth, no gut; fed by bacteria at hydrothermal vents.
+
+Nanoarchaeum|Nanoarchaeum equitans|Nanoarchaea|A tiny cell that rides on another archaeon's surface.
+Cyanophora|Cyanophora paradoxa|Glaucophytes|A cell whose chloroplasts still keep a bacterial wall.
+Cryptomonad|Cryptomonas|Cryptomonads|A flagellate carrying a shrunken second nucleus from a captured alga.
+Nosema|Nosema apis|Microsporidia|A spore that fires a coiled tube into a bee's gut cell. Once thought a protist; a fungus.
+Mycorrhizal fungus|Rhizophagus irregularis|Mycorrhizal fungi|Lives inside plant roots and trades phosphorus for sugar.
+Ergot|Claviceps purpurea|Cordyceps & ergot|A black sclerotium on rye that once caused mass hallucination.
+Calcareous sponge|Sycon|Calcareous sponges|A vase of chalky spicules; the simplest sponge.
+Acoel flatworm|Symsagittifera roscoffensis|Acoel worms|A gutless green worm that farms algae. Sister to all other bilaterians.
+Horsehair worm|Nematomorpha|Horsehair worms|A parasite that drives its cricket host to drown itself.
+Gordian ostracod|Gigantocypris|Ostracods|A deep-sea crustacean in a spherical shell with huge mirror eyes.
+Peripatus|Peripatus|Velvet worms|Soft, many-legged, sprays glue at prey.
+Pycnogonid|Nymphon|Sea spiders|All legs and almost no body. Not a true spider.
+Mite|Acari|Mites & ticks|Eight legs, a fused body, and a home in every habitat on Earth.
+Bowfin|Amia calva|Bowfin|A living fossil with a long dorsal fin and a lung-like bladder.
+Paddlefish|Polyodon spathula|Sturgeons & paddlefish|A plankton-sieving fish with a paddle snout.
+Pipefish|Syngnathus|Seahorses & pipefish|A straightened seahorse; the male broods the eggs.
+Ibis|Threskiornithidae|Herons, pelicans & ibises|A curved-billed wader; the ancient Egyptians mummified it.
+Petrel|Procellariidae|Albatrosses & petrels|A tube-nosed seabird that smells its way to food.
+Broadbill|Eurylaimidae|Flycatchers & antbirds|A gaudy tropical bird that sings by vibrating its wings.
+Lark|Alauda arvensis|Larks & swallows|Sings while hovering high over fields.
+Amphisbaenian|Bipes biporus|Skinks|A pink worm-lizard with only two front legs.
+Legless lizard|Pygopus|Geckos|A snake-like lizard with ear openings. A gecko.
+Snapping turtle|Chelydra serpentina|Tortoises & pond turtles|A hooked beak and a spiky tail; can't retract into its shell.
+Aye-aye|Daubentonia madagascariensis|Lemurs & lorises|Taps trees with a skeletal middle finger to find grubs.
+Solenodon|Solenodon paradoxus|Hedgehogs, shrews & moles|A venomous shrew-like survivor from the age of dinosaurs.
+Springhare|Pedetes|Squirrels|A kangaroo-shaped rodent that hops. Closer to squirrels than mice.
+Musk deer|Moschus|Deer|Fanged, antlerless, and still a deer.
+Pronghorn|Antilocapra americana|Giraffes|America's fastest mammal; closer to giraffes than to antelope.
+Chevrotain|Tragulus|Deer|A mouse-deer with fangs; the smallest hoofed mammal.
+Quillwort|Isoetes|Clubmosses & quillworts|A tuft of quills in a pond that is neither grass nor fern.
+Ephedra|Ephedra|Gnetophytes|A broom-like desert shrub with cones and no leaves to speak of.
+Sundew|Drosera|Cacti, carnations & sundews|Sticky glistening tentacles that curl around insects.
+Plane tree|Platanus|Proteas & planes|Flaking bark and dangling seed balls; sister to the proteas.
+Dodder|Cuscuta|Tomatoes & potatoes|A leafless orange parasitic vine that sniffs out its host.
+Rafflesia|Rafflesia arnoldii|Cucumbers & squashes|The largest flower alive, smells of rotting meat, has no leaves or stem.
+Dictyostelium slug|Dictyostelium|Social amoebas|Independent amoebas that merge into a crawling slug when starved.
+Riftia|Riftia pachyptila|Deep-sea tube worms|No mouth, no gut; fed by bacteria at hydrothermal vents.
+Loki|Candidatus Prometheoarchaeum|Asgard archaea|A tentacled deep-sea microbe closest to the ancestor of all eukaryotes.
 `;
+const WIKI={"Dog": "Dog", "House cat": "Cat", "Honeybee": "Western honey bee", "Common frog": "Common frog", "Chicken": "Red junglefowl", "Button mushroom": "Agaricus bisporus", "Human": "Human", "Monarch butterfly": "Monarch butterfly", "Brown rat": "Brown rat", "Ladybird": "Coccinellidae", "Atlantic salmon": "Atlantic salmon", "Giant sequoia": "Sequoiadendron giganteum", "Garden strawberry": "Strawberry", "Grey squirrel": "Eastern gray squirrel", "Mallard duck": "Mallard", "Crow": "Carrion crow", "Goldfish": "Goldfish", "Giraffe": "Northern giraffe", "Green sea urchin": "Strongylocentrotus", "Garden pea": "Pea", "Zebra": "Plains zebra", "Robin": "American robin", "Oak tree": "Quercus robur", "Lemon": "Lemon", "Bottlenose dolphin": "Common bottlenose dolphin", "Blue whale": "Blue whale", "Pigeon": "Rock dove", "Lion": "Lion", "Cabbage white butterfly": "Pieris rapae", "Grasshopper": "Caelifera", "Apple tree": "Apple", "Swan": "Mute swan", "Grey wolf": "Wolf", "Potato": "Potato", "Red kangaroo": "Red kangaroo", "Common octopus": "Common octopus", "American lobster": "American lobster", "Tarantula": "Tarantula", "Great white shark": "Great white shark", "Earthworm": "Lumbricus terrestris", "Moon jellyfish": "Aurelia aurita", "Green sea turtle": "Green sea turtle", "Emperor penguin": "Emperor penguin", "Killer whale": "Orca", "Bamboo": "Bamboo", "African elephant": "African bush elephant", "Rattlesnake": "Crotalus", "Sunflower": "Common sunflower", "Fruit bat": "Pteropus", "Grizzly bear": "Brown bear", "Cuttlefish": "Common cuttlefish", "Bald eagle": "Bald eagle", "Barn owl": "Western barn owl", "Red fox": "Red fox", "Meerkat": "Meerkat", "Beaver": "Beaver", "Sea otter": "Sea otter", "Capybara": "Capybara", "Ring-tailed lemur": "Ring-tailed lemur", "Baboon": "Baboon", "Hedgehog": "European hedgehog", "Opossum": "Opossum", "Tasmanian devil": "Tasmanian devil", "Armadillo": "Nine-banded armadillo", "Giant anteater": "Giant anteater", "Dromedary camel": "Dromedary", "Red deer": "Red deer", "Wild boar": "Wild boar", "Bison": "American bison", "Tapir": "Tapir", "Spotted hyena": "Spotted hyena", "Gecko": "Gecko", "Reticulated python": "Reticulated python", "King cobra": "King cobra", "American alligator": "American alligator", "Galápagos tortoise": "Galápagos tortoise", "Atlantic puffin": "Atlantic puffin", "Wandering albatross": "Snowy albatross", "Pelican": "Pelican", "White stork": "White stork", "Kingfisher": "Common kingfisher", "Macaw": "Macaw", "European eel": "European eel", "Bluefin tuna": "Atlantic bluefin tuna", "Manta ray": "Giant oceanic manta ray", "Praying mantis": "Mantis", "Scorpion": "Scorpion", "Millipede": "Millipede", "Nautilus": "Chambered nautilus", "Coral": "Coral", "Monkey puzzle tree": "Araucaria araucana", "Avocado": "Avocado", "Banana": "Banana", "Grapevine": "Vitis", "Poppy": "Papaver", "Lactobacillus": "Lactobacillus", "Starfish": "Starfish", "Bracken fern": "Pteridium aquilinum", "Baker's yeast": "Saccharomyces cerevisiae", "Nile crocodile": "Nile crocodile", "Slowworm": "Common slow worm", "Sphagnum moss": "Sphagnum", "Bath sponge": "Spongia officinalis", "Sea anemone": "Sea anemone", "Barnacle": "Barnacle", "Woodlouse": "Woodlouse", "Scallop": "Scallop", "Mosquito": "Mosquito", "Cicada": "Cicadidae", "Firefly": "Firefly", "House centipede": "Scutigera coleoptrata", "Three-toed sloth": "Three-toed sloth", "Walrus": "Walrus", "Venus flytrap": "Venus flytrap", "Vanilla": "Vanilla planifolia", "Coconut palm": "Coconut", "E. coli": "Escherichia coli", "Dragonfly": "Dragonfly", "Axolotl": "Axolotl", "Hummingbird": "Hummingbird", "Hippopotamus": "Hippopotamus", "Seahorse": "Hippocampus", "Koala": "Koala", "Broccoli": "Broccoli", "Dandelion": "Taraxacum", "Termite": "Termite", "Great crested newt": "Northern crested newt", "Clownfish": "Clownfish", "Catfish": "Catfish", "Cod": "Atlantic cod", "Plaice": "European plaice", "Pufferfish": "Tetraodontidae", "Herring": "Atlantic herring", "Mayfly": "Mayfly", "Silverfish": "Silverfish", "Stick insect": "Phasmatodea", "Earwig": "Earwig", "Head louse": "Head louse", "Cat flea": "Cat flea", "Green lacewing": "Chrysopidae", "Caddisfly": "Caddisfly", "Water flea": "Daphnia", "Copepod": "Copepod", "Sand hopper": "Talitridae", "Tiger prawn": "Penaeus monodon", "Blue mussel": "Blue mussel", "Giant clam": "Giant clam", "Common whelk": "Buccinum undatum", "Squid": "European squid", "Brittle star": "Brittle star", "Rotifer": "Rotifer", "Leech": "Hirudo medicinalis", "Lugworm": "Blow lugworm", "Bootlace worm": "Lineus longissimus", "Box jellyfish": "Chironex fleckeri", "Glass sponge": "Hexactinellid", "Nightjar": "Nightjar", "House sparrow": "House sparrow", "Chameleon": "Chameleon", "Lemur": "Lemur", "Otter": "Otter", "Raccoon": "Raccoon", "Horsetail": "Equisetum", "Pineapple": "Pineapple", "Agave": "Agave americana", "Coffee": "Coffee", "Peppermint": "Mentha", "Carrot": "Carrot", "Chanterelle": "Chanterelle", "Platypus": "Platypus", "Slime mould": "Physarum polycephalum", "Sea cucumber": "Sea cucumber", "Manatee": "Manatee", "Rock hyrax": "Rock hyrax", "Antarctic krill": "Antarctic krill", "Ostrich": "Ostrich", "Comb jelly": "Ctenophora", "Pangolin": "Pangolin", "Aardvark": "Aardvark", "Nudibranch": "Nudibranch", "Falcon": "Falcon", "Gharial": "Gharial", "Giardia": "Giardia duodenalis", "Radiolarian": "Radiolaria", "Podocarp": "Podocarpus", "Oyster": "Oyster", "Ostracod": "Ostracod", "Hummingbird hawk-moth": "Hummingbird hawk-moth", "Coral snake": "Micrurus", "Caiman": "Spectacled caiman", "Dugong": "Dugong", "Porcupine": "Porcupine", "Tuberculosis bacterium": "Tuberculosis", "Echidna": "Echidna", "Tuatara": "Tuatara", "Toxoplasma": "Toxoplasma gondii", "Liverwort": "Liverwort", "Foraminiferan": "Foraminifera", "Kiwi": "Kiwi (bird)", "Bichir": "Bichir", "Acoel flatworm": "Symsagittifera roscoffensis", "Mite": "Mite", "Aye-aye": "Aye-aye", "Springhare": "Pedetes", "Pronghorn": "Pronghorn", "Loki": "Loki"};
 // ================= DATA =================
 const MAJOR = new Set(["Bacteria","Archaea","Eukaryotes","Land plants","Flowering plants","Monocots","Eudicots","Fungi","Animals","Arthropods","Insects","Molluscs","Vertebrates","Teleosts","Mammals","Placentals","Carnivorans","Reptiles","Birds","Neoaves","Songbirds","Echinoderms","Chordates","Cnidarians","Squamates"]);
 const ROUND_SECONDS=45, BLIND_FROM=3;
 const LEVELS=["Round 1 · warm-up","Round 2 · familiar","Round 3 · trickier","Round 4 · hard","Round 5 · expert"];
-let MODE="clades", LAYOUT="radial";
+let MODE="clades"; const LAYOUT="radial";
 
 // parse indented tree: depth = leading spaces; leaves are "Common name|Latin"
 const LATIN={};
@@ -670,7 +887,7 @@ function parseTree(txt){
   return root;
 }
 const T=parseTree(TREE_TXT);
-const POOLS=[]; { let cur=null; POOL_TXT.split("\n").forEach(l=>{ l=l.trim(); if(!l) return; if(l.startsWith("#")){cur=[];POOLS.push(cur);return;} const [name,sci,leaf,blurb]=l.split("|"); cur.push({name,sci,leaf,blurb}); }); }
+const POOLS=[]; { let cur=null; POOL_TXT.split("\n").forEach(l=>{ l=l.trim(); if(!l) return; if(l.startsWith("#")){cur=[];POOLS.push(cur);return;} const [name,sci,leaf,blurb]=l.split("|"); cur.push({name,sci,leaf,blurb,wiki:WIKI[name]||null}); }); }
 
 // ================= GRAPH =================
 const nodes=[], leaves=[], byName={};
@@ -690,10 +907,10 @@ const rad=n=>n===root?0:Math.pow((MAXH-n.h)/MAXH,.7);
 function layout(){
   if(LAYOUT==="radial"){
     nodes.forEach(n=>{ n.a=-Math.PI/2+((n.lo+n.hi)/2)*2*Math.PI/N; n.r=R*rad(n); n.x=n.r*Math.cos(n.a); n.y=n.r*Math.sin(n.a); n.ux=Math.cos(n.a); n.uy=Math.sin(n.a); });
-    const m=MODE==="clades"?24:110; BBOX={x0:-R-m,y0:-R-m,x1:R+m,y1:R+m};
+    BBOX={x0:-R-110,y0:-R-110,x1:R+110,y1:R+110};
   } else {
     nodes.forEach(n=>{ n.y=((n.lo+n.hi)/2)*ROW; n.x=XW*rad(n); n.ux=1; n.uy=0; });
-    BBOX={x0:-8,y0:-10,x1:XW+(MODE==="clades"?24:190),y1:(N-1)*ROW+10};
+    BBOX={x0:-8,y0:-10,x1:XW+190,y1:(N-1)*ROW+10};
   }
 }
 const view=document.getElementById("view"), ns="http://www.w3.org/2000/svg";
@@ -764,12 +981,11 @@ function toast(m){const t=$("toast");t.textContent=m;t.classList.add("on");clear
 const dn=n=>(MODE==="latin"&&!n.children.length)?LATIN[n.name]:n.name;
 
 function newGame(){ $("sheet").classList.add("hide"); render(); fit();
-  $("card").innerHTML=`<p class="rank" style="font-size:26px;margin:0">Tree Tap</p><p class="sub" style="margin-bottom:0">Five organisms, easy to expert. Tap where each belongs on the tree of life. Score is branches off; lower is better.</p>
-    <p class="opt">Tree shape</p><div class="seg" id="segL"><button data-v="radial"><b>Circular</b><span>Life radiates from the centre; ${N} tips around the rim.</span></button><button data-v="rect"><b>Cladogram</b><span>Classic left-to-right tree; scroll down through the tips.</span></button></div>
+  $("card").innerHTML=`<p class="rank" style="font-size:26px;margin:0">Tree Tap</p><p class="sub" style="margin-bottom:0">Five organisms, easy to expert, from all three domains of life. Tap where each belongs on the circular tree (${N} tips). Score is branches off; lower is better.</p>
     <p class="opt">Labels</p><div class="seg" id="segM"><button data-v="clades"><b>Clade names only</b><span>Tips are unlabelled. Navigate by the named groups and commit blind.</span></button><button data-v="latin"><b>Latin tips</b><span>Tips carry scientific group names only. Clade names vanish in rounds 4–5.</span></button></div>
     <button class="go" id="start" style="margin-top:16px">Start</button>`;
   const seg=(id,cur,set)=>{ const box=$(id); [...box.children].forEach(b=>{ b.classList.toggle("on",b.dataset.v===cur); b.onclick=()=>{ set(b.dataset.v); [...box.children].forEach(x=>x.classList.toggle("on",x===b)); }; }); };
-  seg("segL",LAYOUT,v=>{LAYOUT=v;render();fit();}); seg("segM",MODE,v=>MODE=v);
+  seg("segM",MODE,v=>MODE=v);
   $("overlay").classList.add("on"); $("start").onclick=begin; }
 function begin(){ render(); view.classList.toggle("notips",MODE==="clades"); round=0;hist=[];totalMs=0; orgs=POOLS.map(p=>rand(p));
   $("overlay").classList.remove("on"); $("sheet").classList.remove("hide"); fit(); startRound(); toast("Drag to pan · pinch or scroll to zoom"); }
@@ -780,10 +996,17 @@ function startRound(){
   view.classList.toggle("nolabels",MODE==="latin"&&round>=BLIND_FROM);
   const o=orgs[round];
   $("lvl").textContent=LEVELS[round]+(MODE==="latin"&&round>=BLIND_FROM?" · clade names hidden":"");
-  $("oname").innerHTML=`${o.name}<i>${o.sci}</i>`; $("blurb").textContent=o.blurb;
+  $("oname").innerHTML=`${o.name}<i>${o.sci}</i>`; $("blurb").textContent=o.blurb; loadImage(o);
   $("status").innerHTML=`Tap the branch where <b>${o.name}</b> belongs. A tip is exact; a clade is a safe hedge.`;
   const go=$("go"); go.disabled=true; go.className="go"; go.textContent="Tap a branch to place it"; go.onclick=()=>confirm(false);
   dots(); startTimer();
+}
+let imgSeq=0;
+async function loadImage(o){ const seq=++imgSeq, img=$("img"), ph=$("ph"), cr=$("cr"); img.classList.remove("ok"); img.removeAttribute("src"); cr.classList.remove("on"); ph.style.display=""; ph.textContent=o.name[0];
+  const titles=[o.wiki,o.sci,o.name].filter(Boolean);
+  for(const t of titles){ try{ const r=await fetch("https://en.wikipedia.org/api/rest_v1/page/summary/"+encodeURIComponent(t.replace(/ /g,"_")),{headers:{"Api-User-Agent":"TreeTap/1.0"}}); if(!r.ok) continue; const j=await r.json(); if(seq!==imgSeq) return;
+    const src=(j.thumbnail&&j.thumbnail.source)||(j.originalimage&&j.originalimage.source); if(!src) continue;
+    const big=src.replace(/\/\d+px-/,"/480px-"); img.onload=()=>{ if(seq===imgSeq){ img.classList.add("ok"); ph.style.display="none"; cr.href=j.content_urls?j.content_urls.desktop.page:"#"; cr.classList.add("on"); } }; img.onerror=()=>{ img.src=src; }; img.src=big; return; }catch(e){} }
 }
 function startTimer(){ clearInterval(timerId); tLeft=ROUND_SECONDS; roundStart=Date.now(); tick();
   timerId=setInterval(()=>{ tLeft=ROUND_SECONDS-(Date.now()-roundStart)/1000; if(tLeft<=0){tLeft=0;tick();clearInterval(timerId);timeout();} else tick(); },100); }
@@ -824,7 +1047,7 @@ function results(){
     total<=8?["Field naturalist","Solid instincts, with a slip in the deep branches."]:
     total<=16?["Curious amateur","The big groups are there; the fine structure needs another look."]:
     ["Cambrian explosion","Lots of branches in play. The tree makes more sense every run."];
-  const modeTxt=`${LAYOUT==="radial"?"circular":"cladogram"} · ${MODE==="clades"?"clades only":"latin tips"}`;
+  const modeTxt=MODE==="clades"?"clades only":"latin tips";
   $("card").innerHTML=`<p class="big">${total}<small>branches off · ${fmt(totalMs)}</small></p><p class="rank">${rank}</p><p class="sub">${sub} ${modeTxt}.</p>
     <div class="pips">${hist.map(h=>pip(h.dist)).join("")}</div>
     ${hist.map(h=>`<div class="rr"><div><div class="n">${h.o.name}</div><div class="w">${h.dist===0?`<span>${h.o.leaf}</span>`:`${h.timedOut?"no placement":"you chose "+(LATIN[h.guess]?LATIN[h.guess]+" ("+h.guess+")":h.guess)} · belongs with <span>${h.o.leaf}</span>`}</div></div><div class="d ${h.dist===0?'z':''}">${h.dist}</div></div>`).join("")}
