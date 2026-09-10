@@ -43,6 +43,7 @@
   .lbl.picked{fill:var(--orange-ink);font-weight:600}
   .lbl.correct{fill:var(--green-ink);font-weight:600}
   .clbl{font-size:6px;fill:var(--dk,#5b6f65);opacity:0;stroke-width:2.6px;font-weight:600}
+  .clbl.major[data-lvl="3"]{font-weight:500}
   .clbl.major{font-size:var(--fs,10px);opacity:1;font-weight:700;stroke-width:calc(var(--fs,10px) * .32);fill:var(--dk,#40554b)}
   .clbl.major.l2{display:none} #view.z2 .clbl.major.l2{display:block}
   .wedge{stroke:none;opacity:.07}
@@ -60,6 +61,11 @@
   #view.notips .clbl{opacity:1}
   #stage.locked{cursor:default}
 
+  .hover{position:absolute;transform:translate(-50%,-50%);pointer-events:none;display:none}
+  .hover i{display:block;width:14px;height:14px;border-radius:50%;border:2px solid var(--ink);background:rgba(255,255,255,.7);margin:0 auto}
+  .hover span{position:absolute;left:50%;top:-24px;transform:translateX(-50%);background:var(--paper);font-size:11px;font-weight:600;padding:3px 7px;border-radius:999px;white-space:nowrap;box-shadow:0 1px 6px rgba(18,32,25,.15)}
+  .disc{fill:var(--dc,#ccc);stroke:var(--dc,#ccc);stroke-width:1;vector-effect:non-scaling-stroke;fill-opacity:.06;stroke-opacity:.35}
+  .leafblob{stroke:none;fill:var(--dc,var(--line));opacity:.55}
   .chip{position:absolute;transform:translate(-50%,-130%);background:var(--ink);color:#fff;font-size:12px;font-weight:600;padding:6px 10px;border-radius:999px;pointer-events:none;white-space:nowrap;opacity:0;transition:opacity .15s}
   .chip.on{opacity:1} .chip.green{background:var(--green-ink)}
   .chip::after{content:"";position:absolute;left:50%;bottom:-5px;width:10px;height:10px;background:inherit;transform:translateX(-50%) rotate(45deg);border-radius:2px}
@@ -107,7 +113,10 @@
   .rank{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:22px;margin:10px 0 2px}
   .sub{color:var(--muted);font-size:14px;line-height:1.45;margin:0 0 16px}
   .pips{font-size:22px;letter-spacing:2px;margin-bottom:14px}
-  .rr{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:10px 12px;border-radius:14px;background:var(--bg);margin-bottom:6px}
+  .rr .em{font-size:26px;line-height:1;width:34px;text-align:center}
+  .rr .n small{font-weight:600;color:var(--muted);font-size:12px;margin-left:4px}
+  .rr .d{white-space:nowrap}
+  .rr{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:10px 12px;border-radius:14px;background:var(--bg);margin-bottom:6px}
   .rr .n{font-weight:600;font-size:15px} .rr .w{font-size:12.5px;color:var(--muted);margin-top:2px} .rr .w span{color:var(--ink)}
   .rr .d{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:26px;min-width:2ch;text-align:right}
   .rr .d.z{color:var(--green-ink)}
@@ -128,6 +137,7 @@
   <svg id="svg" aria-label="Tree of life. Drag to pan, pinch or scroll to zoom, tap a branch to place the organism."><g id="view"></g></svg>
   <div class="chip" id="chip"></div>
   <div class="hold" id="hold"></div>
+  <div class="hover" id="hover"><span></span><i></i></div>
 </div>
 <div class="top">
   <div class="pill"><span class="brand">Tree Tap</span><span class="dots" id="dots"></span></div>
@@ -150,7 +160,15 @@
 const TREE_TXT=`Life
  Bacteria
   Aquificae|Aquificota
+  Hydrogenobacter|Hydrogenobacter
+  Thermocrinis (pink streamers)|Thermocrinis
   Thermotogae|Thermotogota
+  Kosmotoga|Kosmotoga
+  Dictyoglomi|Dictyoglomota
+  Caldiserica|Caldisericota
+  Thermodesulfobacteria|Thermodesulfobacteriota
+  Coprothermobacter|Coprothermobacterota
+  Calditrichaeota|Calditrichota
   Deferribacteres|Deferribacterota
   Synergistetes|Synergistota
   Terrabacteria
@@ -169,18 +187,26 @@ const TREE_TXT=`Life
     Chroococcales
      Microcystis (bloom-formers)|Microcystis
      Chroococcidiopsis (desert rock dwellers)|Chroococcidiopsidales
+     Gloeocapsa|Gloeocapsa
+    Calothrix & Rivularia|Rivulariaceae
+    Scytonema (desert crust)|Scytonema
    Deinococcus-Thermus
     Deinococcus|Deinococcales
     Thermus|Thermales
+    Meiothermus|Meiothermus
    Chloroflexi
     Chloroflexus (green non-sulfur)|Chloroflexales
     Dehalococcoides (solvent-breathers)|Dehalococcoidia
+    Roseiflexus|Roseiflexus
+    Ktedonobacter (largest bacterial genome)|Ktedonobacteria
+    Thermomicrobium|Thermomicrobia
    Armatimonadetes|Armatimonadota
    Firmicutes
     Bacillales
      Bacillus
       Bacillus subtilis & hay bacilli|Bacillus subtilis group
       Anthrax & Bacillus cereus|Bacillus cereus group
+      Bt (Bacillus thuringiensis)|Bacillus thuringiensis
      Geobacillus (hot compost)|Geobacillus
      Paenibacillus|Paenibacillaceae
      Listeria|Listeriaceae
@@ -192,10 +218,12 @@ const TREE_TXT=`Life
       Streptococcus pyogenes (strep throat)|Streptococcus pyogenes
       Pneumococcus|Streptococcus pneumoniae
       Mouth streptococci|Streptococcus mutans
+      Group B streptococcus|Streptococcus agalactiae
      Lactococcus (cheese)|Lactococcus
      Enterococcus|Enterococcaceae
      Lactobacilli|Lactobacillaceae
      Leuconostoc (sauerkraut)|Leuconostoc
+     Pediococcus|Pediococcus
     Clostridia
      Clostridium
       Clostridium botulinum|Clostridium botulinum
@@ -203,15 +231,22 @@ const TREE_TXT=`Life
      C. difficile|Clostridioides difficile
      Ruminococcus & gut clostridia|Ruminococcaceae & Lachnospiraceae
      Heliobacteria (photosynthetic Firmicutes)|Heliobacteriaceae
+     Faecalibacterium (gut anti-inflammatory)|Faecalibacterium
+     Desulfotomaculum (spore-forming sulfate reducers)|Desulfotomaculum
     Negativicutes
      Veillonella|Veillonellaceae
+     Megasphaera|Megasphaera
     Erysipelothrix|Erysipelotrichia
     Mollicutes
      Mycoplasmas|Mycoplasma
      Spiroplasma|Spiroplasma
      Phytoplasmas (plant yellows)|Phytoplasma
+     Ureaplasma|Ureaplasma
    Actinobacteria
     Streptomyces|Streptomyces
+    Saccharopolyspora (erythromycin)|Saccharopolyspora
+    Amycolatopsis (vancomycin)|Amycolatopsis
+    Salinispora (marine drug-makers)|Salinispora
     Mycobacteriales
      Mycobacterium
       Tuberculosis bacterium|Mycobacterium tuberculosis
@@ -219,15 +254,19 @@ const TREE_TXT=`Life
       Environmental mycobacteria|Mycobacterium avium complex
      Nocardia & Rhodococcus|Nocardiaceae
      Corynebacteria|Corynebacterium
+     Tsukamurella & Gordonia|Gordoniaceae
     Bifidobacteriales
      Bifidobacteria|Bifidobacterium
      Gardnerella|Gardnerella
     Cutibacterium (acne)|Cutibacterium
     Frankia (root-nodule fixers)|Frankia
     Actinomyces|Actinomyces
+    Tropheryma (Whipple's disease)|Tropheryma
     Micrococcales
      Micrococcus & Kocuria|Micrococcaceae
      Brevibacterium (cheese rind)|Brevibacterium
+     Arthrobacter|Arthrobacter
+     Rothia|Rothia
   Gracilicutes
    Proteobacteria
     Alphaproteobacteria
@@ -238,18 +277,25 @@ const TREE_TXT=`Life
       Brucella|Brucella
       Bartonella (cat-scratch)|Bartonella
       Methylobacterium (pink leaf dwellers)|Methylobacterium
+      Sinorhizobium & Mesorhizobium|Sinorhizobium
+      Rhodopseudomonas|Rhodopseudomonas
+      Ochrobactrum|Ochrobactrum
      Rickettsiales
       Rickettsias|Rickettsia
       Ehrlichia & Anaplasma|Anaplasmataceae
       Wolbachia (insect symbionts)|Wolbachia
+      Neorickettsia|Neorickettsia
      Caulobacter|Caulobacter
      Rhodobacterales
       Rhodobacter (purple non-sulfur)|Rhodobacter
       Roseobacter (marine)|Roseobacter
+      Paracoccus|Paracoccus
      Rhodospirillales
       Rhodospirillum|Rhodospirillum
       Magnetospirillum (magnetotactic)|Magnetospirillum
       Acetobacter (vinegar)|Acetobacter
+      Gluconobacter|Gluconobacter
+      Azospirillum (plant-growth promoters)|Azospirillum
      Pelagibacter (SAR11)|Pelagibacter
      Sphingomonadales
       Sphingomonas|Sphingomonas
@@ -262,9 +308,15 @@ const TREE_TXT=`Life
       Ralstonia|Ralstonia
       Cupriavidus (hydrogen-eaters)|Cupriavidus
       Comamonas & Delftia|Comamonadaceae
+      Achromobacter & Alcaligenes|Alcaligenes
+      Chromobacterium (violet)|Chromobacterium
+      Zoogloea (sludge flocs)|Zoogloea
+      Rhodocyclus|Rhodocyclus
      Nitrosomonadales
       Nitrosomonas (ammonia oxidisers)|Nitrosomonas
       Thiobacillus|Thiobacillus
+      Nitrosospira|Nitrosospira
+      Methylophilus|Methylophilus
     Gammaproteobacteria
      Enterobacterales
       E. coli|Escherichia
@@ -275,11 +327,20 @@ const TREE_TXT=`Life
       Serratia (red slime)|Serratia
       Yersinia (plague)|Yersinia
       Erwinia & Pectobacterium (soft rot)|Erwiniaceae
+      Citrobacter & Enterobacter|Citrobacter
+      Morganella & Providencia|Morganellaceae
+      Pantoea|Pantoea
+      Edwardsiella|Edwardsiella
+      Dickeya|Dickeya
+      Buchnera (aphid symbiont)|Buchnera
+      Sodalis (tsetse symbiont)|Sodalis
      Vibrionales
       Vibrio cholerae|Vibrio cholerae
       Vibrio fischeri (glowing squid symbiont)|Aliivibrio fischeri
       Photobacterium|Photobacterium
+      Vibrio parahaemolyticus & vulnificus|Vibrio parahaemolyticus
      Aeromonas|Aeromonas
+     Plesiomonas|Plesiomonas
      Pasteurellales
       Haemophilus|Haemophilus
       Pasteurella|Pasteurella
@@ -289,6 +350,9 @@ const TREE_TXT=`Life
       Azotobacter|Azotobacter
       Acinetobacter|Acinetobacter
       Moraxella|Moraxella
+      Psychrobacter (cold-lovers)|Psychrobacter
+      Halomonas (salt-tolerant)|Halomonas
+      Marinomonas|Marinomonas
      Legionellales
       Legionella|Legionella
       Coxiella (Q fever)|Coxiella
@@ -297,11 +361,14 @@ const TREE_TXT=`Life
       Thiomargarita (giant sulfur bacteria)|Thiomargarita
       Beggiatoa (sulfur mats)|Beggiatoa
       Thiotrichales vent symbionts|Thiotrichales
+      Thioploca|Thioploca
      Xanthomonadales
       Xanthomonas|Xanthomonas
       Xylella|Xylella
       Stenotrophomonas|Stenotrophomonas
      Chromatium (purple sulfur)|Chromatium
+     Nitrosococcus|Nitrosococcus
+     Cardiobacterium|Cardiobacterium
      Alteromonadales
       Shewanella (metal-breathers)|Shewanella
       Alteromonas & Pseudoalteromonas|Alteromonadaceae
@@ -309,13 +376,20 @@ const TREE_TXT=`Life
     Epsilonproteobacteria
      Helicobacter|Helicobacter
      Campylobacter|Campylobacter
+     Arcobacter|Arcobacter
+     Sulfurimonas (vent sulfur-oxidisers)|Sulfurimonas
+     Nautilia|Nautilia
     Deltaproteobacteria
      Myxobacteria|Myxococcus
      Desulfovibrio (sulfate reducers)|Desulfovibrio
      Geobacter (electric mud)|Geobacter
      Bdellovibrio (bacterial predators)|Bdellovibrio
+     Desulfobacter|Desulfobacter
+     Syntrophobacter|Syntrophobacter
+     Anaeromyxobacter|Anaeromyxobacter
     Zetaproteobacteria (iron-oxidising mats)|Mariprofundus
    Acidobacteria|Acidobacteriota
+   Solibacter|Solibacter
    Nitrospira (nitrite oxidisers)|Nitrospira
    Nitrospinae|Nitrospinota
    FCB group
@@ -326,7 +400,16 @@ const TREE_TXT=`Life
       Porphyromonas (gum disease)|Porphyromonas
      Flavobacteria|Flavobacterium
      Cytophaga|Cytophaga
+     Sphingobacterium|Sphingobacterium
+     Chitinophaga|Chitinophaga
+     Cellulophaga|Cellulophaga
+     Salinibacter (bacterial extreme halophile)|Salinibacter
+     Rhodothermus|Rhodothermus
     Chlorobi (green sulfur)|Chlorobium
+    Chlorobaculum|Chlorobaculum
+    Marinimicrobia|Marinimicrobia
+    Cloacimonetes|Cloacimonadota
+    Latescibacteria|Latescibacterota
     Ignavibacteria|Ignavibacteriota
     Fibrobacters (rumen cellulose digesters)|Fibrobacter
     Gemmatimonadetes|Gemmatimonadota
@@ -335,10 +418,16 @@ const TREE_TXT=`Life
      Planctomyces|Planctomyces
      Gemmata|Gemmata
      Anammox bacteria|Brocadiales
+     Pirellula & Rhodopirellula|Pirellulaceae
+     Isosphaera|Isosphaera
+     Kuenenia|Kuenenia
     Chlamydiae
      Chlamydia trachomatis|Chlamydia
      Parachlamydia (amoeba symbionts)|Parachlamydiaceae
+     Simkania & Waddlia|Simkaniaceae
     Verrucomicrobia (Akkermansia)|Akkermansia
+    Chthoniobacter & Opitutus|Opitutales
+    Victivallis|Victivallis
     Lentisphaerae|Lentisphaerota
    Spirochaetes
     Borrelia (Lyme, relapsing fever)|Borrelia
@@ -346,41 +435,111 @@ const TREE_TXT=`Life
     Leptospira|Leptospira
     Spirochaeta (free-living)|Spirochaeta
     Brachyspira|Brachyspira
+    Sphaerochaeta|Sphaerochaeta
    Fusobacteria|Fusobacterium
+   Leptotrichia|Leptotrichia
    Elusimicrobia (termite gut)|Elusimicrobiota
    CPR ultrasmall bacteria|Patescibacteria
+   Saccharibacteria (TM7)|Saccharibacteria
+   Gracilibacteria|Gracilibacteria
+   Absconditabacteria|Absconditabacteria
+   Parcubacteria|Parcubacteria
+   Microgenomates|Microgenomates
  Archaea
   Euryarchaeota
    Methanogens
-    Methanobacteria (gut & rumen)|Methanobacteria
-    Methanococci (vent methanogens)|Methanococci
-    Methanomicrobia (Methanosarcina)|Methanomicrobia
-    Methanopyri (hottest methanogens)|Methanopyri
-   Anaerobic methane oxidisers (ANME)|ANME archaea
-   Halophiles|Halobacteria
-   Thermococci|Thermococci
-   Thermoplasmata|Thermoplasmata
-   Archaeoglobi (hot sulfate reducers)|Archaeoglobi
+    Methanobacteria (gut & rumen)
+     Methanobrevibacter (gut)|Methanobrevibacter
+     Methanobacterium|Methanobacterium
+     Methanothermobacter (hot digesters)|Methanothermobacter
+    Methanococci (vent methanogens)
+     Methanococcus|Methanococcus
+     Methanocaldococcus (jannaschii)|Methanocaldococcus
+    Methanomicrobia (Methanosarcina)
+     Methanosarcina|Methanosarcina
+     Methanosaeta (acetate-eaters)|Methanothrix
+     Methanospirillum|Methanospirillum
+     Methanoculleus|Methanoculleus
+    Methanopyri (hottest methanogens)|Methanopyrus
+    Methanomassiliicoccales (gut, seventh order)|Methanomassiliicoccales
+    Methanonatronarchaeia (soda lakes)|Methanonatronarchaeia
+   Anaerobic methane oxidisers (ANME)
+    ANME-1|ANME-1
+    ANME-2 (Methanoperedens)|Methanoperedens
+   Halophiles
+    Halobacterium|Halobacterium
+    Haloferax|Haloferax
+    Haloquadratum (square cells)|Haloquadratum
+    Halococcus|Halococcus
+    Haloarcula|Haloarcula
+    Natronomonas (soda-lake halophiles)|Natronomonas
+   Thermococci
+    Thermococcus|Thermococcus
+    Pyrococcus|Pyrococcus
+   Thermoplasmata
+    Thermoplasma|Thermoplasma
+    Ferroplasma|Ferroplasma
+    Picrophilus (pH 0)|Picrophilus
+    Marine Group II archaea|Poseidoniales
+   Archaeoglobi (hot sulfate reducers)
+    Archaeoglobus|Archaeoglobus
+    Ferroglobus|Ferroglobus
+   Hadesarchaea (deep subsurface)|Hadesarchaea
+   Methanofastidiosa|Methanofastidiosa
   DPANN archaea
    Nanoarchaea|Nanoarchaeota
+   Nanohaloarchaea|Nanohaloarchaeota
    Woesearchaea|Woesearchaeota
    Micrarchaea|Micrarchaeota
+   Aenigmarchaea|Aenigmarchaeota
+   Diapherotrites|Diapherotrites
+   Pacearchaea|Pacearchaeota
+   Parvarchaea|Parvarchaeota
+   Huberarchaea|Huberarchaeota
   TACK archaea
    Crenarchaea
-    Sulfolobales|Sulfolobales
-    Thermoproteales (Pyrobaculum)|Thermoproteales
-    Desulfurococcales (Pyrolobus)|Desulfurococcales
+    Sulfolobales
+     Sulfolobus|Sulfolobus
+     Acidianus|Acidianus
+     Metallosphaera (ore-leachers)|Metallosphaera
+    Thermoproteales (Pyrobaculum)
+     Pyrobaculum|Pyrobaculum
+     Thermoproteus|Thermoproteus
+     Thermofilum|Thermofilum
+    Desulfurococcales (Pyrolobus)
+     Pyrolobus|Pyrolobus
+     Ignicoccus (host of Nanoarchaeum)|Ignicoccus
+     Desulfurococcus|Desulfurococcus
+     Aeropyrum|Aeropyrum
+     Staphylothermus|Staphylothermus
+    Fervidicoccales|Fervidicoccales
    Thaumarchaea
-    Marine ammonia-oxidisers|Nitrosopumilales
-    Soil ammonia-oxidisers|Nitrososphaerales
+    Marine ammonia-oxidisers|Nitrosopumilus
+    Soil ammonia-oxidisers|Nitrososphaera
+    Nitrosocaldus (hot-spring ammonia-oxidisers)|Nitrosocaldus
+    Cenarchaeum (sponge symbiont)|Cenarchaeum
    Korarchaea|Korarchaeota
    Bathyarchaea|Bathyarchaeota
    Aigarchaea|Aigarchaeota
+   Geoarchaea|Geoarchaeota
+   Verstraetearchaea (methanogenic TACK)|Verstraetearchaeota
+   Brockarchaea|Brockarchaeota
+   Marsarchaea|Marsarchaeota
+   Nezhaarchaea|Nezhaarchaeota
   Asgard archaea
    Lokiarchaea|Lokiarchaeota
    Thorarchaea|Thorarchaeota
    Odinarchaea|Odinarchaeota
    Heimdallarchaea|Heimdallarchaeota
+   Helarchaea|Helarchaeota
+   Gerdarchaea|Gerdarchaeota
+   Wukongarchaea|Wukongarchaeota
+   Hodarchaea|Hodarchaeota
+   Kariarchaea|Kariarchaeota
+   Baldrarchaea|Baldrarchaeota
+   Sifarchaea|Sifarchaeota
+   Hermodarchaea|Hermodarchaeota
+   Jordarchaea|Jordarchaeota
  Eukaryotes
   Excavates
    Euglenozoans
@@ -1853,7 +2012,7 @@ Acne bacterium|Cutibacterium acnes|Cutibacterium (acne)|Lives in hair follicles 
 Legionella|Legionella pneumophila|Legionella|Lurks in amoebae and air-conditioning water; causes Legionnaires' disease.
 Syphilis spirochaete|Treponema pallidum|Treponema (syphilis)|A corkscrew so thin it is invisible under an ordinary microscope.
 Microcystis|Microcystis aeruginosa|Microcystis (bloom-formers)|Forms toxic green scums on warm lakes.
-Salt-lake archaeon|Haloferax volcanii|Halophiles|Square-ish pink cells from the Dead Sea. No nucleus, no peptidoglycan.
+Salt-lake archaeon|Haloferax volcanii|Haloferax|Square-ish pink cells from the Dead Sea. No nucleus, no peptidoglycan.
 Bonobo|Pan paniscus|Chimpanzees & bonobos|Our other closest relative; makes peace, not war.
 Mandrill|Mandrillus sphinx|Baboons & mandrills|The most colourful mammal face.
 Vervet monkey|Chlorocebus pygerythrus|Guenons & vervets|A grey monkey with distinct alarm calls for each predator.
@@ -2252,8 +2411,8 @@ Leptospira|Leptospira interrogans|Leptospira|A hooked corkscrew spread in rat ur
 Fusobacterium|Fusobacterium nucleatum|Fusobacteria|A spindle-shaped mouth bacterium behind gum disease.
 Corynebacterium|Corynebacterium diphtheriae|Corynebacteria|Club-shaped rods; the cause of diphtheria.
 Actinomyces|Actinomyces israelii|Actinomyces|Branching filaments that form 'sulfur granules' in jaw abscesses.
-Methanococcus|Methanococcus jannaschii|Methanococci (vent methanogens)|The first archaeon to have its genome sequenced; from a Pacific vent.
-Pyrobaculum|Pyrobaculum aerophilum|Thermoproteales (Pyrobaculum)|A rod that grows at 100 °C and can breathe nitrate.
+Methanococcus|Methanococcus jannaschii|Methanococcus|The first archaeon to have its genome sequenced; from a Pacific vent.
+Pyrobaculum|Pyrobaculum aerophilum|Pyrobaculum|A rod that grows at 100 °C and can breathe nitrate.
 Thorarchaeon|Thorarchaeota|Thorarchaea|An Asgard archaeon from estuary mud.
 Leishmania|Leishmania|Leishmania|A sandfly-borne parasite that causes skin ulcers.
 Tetrahymena|Tetrahymena thermophila|Tetrahymena|A pear-shaped ciliate that revealed telomeres and ribozymes.
@@ -2538,6 +2697,111 @@ Brachyspira|Brachyspira|Brachyspira|A spirochaete of pig and human guts.
 Deferribacter|Deferribacter|Deferribacteres|Breathes iron in hot vents.
 Synergistes|Synergistes|Synergistetes|An amino-acid fermenter of guts and sludge.
 Gemmatimonas|Gemmatimonas|Gemmatimonadetes|A common soil phylum that photosynthesises without oxygen.
+Hydrogenobacter|Hydrogenobacter|Hydrogenobacter|A hydrogen-eating hot-spring bacterium.
+Thermocrinis|Thermocrinis|Thermocrinis (pink streamers)|The pink streamers of Yellowstone outflow channels.
+Kosmotoga|Kosmotoga|Kosmotoga|A toga-wearing anaerobe from oil reservoirs.
+Dictyoglomi|Dictyoglomota|Dictyoglomi|Net-forming hot-spring rods with an amylase used in bread.
+Caldiserica|Caldisericota|Caldiserica|A hot-spring phylum known from one isolate.
+Coprothermobacter|Coprothermobacterota|Coprothermobacter|Hot protein-degraders from compost and digesters.
+Calditrichaeota|Calditrichota|Calditrichaeota|A vent lineage that eats detritus.
+Gloeocapsa|Gloeocapsa|Gloeocapsa|Colonies of cells in layered jelly sheaths on damp rocks.
+Calothrix|Rivulariaceae|Calothrix & Rivularia|Tapering filaments with a basal heterocyst.
+Scytonema|Scytonema|Scytonema (desert crust)|Builds biological soil crusts and makes its own sunscreen.
+Meiothermus|Meiothermus|Meiothermus|A moderate thermophile, cousin of Thermus.
+Roseiflexus|Roseiflexus|Roseiflexus|A red filament in hot-spring mats that photosynthesises without oxygen.
+Thermomicrobium|Thermomicrobia|Thermomicrobium|A pleomorphic hot-spring rod with an odd cell wall.
+Bt|Bacillus thuringiensis|Bt (Bacillus thuringiensis)|Makes crystal toxins that kill caterpillars; used in organic farming.
+Group B streptococcus|Streptococcus agalactiae|Group B streptococcus|A neonatal pathogen screened for in pregnancy.
+Pediococcus|Pediococcus|Pediococcus|Tetrad-forming cocci that sour beer and sausage.
+Faecalibacterium|Faecalibacterium|Faecalibacterium (gut anti-inflammatory)|One of the most abundant gut bacteria; makes butyrate.
+Desulfotomaculum|Desulfotomaculum|Desulfotomaculum (spore-forming sulfate reducers)|Spore-forming sulfate reducers that sour oil wells.
+Megasphaera|Megasphaera|Megasphaera|A rumen coccus that eats lactate.
+Ureaplasma|Ureaplasma|Ureaplasma|A wall-less genital bacterium that splits urea.
+Saccharopolyspora|Saccharopolyspora|Saccharopolyspora (erythromycin)|The source of erythromycin.
+Amycolatopsis|Amycolatopsis|Amycolatopsis (vancomycin)|The source of vancomycin and rifamycin.
+Salinispora|Salinispora|Salinispora (marine drug-makers)|A marine actinomycete that needs salt and makes anticancer drugs.
+Tsukamurella|Gordoniaceae|Tsukamurella & Gordonia|Foam-forming rods in sewage plants.
+Tropheryma|Tropheryma|Tropheryma (Whipple's disease)|A rare gut pathogen that took a century to culture.
+Arthrobacter|Arthrobacter|Arthrobacter|A soil rod that changes shape with age and survives drought.
+Rothia|Rothia|Rothia|A mouth coccus that helps you taste nitrate.
+Sinorhizobium|Sinorhizobium|Sinorhizobium & Mesorhizobium|Nodule symbionts of alfalfa and chickpea.
+Rhodopseudomonas|Rhodopseudomonas|Rhodopseudomonas|A purple bacterium that can photosynthesise, respire, or fix nitrogen.
+Ochrobactrum|Ochrobactrum|Ochrobactrum|A soil relative of Brucella.
+Neorickettsia|Neorickettsia|Neorickettsia|Lives inside flukes; causes Potomac horse fever.
+Paracoccus|Paracoccus|Paracoccus|A denitrifier used to model mitochondria.
+Gluconobacter|Gluconobacter|Gluconobacter|Oxidises sugars; makes vitamin C precursors.
+Azospirillum|Azospirillum|Azospirillum (plant-growth promoters)|A root-colonising nitrogen fixer used as biofertiliser.
+Achromobacter|Alcaligenes|Achromobacter & Alcaligenes|Ubiquitous soil and water rods.
+Chromobacterium|Chromobacterium|Chromobacterium (violet)|Makes the purple pigment violacein.
+Zoogloea|Zoogloea|Zoogloea (sludge flocs)|Glues activated sludge into flocs.
+Rhodocyclus|Rhodocyclus|Rhodocyclus|A purple non-sulfur bacterium of wastewater.
+Nitrosospira|Nitrosospira|Nitrosospira|The dominant soil ammonia oxidiser.
+Methylophilus|Methylophilus|Methylophilus|Eats methanol; once grown as animal feed.
+Citrobacter|Citrobacter|Citrobacter & Enterobacter|Gut rods behind hospital infections.
+Morganella|Morganellaceae|Morganella & Providencia|Urinary and wound infection rods.
+Pantoea|Pantoea|Pantoea|A yellow plant-associated rod.
+Edwardsiella|Edwardsiella|Edwardsiella|A fish pathogen of catfish farms.
+Dickeya|Dickeya|Dickeya|Causes blackleg of potatoes.
+Buchnera|Buchnera|Buchnera (aphid symbiont)|Lives inside aphid cells and makes their amino acids; tiny genome.
+Sodalis|Sodalis|Sodalis (tsetse symbiont)|A gut symbiont of tsetse flies.
+Vibrio parahaemolyticus|Vibrio parahaemolyticus|Vibrio parahaemolyticus & vulnificus|Seafood poisoning and deadly wound infections.
+Plesiomonas|Plesiomonas|Plesiomonas|A freshwater rod causing diarrhoea.
+Psychrobacter|Psychrobacter|Psychrobacter (cold-lovers)|Grows in permafrost and refrigerated meat.
+Halomonas|Halomonas|Halomonas (salt-tolerant)|Thrives in brine and makes bioplastic.
+Marinomonas|Marinomonas|Marinomonas|A marine rod on seagrass.
+Thioploca|Thioploca|Thioploca|Giant sulfur filaments off Chile, in shared sheaths.
+Nitrosococcus|Nitrosococcus|Nitrosococcus|A marine ammonia oxidiser with stacked membranes.
+Cardiobacterium|Cardiobacterium|Cardiobacterium|A mouth rod that can infect heart valves.
+Arcobacter|Arcobacter|Arcobacter|A curved rod from shellfish and sewage.
+Sulfurimonas|Sulfurimonas|Sulfurimonas (vent sulfur-oxidisers)|Dominates hydrothermal vent plumes.
+Nautilia|Nautilia|Nautilia|A vent microbe that eats hydrogen and sulfur.
+Desulfobacter|Desulfobacter|Desulfobacter|Oxidises acetate with sulfate in marine mud.
+Syntrophobacter|Syntrophobacter|Syntrophobacter|Lives only in partnership with methanogens.
+Anaeromyxobacter|Anaeromyxobacter|Anaeromyxobacter|A metal-reducing myxobacterium.
+Solibacter|Solibacter|Solibacter|A common soil acidobacterium with a huge genome.
+Sphingobacterium|Sphingobacterium|Sphingobacterium|A soil rod rich in sphingolipids.
+Chitinophaga|Chitinophaga|Chitinophaga|Digests chitin in soil.
+Cellulophaga|Cellulophaga|Cellulophaga|A marine seaweed-degrader.
+Rhodothermus|Rhodothermus|Rhodothermus|A hot-spring bacterium with heat-stable enzymes.
+Chlorobaculum|Chlorobaculum|Chlorobaculum|The model green sulfur bacterium.
+Marinimicrobia|Marinimicrobia|Marinimicrobia|An abundant deep-sea lineage known from genomes.
+Cloacimonetes|Cloacimonadota|Cloacimonetes|A sludge lineage known from genomes.
+Pirellula|Pirellulaceae|Pirellula & Rhodopirellula|Stalked marine planctomycetes that bud.
+Isosphaera|Isosphaera|Isosphaera|A gliding, phototactic planctomycete.
+Kuenenia|Kuenenia|Kuenenia|An anammox bacterium used in wastewater treatment.
+Simkania|Simkaniaceae|Simkania & Waddlia|Chlamydia-like organisms of amoebae and cattle.
+Chthoniobacter|Opitutales|Chthoniobacter & Opitutus|Common soil verrucomicrobia.
+Victivallis|Victivallis|Victivallis|A gut anaerobe that eats cellobiose.
+Sphaerochaeta|Sphaerochaeta|Sphaerochaeta|A round spirochaete that does not spiral.
+Leptotrichia|Leptotrichia|Leptotrichia|A mouth filament with pointed ends.
+Microgenomates|Microgenomates|Microgenomates|Ultrasmall bacteria with minimal genomes.
+Methanobacterium|Methanobacterium|Methanobacterium|A rod-shaped methanogen of sewage digesters.
+Methanothermobacter|Methanothermobacter|Methanothermobacter (hot digesters)|A 65 °C methanogen of thermophilic digesters.
+Methanocaldococcus|Methanocaldococcus|Methanocaldococcus (jannaschii)|The first archaeon genome; from a Pacific vent.
+Methanosaeta|Methanothrix|Methanosaeta (acetate-eaters)|Makes most of the methane in rice paddies from acetate.
+Methanospirillum|Methanospirillum|Methanospirillum|A spiral methanogen in a protein sheath.
+Methanoculleus|Methanoculleus|Methanoculleus|A common digester methanogen.
+Methanomassiliicoccales|Methanomassiliicoccales|Methanomassiliicoccales (gut, seventh order)|A gut methanogen order discovered in 2012.
+Methanonatronarchaeia|Methanonatronarchaeia|Methanonatronarchaeia (soda lakes)|Methanogens that need salt and high pH.
+Haloquadratum|Haloquadratum|Haloquadratum (square cells)|Flat square cells like postage stamps in salt ponds.
+Haloarcula|Haloarcula|Haloarcula|A triangular halophile.
+Natronomonas|Natronomonas|Natronomonas (soda-lake halophiles)|Lives at pH 11 in African soda lakes.
+Thermococcus|Thermococcus|Thermococcus|A vent archaeon that grows at 90 °C.
+Picrophilus|Picrophilus|Picrophilus (pH 0)|Grows at pH 0, the most acid-loving organism known.
+Ferroglobus|Ferroglobus|Ferroglobus|Oxidises iron at 85 °C.
+Methanofastidiosa|Methanofastidiosa|Methanofastidiosa|Methanogens that need methylated thiols.
+Diapherotrites|Diapherotrites|Diapherotrites|A DPANN lineage from groundwater.
+Acidianus|Acidianus|Acidianus|Oxidises or reduces sulfur in acid hot springs.
+Metallosphaera|Metallosphaera|Metallosphaera (ore-leachers)|Used to leach copper from ore.
+Thermoproteus|Thermoproteus|Thermoproteus|A rigid rod that grows at 90 °C on sulfur.
+Thermofilum|Thermofilum|Thermofilum|A very thin hot-spring filament.
+Ignicoccus|Ignicoccus|Ignicoccus (host of Nanoarchaeum)|Carries Nanoarchaeum on its surface; has a periplasm-like outer membrane.
+Desulfurococcus|Desulfurococcus|Desulfurococcus|A sulfur-respiring vent coccus.
+Aeropyrum|Aeropyrum|Aeropyrum|An aerobic vent archaeon at 95 °C.
+Staphylothermus|Staphylothermus|Staphylothermus|Clusters of cocci at deep vents.
+Fervidicoccales|Fervidicoccales|Fervidicoccales|Hot-spring cocci from Kamchatka.
+Nitrosocaldus|Nitrosocaldus|Nitrosocaldus (hot-spring ammonia-oxidisers)|Oxidises ammonia at 72 °C.
+Cenarchaeum|Cenarchaeum|Cenarchaeum (sponge symbiont)|Lives in a Californian sponge.
 # round 4
 Platypus|Ornithorhynchus anatinus|Platypus|Fur and milk, but it lays eggs. Venomous spur on the hind leg.
 Giant kelp|Macrocystis pyrifera|Kelps|Grows half a metre a day in undersea forests.
@@ -2617,8 +2881,8 @@ Pseudomonas|Pseudomonas aeruginosa|Pseudomonas aeruginosa|A rod with a polar tai
 Lyme spirochaete|Borrelia burgdorferi|Borrelia (Lyme, relapsing fever)|A corkscrew-shaped cell spread by ticks.
 Chlamydia|Chlamydia trachomatis|Chlamydia trachomatis|Lives only inside other cells; among the smallest bacteria.
 Rhizobium|Rhizobium leguminosarum|Rhizobium|Lives in root nodules and turns air into fertiliser.
-Halobacterium|Halobacterium salinarum|Halophiles|Turns salt lakes pink with a light-harvesting purple pigment. No nucleus.
-Methanosarcina|Methanosarcina barkeri|Methanomicrobia (Methanosarcina)|Makes methane in swamps and cattle. No nucleus, no bacterial cell wall.
+Halobacterium|Halobacterium salinarum|Halobacterium|Turns salt lakes pink with a light-harvesting purple pigment. No nucleus.
+Methanosarcina|Methanosarcina barkeri|Methanosarcina|Makes methane in swamps and cattle. No nucleus, no bacterial cell wall.
 Tuberculosis bacterium|Mycobacterium tuberculosis|Tuberculosis bacterium|A waxy-walled rod that hides inside immune cells.
 Aquifex|Aquifex aeolicus|Aquificae|Grows at 95 °C and breathes hydrogen; near the root of bacteria.
 Thermus|Thermus aquaticus|Thermus|A Yellowstone hot-spring microbe that gave us the PCR enzyme.
@@ -2626,8 +2890,8 @@ Myxobacterium|Myxococcus xanthus|Myxobacteria|Bacteria that swarm and build frui
 Planctomycete|Gemmata obscuriglobus|Planctomyces|A bacterium with a membrane around its DNA.
 Whooping cough bacterium|Bordetella pertussis|Bordetella|A small rod that clings to the windpipe.
 Chloroflexus|Chloroflexus aurantiacus|Chloroflexus (green non-sulfur)|A gliding, photosynthetic filament in hot-spring mats.
-Pyrococcus|Pyrococcus furiosus|Thermococci|Grows best at 100 °C on the sea floor.
-Thermoplasma|Thermoplasma acidophilum|Thermoplasmata|Lives in hot acid coal waste with no cell wall.
+Pyrococcus|Pyrococcus furiosus|Pyrococcus|Grows best at 100 °C on the sea floor.
+Thermoplasma|Thermoplasma acidophilum|Thermoplasma|Lives in hot acid coal waste with no cell wall.
 Ammonia-oxidising archaeon|Nitrosopumilus maritimus|Marine ammonia-oxidisers|One of the most abundant cells in the ocean.
 Korarchaeon|Korarchaeum cryptofilum|Korarchaea|A thread-like hot-spring archaeon known mostly from DNA.
 Heimdallarchaeon|Heimdallarchaeota|Heimdallarchaea|The archaeal lineage closest to eukaryotes.
@@ -2699,8 +2963,8 @@ Acidobacterium|Acidobacteria|Acidobacteria|Among the most common soil bacteria, 
 Nitrospira|Nitrospira|Nitrospira (nitrite oxidisers)|Finishes the nitrification job that Nitrosomonas starts.
 Fibrobacter|Fibrobacter succinogenes|Fibrobacters (rumen cellulose digesters)|Digests grass cellulose in a cow's rumen.
 Relapsing fever spirochaete|Borrelia recurrentis|Borrelia (Lyme, relapsing fever)|Changes its coat to dodge antibodies, again and again.
-Archaeoglobus|Archaeoglobus fulgidus|Archaeoglobi (hot sulfate reducers)|Breathes sulfate at 83 °C in oil wells.
-Pyrolobus|Pyrolobus fumarii|Desulfurococcales (Pyrolobus)|Grows at 113 °C inside a black smoker chimney.
+Archaeoglobus|Archaeoglobus fulgidus|Archaeoglobus|Breathes sulfate at 83 °C in oil wells.
+Pyrolobus|Pyrolobus fumarii|Pyrolobus|Grows at 113 °C inside a black smoker chimney.
 Woesearchaeon|Woesearchaeota|Woesearchaea|A tiny DPANN archaeon living off other cells.
 Bathyarchaeon|Bathyarchaeota|Bathyarchaea|One of the most abundant archaea in seafloor sediment.
 Odinarchaeon|Odinarchaeota|Odinarchaea|An Asgard archaeon from hot springs with eukaryote-like genes.
@@ -2832,6 +3096,36 @@ Lentisphaera|Lentisphaera|Lentisphaerae|A marine slime-producing bacterium.
 Elusimicrobium|Elusimicrobium|Elusimicrobia (termite gut)|A termite-gut lineage long known only from DNA.
 Armatimonas|Armatimonas|Armatimonadetes|A soil phylum first cultured in 2011.
 Planctomyces|Planctomyces|Planctomyces|Buds on a stalk and lacks peptidoglycan in the classic sense.
+Thermodesulfobacteria|Thermodesulfobacteriota|Thermodesulfobacteria|Hot sulfate reducers of vents.
+Ktedonobacter|Ktedonobacteria|Ktedonobacter (largest bacterial genome)|A soil filament with a 13-million-base genome.
+Salinibacter|Salinibacter|Salinibacter (bacterial extreme halophile)|A red bacterium that lives with archaea in saltern crystallisers.
+Latescibacteria|Latescibacterota|Latescibacteria|A rare-biosphere phylum from sediments.
+Saccharibacteria|Saccharibacteria|Saccharibacteria (TM7)|A tiny mouth parasite of other bacteria.
+Gracilibacteria|Gracilibacteria|Gracilibacteria|CPR bacteria with a rewritten genetic code.
+Absconditabacteria|Absconditabacteria|Absconditabacteria|Ultrasmall groundwater bacteria.
+Parcubacteria|Parcubacteria|Parcubacteria|The largest CPR group; symbionts of other cells.
+ANME-1|ANME-1|ANME-1|Eats methane in cold seeps with sulfate-reducing partners.
+Marine Group II archaea|Poseidoniales|Marine Group II archaea|The most abundant archaea in surface seawater.
+Hadesarchaea|Hadesarchaea|Hadesarchaea (deep subsurface)|Lives kilometres underground, known from genomes.
+Nanohaloarchaea|Nanohaloarchaeota|Nanohaloarchaea|Tiny salt-pond parasites of halophiles.
+Aenigmarchaea|Aenigmarchaeota|Aenigmarchaea|Ultrasmall archaea known only from genomes.
+Pacearchaea|Pacearchaeota|Pacearchaea|Ultrasmall archaea with tiny genomes.
+Parvarchaea|Parvarchaeota|Parvarchaea|Acid-mine ultrasmall archaea.
+Huberarchaea|Huberarchaeota|Huberarchaea|DPANN archaea from a mine.
+Geoarchaea|Geoarchaeota|Geoarchaea|Hot-spring archaea from Yellowstone.
+Verstraetearchaea|Verstraetearchaeota|Verstraetearchaea (methanogenic TACK)|Methanogens outside the Euryarchaeota.
+Brockarchaea|Brockarchaeota|Brockarchaea|Hot-spring archaea named after Thomas Brock.
+Marsarchaea|Marsarchaeota|Marsarchaea|Hot-spring archaea with a Mars-like name.
+Nezhaarchaea|Nezhaarchaeota|Nezhaarchaea|A hot-spring lineage named after a Chinese deity.
+Helarchaea|Helarchaeota|Helarchaea|Asgard archaea from deep sediments that may eat hydrocarbons.
+Gerdarchaea|Gerdarchaeota|Gerdarchaea|Asgard archaea from estuaries.
+Wukongarchaea|Wukongarchaeota|Wukongarchaea|Asgard archaea named after the Monkey King.
+Hodarchaea|Hodarchaeota|Hodarchaea|Asgard archaea close to Heimdall.
+Kariarchaea|Kariarchaeota|Kariarchaea|Asgard archaea from marine sediment.
+Baldrarchaea|Baldrarchaeota|Baldrarchaea|Asgard archaea from freshwater sediment.
+Sifarchaea|Sifarchaeota|Sifarchaea|Asgard archaea with actin-like proteins.
+Hermodarchaea|Hermodarchaeota|Hermodarchaea|Asgard archaea that may degrade alkanes.
+Jordarchaea|Jordarchaeota|Jordarchaea|Asgard archaea from hot springs.
 # round 5
 Tardigrade|Hypsibius exemplaris|Tardigrades|Eight stubby legs, a moulting cuticle, survives vacuum.
 Coelacanth|Latimeria chalumnae|Coelacanths|Fleshy, limb-like fins. Thought extinct until 1938.
@@ -2840,7 +3134,7 @@ Black truffle|Tuber melanosporum|Truffles|Spores form in sacs, not on gills, and
 Echidna|Tachyglossus aculeatus|Echidnas|Spiny, ant-eating, warm-blooded, hatched from a soft egg.
 Hagfish|Myxine glutinosa|Hagfish|Jawless, nearly blind, fills a bucket with slime in seconds.
 Diatom|Bacillariophyceae|Pennate diatoms|A single photosynthetic cell in a glass shell.
-Gut methanogen|Methanobrevibacter smithii|Methanobacteria (gut & rumen)|Makes methane in your gut. No nucleus, but no bacterial cell wall either.
+Gut methanogen|Methanobrevibacter smithii|Methanobrevibacter (gut)|Makes methane in your gut. No nucleus, but no bacterial cell wall either.
 Tuatara|Sphenodon punctatus|Tuatara|Lizard-like, with a third eye. Not a lizard.
 Toxoplasma|Toxoplasma gondii|Toxoplasma & coccidia|A single-celled parasite that breeds in cats and infects a third of humans.
 Spirulina|Arthrospira platensis|Spirulina (Arthrospira)|Photosynthetic, sold as a powder, no nucleus.
@@ -2864,7 +3158,7 @@ Welwitschia|Welwitschia mirabilis|Welwitschia|Two leaves that grow for a thousan
 Stonewort|Chara|Stoneworts|A green alga with a body plan closest to land plants.
 Lokiarchaeon|Lokiarchaeota|Lokiarchaea|A deep-sea microbe with no nucleus, but genes that look eukaryotic.
 Chytrid fungus|Batrachochytrium dendrobatidis|Chytrids|A fungus with swimming spores. Devastates frogs.
-Sulfolobus|Sulfolobus acidocaldarius|Sulfolobales|Thrives in boiling acid hot springs. No nucleus.
+Sulfolobus|Sulfolobus acidocaldarius|Sulfolobus|Thrives in boiling acid hot springs. No nucleus.
 Moss animal|Bryozoa|Bryozoans|A colony of tiny tentacled filter feeders that looks like moss on a rock.
 Colugo|Cynocephalus volans|Colugos|A gliding mammal with a full-body membrane. Not a lemur, not a bat.
 Tenrec|Tenrecidae|Tenrecs|Looks like a hedgehog, lives in Madagascar, related to elephants.
@@ -2914,8 +3208,8 @@ Riftia|Riftia pachyptila|Deep-sea tube worms|No mouth, no gut; fed by bacteria a
 Loki|Candidatus Prometheoarchaeum|Lokiarchaea|A tentacled deep-sea microbe closest to the ancestor of all eukaryotes.
 Nitrososphaera|Nitrososphaera viennensis|Soil ammonia-oxidisers|A soil archaeon that oxidises ammonia.
 Methanopyrus|Methanopyrus kandleri|Methanopyri (hottest methanogens)|Makes methane at 122 °C, the hottest life known.
-Ferroplasma|Ferroplasma acidiphilum|Thermoplasmata|Lives in pH 0 mine drainage with no cell wall.
-Halococcus|Halococcus|Halophiles|Round pink cells in salt pans.
+Ferroplasma|Ferroplasma acidiphilum|Ferroplasma|Lives in pH 0 mine drainage with no cell wall.
+Halococcus|Halococcus|Halococcus|Round pink cells in salt pans.
 Heimdall|Heimdallarchaeota|Heimdallarchaea|A sister to eukaryotes found in marine sediment.
 Vaucheria|Vaucheria|Yellow-green algae|A green felt of tubes; a stramenopile, not a plant.
 Reclinomonas|Reclinomonas americana|Jakobids|A tiny flagellate with a very bacteria-like mitochondrial genome.
@@ -2956,7 +3250,7 @@ Weaver|Ploceus cucullatus|Weavers|Knots grass into hanging basket nests.
 Tanager|Tangara|Tanagers|A jewel-coloured songbird of the Neotropics.
 Babbler|Turdoides|Babblers & laughingthrushes|A gregarious, chattering bird that raises young cooperatively.
 Gemmata|Gemmata obscuriglobus|Gemmata|A budding bacterium with DNA wrapped in membrane.
-ANME archaeon|Candidatus Methanoperedens|Anaerobic methane oxidisers (ANME)|Runs methane production in reverse, eating methane in seafloor mud.
+ANME archaeon|Candidatus Methanoperedens|ANME-2 (Methanoperedens)|Runs methane production in reverse, eating methane in seafloor mud.
 Micrarchaeon|Micrarchaeota|Micrarchaea|An ultrasmall parasitic archaeon from acid mine drainage.
 Aigarchaeon|Caldiarchaeum subterraneum|Aigarchaea|A hot-spring archaeon with a eukaryote-like ubiquitin system.
 CPR bacterium|Candidatus Saccharibacteria|CPR ultrasmall bacteria|Ultra-small bacteria with no ability to make their own amino acids.
@@ -3024,18 +3318,18 @@ Ignavibacterium album|Ignavibacterium album|Ignavibacteria|A non-photosynthetic 
 const WIKI={"Dog": "Dog", "House cat": "Cat", "Honeybee": "Western honey bee", "Common frog": "Common frog", "Chicken": "Red junglefowl", "Button mushroom": "Agaricus bisporus", "Human": "Human", "Monarch butterfly": "Monarch butterfly", "Brown rat": "Brown rat", "Ladybird": "Coccinellidae", "Atlantic salmon": "Atlantic salmon", "Giant sequoia": "Sequoiadendron giganteum", "Garden strawberry": "Strawberry", "Grey squirrel": "Eastern gray squirrel", "Mallard duck": "Mallard", "Crow": "Carrion crow", "Goldfish": "Goldfish", "Giraffe": "Northern giraffe", "Green sea urchin": "Strongylocentrotus", "Garden pea": "Pea", "Zebra": "Plains zebra", "Robin": "American robin", "Oak tree": "Quercus robur", "Lemon": "Lemon", "Bottlenose dolphin": "Common bottlenose dolphin", "Blue whale": "Blue whale", "Pigeon": "Rock dove", "Lion": "Lion", "Cabbage white butterfly": "Pieris rapae", "Grasshopper": "Caelifera", "Apple tree": "Apple", "Swan": "Mute swan", "Grey wolf": "Wolf", "Potato": "Potato", "Red kangaroo": "Red kangaroo", "Common octopus": "Common octopus", "American lobster": "American lobster", "Tarantula": "Tarantula", "Great white shark": "Great white shark", "Earthworm": "Lumbricus terrestris", "Moon jellyfish": "Aurelia aurita", "Green sea turtle": "Green sea turtle", "Emperor penguin": "Emperor penguin", "Killer whale": "Orca", "Bamboo": "Bamboo", "African elephant": "African bush elephant", "Rattlesnake": "Crotalus", "Sunflower": "Common sunflower", "Fruit bat": "Pteropus", "Grizzly bear": "Brown bear", "Cuttlefish": "Common cuttlefish", "Bald eagle": "Bald eagle", "Barn owl": "Western barn owl", "Red fox": "Red fox", "Meerkat": "Meerkat", "Beaver": "Beaver", "Sea otter": "Sea otter", "Capybara": "Capybara", "Ring-tailed lemur": "Ring-tailed lemur", "Baboon": "Baboon", "Hedgehog": "European hedgehog", "Opossum": "Opossum", "Tasmanian devil": "Tasmanian devil", "Armadillo": "Nine-banded armadillo", "Giant anteater": "Giant anteater", "Dromedary camel": "Dromedary", "Red deer": "Red deer", "Wild boar": "Wild boar", "Bison": "American bison", "Tapir": "Tapir", "Spotted hyena": "Spotted hyena", "Gecko": "Gecko", "Reticulated python": "Reticulated python", "King cobra": "King cobra", "American alligator": "American alligator", "Galápagos tortoise": "Galápagos tortoise", "Atlantic puffin": "Atlantic puffin", "Wandering albatross": "Snowy albatross", "Pelican": "Pelican", "White stork": "White stork", "Kingfisher": "Common kingfisher", "Macaw": "Macaw", "European eel": "European eel", "Bluefin tuna": "Atlantic bluefin tuna", "Manta ray": "Giant oceanic manta ray", "Praying mantis": "Mantis", "Scorpion": "Scorpion", "Millipede": "Millipede", "Nautilus": "Chambered nautilus", "Coral": "Coral", "Monkey puzzle tree": "Araucaria araucana", "Avocado": "Avocado", "Banana": "Banana", "Grapevine": "Vitis", "Poppy": "Papaver", "Lactobacillus": "Lactobacillus", "Starfish": "Starfish", "Bracken fern": "Pteridium aquilinum", "Baker's yeast": "Saccharomyces cerevisiae", "Nile crocodile": "Nile crocodile", "Slowworm": "Common slow worm", "Sphagnum moss": "Sphagnum", "Bath sponge": "Spongia officinalis", "Sea anemone": "Sea anemone", "Barnacle": "Barnacle", "Woodlouse": "Woodlouse", "Scallop": "Scallop", "Mosquito": "Mosquito", "Cicada": "Cicadidae", "Firefly": "Firefly", "House centipede": "Scutigera coleoptrata", "Three-toed sloth": "Three-toed sloth", "Walrus": "Walrus", "Venus flytrap": "Venus flytrap", "Vanilla": "Vanilla planifolia", "Coconut palm": "Coconut", "E. coli": "Escherichia coli", "Dragonfly": "Dragonfly", "Axolotl": "Axolotl", "Hummingbird": "Hummingbird", "Hippopotamus": "Hippopotamus", "Seahorse": "Hippocampus", "Koala": "Koala", "Broccoli": "Broccoli", "Dandelion": "Taraxacum", "Termite": "Termite", "Great crested newt": "Northern crested newt", "Clownfish": "Clownfish", "Catfish": "Catfish", "Cod": "Atlantic cod", "Plaice": "European plaice", "Pufferfish": "Tetraodontidae", "Herring": "Atlantic herring", "Mayfly": "Mayfly", "Silverfish": "Silverfish", "Stick insect": "Phasmatodea", "Earwig": "Earwig", "Head louse": "Head louse", "Cat flea": "Cat flea", "Green lacewing": "Chrysopidae", "Caddisfly": "Caddisfly", "Water flea": "Daphnia", "Copepod": "Copepod", "Sand hopper": "Talitridae", "Tiger prawn": "Penaeus monodon", "Blue mussel": "Blue mussel", "Giant clam": "Giant clam", "Common whelk": "Buccinum undatum", "Squid": "European squid", "Brittle star": "Brittle star", "Rotifer": "Rotifer", "Leech": "Hirudo medicinalis", "Lugworm": "Blow lugworm", "Bootlace worm": "Lineus longissimus", "Box jellyfish": "Chironex fleckeri", "Glass sponge": "Hexactinellid", "Nightjar": "Nightjar", "House sparrow": "House sparrow", "Chameleon": "Chameleon", "Lemur": "Lemur", "Otter": "Otter", "Raccoon": "Raccoon", "Horsetail": "Equisetum", "Pineapple": "Pineapple", "Agave": "Agave americana", "Coffee": "Coffee", "Peppermint": "Mentha", "Carrot": "Carrot", "Chanterelle": "Chanterelle", "Platypus": "Platypus", "Slime mould": "Physarum polycephalum", "Sea cucumber": "Sea cucumber", "Manatee": "Manatee", "Rock hyrax": "Rock hyrax", "Antarctic krill": "Antarctic krill", "Ostrich": "Ostrich", "Comb jelly": "Ctenophora", "Pangolin": "Pangolin", "Aardvark": "Aardvark", "Nudibranch": "Nudibranch", "Falcon": "Falcon", "Gharial": "Gharial", "Giardia": "Giardia duodenalis", "Radiolarian": "Radiolaria", "Podocarp": "Podocarpus", "Oyster": "Oyster", "Ostracod": "Ostracod", "Hummingbird hawk-moth": "Hummingbird hawk-moth", "Coral snake": "Micrurus", "Caiman": "Spectacled caiman", "Dugong": "Dugong", "Porcupine": "Porcupine", "Tuberculosis bacterium": "Tuberculosis", "Echidna": "Echidna", "Tuatara": "Tuatara", "Toxoplasma": "Toxoplasma gondii", "Liverwort": "Liverwort", "Foraminiferan": "Foraminifera", "Kiwi": "Kiwi (bird)", "Bichir": "Bichir", "Acoel flatworm": "Symsagittifera roscoffensis", "Mite": "Mite", "Aye-aye": "Aye-aye", "Springhare": "Pedetes", "Pronghorn": "Pronghorn", "Loki": "Loki"};
 // ================= DATA =================
 const MAJOR = new Set(["Bacteria","Archaea","Eukaryotes","Cyanobacteria","Firmicutes","Actinobacteria","Proteobacteria","Spirochaetes","PVC group","FCB group","Euryarchaeota","TACK archaea","Asgard archaea","DPANN archaea","Excavates","SAR supergroup","Rhizarians","Stramenopiles","Alveolates","Haptophytes & cryptophytes","Archaeplastids","Red algae","Green plants","Land plants","Liverworts","Mosses","Lycophytes","Ferns & horsetails","Gymnosperms","Flowering plants","Amoebozoans","Fungi","Sac fungi","Club fungi","Animals","Sponges","Cnidarians","Roundworms","Tardigrades","Arthropods","Chelicerates","Insects","Flatworms","Annelids","Molluscs","Echinoderms","Hemichordates","Chordates","Tunicates","Vertebrates","Cartilaginous fish","Teleosts","Amphibians","Mammals","Reptiles","Birds"]);
-const AGES={"Life":4000,"Bacteria":3600,"Archaea":3500,"Eukaryotes":1900,"Terrabacteria":3200,"Gracilicutes":3000,"Cyanobacteria":2700,"Chloroflexi":2600,"Firmicutes":2600,"Actinobacteria":2400,"Proteobacteria":2600,"Alphaproteobacteria":2100,"Betaproteobacteria":1800,"Gammaproteobacteria":2000,"Epsilonproteobacteria":2100,"Deltaproteobacteria":2300,"Rhizobiales":900,"Rickettsiales":1200,"Rhodobacterales":900,"Rhodospirillales":1100,"Sphingomonadales":1000,"Burkholderiales":1000,"Nitrosomonadales":1100,"Enterobacterales":500,"Vibrionales":700,"Pasteurellales":600,"Pseudomonadales":900,"Legionellales":1000,"Thiotrichales":1100,"Xanthomonadales":900,"Alteromonadales":900,"Bacillales":1300,"Bacillus":400,"Staphylococci":350,"Lactobacillales":1300,"Streptococci":300,"Clostridia":1600,"Clostridium":600,"Negativicutes":1400,"Mollicutes":1000,"Mycobacteriales":900,"Mycobacterium":250,"Bifidobacteriales":900,"Micrococcales":1000,"Nostocales":1200,"Oscillatoriales":1500,"Synechococcales":1400,"Chroococcales":1400,"Deinococcus-Thermus":2000,"Bacteroidetes":1800,"Bacteroidales":900,"Planctomycetes":1600,"Chlamydiae":1200,"FCB group":2500,"PVC group":2400,"Spirochaetes":2300,"Euryarchaeota":3100,"Methanogens":2800,"DPANN archaea":2600,"TACK archaea":2800,"Crenarchaea":2400,"Thaumarchaea":2000,"Asgard archaea":2300,
+const AGES={"Life":4000,"Bacteria":3600,"Archaea":3500,"Eukaryotes":1900,"Terrabacteria":3200,"Gracilicutes":3000,"Cyanobacteria":2700,"Chloroflexi":2600,"Firmicutes":2600,"Actinobacteria":2400,"Proteobacteria":2600,"Alphaproteobacteria":2100,"Betaproteobacteria":1800,"Gammaproteobacteria":2000,"Epsilonproteobacteria":2100,"Deltaproteobacteria":2300,"Rhizobiales":900,"Rickettsiales":1200,"Rhodobacterales":900,"Rhodospirillales":1100,"Sphingomonadales":1000,"Burkholderiales":1000,"Nitrosomonadales":1100,"Enterobacterales":500,"Vibrionales":700,"Pasteurellales":600,"Pseudomonadales":900,"Legionellales":1000,"Thiotrichales":1100,"Xanthomonadales":900,"Alteromonadales":900,"Bacillales":1300,"Bacillus":400,"Staphylococci":350,"Lactobacillales":1300,"Streptococci":300,"Clostridia":1600,"Clostridium":600,"Negativicutes":1400,"Mollicutes":1000,"Mycobacteriales":900,"Mycobacterium":250,"Bifidobacteriales":900,"Micrococcales":1000,"Nostocales":1200,"Oscillatoriales":1500,"Synechococcales":1400,"Chroococcales":1400,"Deinococcus-Thermus":2000,"Bacteroidetes":1800,"Bacteroidales":900,"Planctomycetes":1600,"Chlamydiae":1200,"FCB group":2500,"PVC group":2400,"Spirochaetes":2300,"Euryarchaeota":3100,"Methanogens":2800,"Methanobacteria (gut & rumen)":1500,"Methanococci (vent methanogens)":1500,"Methanomicrobia (Methanosarcina)":1400,"Anaerobic methane oxidisers (ANME)":1200,"Halophiles":1300,"Thermococci":1200,"Thermoplasmata":1500,"Archaeoglobi (hot sulfate reducers)":1200,"Sulfolobales":1200,"Thermoproteales (Pyrobaculum)":1300,"Desulfurococcales (Pyrolobus)":1300,"Thaumarchaea":1800,"DPANN archaea":2600,"TACK archaea":2800,"Crenarchaea":2400,"Thaumarchaea":2000,"Asgard archaea":2300,
 "Excavates":1700,"Euglenozoans":1300,"Metamonads":1300,"Other deep eukaryote lineages":1700,"SAR supergroup":1500,"Rhizarians":1100,"Forams":700,"Radiolarians":700,"Cercozoans":900,"Stramenopiles":1100,"Diatoms":250,"Brown algae":250,"Water moulds":400,"Alveolates":1100,"Ciliates":800,"Dinoflagellates":600,"Apicomplexans":600,"Haptophytes & cryptophytes":1300,
-"Archaeplastids":1600,"Red algae":1300,"Green plants":1200,"Chlorophytes":1000,"Streptophytes":1000,"Land plants":480,"Liverworts":400,"Mosses":380,"Vascular plants":430,"Lycophytes":380,"Euphyllophytes":410,"Ferns & horsetails":370,"Polypod ferns":200,"Seed plants":330,"Gymnosperms":310,"Gnetophytes":220,"Conifers":270,"Pine family":170,"Cypress family":180,"Flowering plants":145,"Magnoliids":130,"Monocots":125,"Grasses":75,"Eudicots":128,"Rosids":112,"Asterids":108,
+"Archaeplastids":1600,"Red algae":1300,"Green plants":1200,"Chlorophytes":1000,"Streptophytes":1000,"Land plants":480,"Liverworts":400,"Mosses":380,"Vascular plants":430,"Lycophytes":380,"Euphyllophytes":410,"Ferns & horsetails":370,"Polypod ferns":200,"Seed plants":330,"Gymnosperms":310,"Gnetophytes":220,"Conifers":270,"Pine family":170,"Cypress family":180,"Flowering plants":145,"Magnoliids":130,"Monocots":125,"Grasses":75,"Eudicots":128,"Rosids":112,"Asterids":108,"Rosaceae":90,"Fabaceae":80,"Grasses":75,"Orchidaceae":90,"Pine family":170,"Magnoliids":130,"Cactaceae":35,"Solanaceae":50,"Lamiaceae":60,"Asteraceae":50,"Brassicaceae":40,"Cucurbitaceae":60,"Polypod ferns":200,"Liverworts":400,
 "Amoebozoans":1100,"Opisthokonts":1200,"Fungi":1050,"Dikarya":650,"Sac fungi":550,"Club fungi":500,"Animals":750,"Sponges":650,"Cnidarians":620,"True jellyfish":350,"Anthozoans":500,"Hydrozoans":450,"Bilaterians":620,"Protostomes":580,"Ecdysozoans":570,"Roundworms":450,"Arthropods":550,"Chelicerates":500,"Scorpions":350,"Spiders":320,"Mites & ticks":420,"Myriapods":420,"Pancrustaceans":520,"Barnacles":300,"True crabs":180,"Insects":420,"Insects with metamorphosis":320,"Beetles":270,"Butterflies & moths":180,"Flies":250,"Hymenopterans":250,"Lophotrochozoans":570,"Flatworms":450,"Annelids":520,"Molluscs":540,"Gastropods":470,"Bivalves":500,"Cephalopods":420,
-"Deuterostomes":590,"Echinoderms":520,"Hemichordates":520,"Chordates":560,"Tunicates":420,"Vertebrates":520,"Jawed vertebrates":460,"Cartilaginous fish":420,"Sharks":280,"Rays":220,"Bony vertebrates":440,"Ray-finned fish":410,"Teleosts":270,"Eels":110,"Catfish":110,"Anglerfish":110,"Lobe-finned lineage":420,"Tetrapods":375,"Amphibians":310,"Frogs & toads":200,"Salamanders & newts":170,"Amniotes":320,"Mammals":200,"Monotremes":50,"Therians":165,"Marsupials":85,"Placentals":100,"Xenarthrans":65,"Afrotherians":75,"Boreoeutherians":92,"Euarchontoglires":87,"Primates":68,"Rodents":66,"Laurasiatherians":88,"Bats":62,"Carnivorans":52,"Odd-toed ungulates":56,"Even-toed ungulates":62,"Whales & dolphins":36,"Reptiles":285,"Turtles":160,"Lepidosaurs":250,"Squamates":195,"Snakes":125,"Archosaurs":250,"Crocodilians":95,"Birds":105,"Palaeognaths":80,"Neognath birds":95,"Fowl & waterfowl":85,"Neoaves":72,"Parrots":45,"Songbirds":58};
+"Deuterostomes":590,"Echinoderms":520,"Hemichordates":520,"Chordates":560,"Tunicates":420,"Vertebrates":520,"Jawed vertebrates":460,"Cartilaginous fish":420,"Sharks":280,"Rays":220,"Bony vertebrates":440,"Ray-finned fish":410,"Teleosts":270,"Eels":110,"Catfish":110,"Anglerfish":110,"Lobe-finned lineage":420,"Tetrapods":375,"Amphibians":310,"Frogs & toads":200,"Salamanders & newts":170,"Amniotes":320,"Mammals":200,"Monotremes":50,"Therians":165,"Marsupials":85,"Placentals":100,"Xenarthrans":65,"Afrotherians":75,"Boreoeutherians":92,"Euarchontoglires":87,"Primates":68,"Rodents":66,"Laurasiatherians":88,"Bats":62,"Carnivorans":52,"Odd-toed ungulates":56,"Even-toed ungulates":62,"Whales & dolphins":36,"Cats":15,"Small cats & domestic cat":10,"Dogs & foxes":40,"Bears":20,"Deer":20,"Cattle, sheep & antelope":25,"Rodents":66,"Mice & rats":20,"Squirrels & chipmunks":35,"Primates":68,"Great apes":15,"Old World monkeys":20,"Bats":62,"Crows & ravens":15,"Songbirds":58,"Parrots":45,"Ducks":30,"Owls":45,"Hawks & eagles":40,"Penguins":40,"Turtles":160,"Sea turtles":60,"Tortoises":50,"Snakes":125,"Pit vipers & rattlesnakes":40,"Cobras & kraits":35,"Crocodilians":95,"Lizards":190,"Frogs & toads":200,"True frogs":80,"Tree frogs":60,"Salamanders & newts":170,"Newts":70,"Sharks":280,"Rays":220,"Teleosts":270,"Cichlids":45,"Salmon & trout":50,"Carps & goldfish":60,"Butterflies & moths":180,"Swallowtails":60,"Brush-footed butterflies":90,"Beetles":270,"Weevils":110,"Ladybirds":90,"Flies":250,"Mosquitoes":150,"Hymenopterans":250,"Ants":140,"Honeybees":30,"Bumblebees":30,"Spiders":320,"Jumping spiders":50,"Orb-weavers":150,"Cephalopods":420,"Octopuses":150,"Squid":150,"Bivalves":500,"Gastropods":470,"Sea urchins":250,"Starfish":450,"Stony corals":250,"Sponges":650,"Reptiles":285,"Turtles":160,"Lepidosaurs":250,"Squamates":195,"Snakes":125,"Archosaurs":250,"Crocodilians":95,"Birds":105,"Palaeognaths":80,"Neognath birds":95,"Fowl & waterfowl":85,"Neoaves":72,"Parrots":45,"Songbirds":58};
 const ROOT_AGE=4000;
-const ROUND_SECONDS=45, BLIND_FROM=3;
+let ROUND_SECONDS=45; const BLIND_FROM=3;
 const L1=new Set(["Bacteria","Archaea","Cyanobacteria","Firmicutes","Actinobacteria","Proteobacteria","Euryarchaeota","TACK archaea","Asgard archaea","Excavates","SAR supergroup","Archaeplastids","Land plants","Flowering plants","Amoebozoans","Fungi","Animals","Cnidarians","Arthropods","Insects","Molluscs","Echinoderms","Chordates","Vertebrates","Teleosts","Amphibians","Mammals","Reptiles","Birds"]);
 const DOM={"Bacteria":{c:"#3f7fcf",k:"#2b5a99"},"Archaea":{c:"#d39a2a",k:"#8a6216"},"Eukaryotes":{c:"#8f6fd0",k:"#5a3f96"}};
 const mix=(hex,t)=>{const n=parseInt(hex.slice(1),16),r=n>>16,gg=n>>8&255,b=n&255;const f=v=>Math.round(v+(255-v)*t);return `rgb(${f(r)},${f(gg)},${f(b)})`;};
 const LEVELS=["Round 1 · warm-up","Round 2 · familiar","Round 3 · trickier","Round 4 · hard","Round 5 · expert"];
-let MODE="latin", SELECT="tap", SCOPE="all"; const LAYOUT="radial"; const HOLD_MS=450;
+let MODE="latin", SELECT="tap", SCOPE="all", EASY=false, LAYOUT="radial"; const HOLD_MS=450;
 
 // parse indented tree: depth = leading spaces; leaves are "Common name|Latin"
 const LATIN={};
@@ -3071,7 +3365,26 @@ function pathBetween(a,b){const A=new Set(ancestors(a));let l=b;while(!A.has(l))
 const N=leaves.length, R=Math.round(N*14.5/(2*Math.PI)), ROW=14, XW=Math.round(MAXH*34);
 let BBOX;
 const rad=n=>n===root?0:1-Math.pow(n.age/ROOT_AGE,0.5);
+function layoutFractal(){
+  // OneZoom-style spiral: the biggest child continues the trunk with a gentle bend; smaller children bud off the sides,
+  // each as a smaller copy of the same rule.
+  (function cnt(n){ n.nl=n.children.length?n.children.reduce((t,c)=>t+cnt(c),0):1; return n.nl; })(root);
+  const L0=520;
+  root.x=0; root.y=0; root.dir=-Math.PI/2; root.L=L0; root.side=1;
+  (function place(n){ if(!n.children.length) return;
+    const ch=[...n.children].sort((a,b)=>b.nl-a.nl);
+    ch.forEach((c,i)=>{ const f=c.nl/n.nl; let ang,L;
+      if(i===0){ ang=n.dir+n.side*0.3; L=n.L*Math.max(0.5,Math.min(0.82,Math.pow(f,0.35)))*0.95; c.side=-n.side; }
+      else { const k=Math.ceil(i/2), sgn=(i%2===1)?-n.side:n.side; ang=n.dir+sgn*(0.95+0.28*k); L=n.L*Math.max(0.22,Math.pow(f,0.42))*0.85; c.side=sgn; }
+      if(!c.children.length) L=Math.min(Math.max(L, n.L*0.3), n.L*0.5);
+      c.dir=ang; c.L=L; c.x=n.x+L*Math.cos(ang); c.y=n.y+L*Math.sin(ang); place(c); });
+  })(root);
+  nodes.forEach(n=>{ n.ux=Math.cos(n.dir); n.uy=Math.sin(n.dir); n.dirIn=n.dir; n.rr=n.L; });
+  const xs=nodes.map(n=>n.x), ys=nodes.map(n=>n.y); const m=L0*0.1;
+  BBOX={x0:Math.min(...xs)-m,y0:Math.min(...ys)-m,x1:Math.max(...xs)+m,y1:Math.max(...ys)+m};
+}
 function layout(){
+  if(LAYOUT==="fractal"){ layoutFractal(); return; }
   if(LAYOUT==="radial"){
     nodes.forEach(n=>{ n.a=-Math.PI/2+((n.lo+n.hi)/2)*2*Math.PI/N; n.r=R*rad(n); n.x=n.r*Math.cos(n.a); n.y=n.r*Math.sin(n.a); n.ux=Math.cos(n.a); n.uy=Math.sin(n.a); });
     BBOX={x0:-R-110,y0:-R-110,x1:R+110,y1:R+110};
@@ -3083,42 +3396,57 @@ function layout(){
 const view=document.getElementById("view"), ns="http://www.w3.org/2000/svg";
 const el=(t,attrs)=>{const e=document.createElementNS(ns,t);for(const k in attrs)e.setAttribute(k,attrs[k]);return e;};
 function render(){
-  layout(); view.innerHTML="";
+  layout(); view.innerHTML=""; const fr=LAYOUT==="fractal";
   const gW=el("g",{}),gE=el("g",{}),gD=el("g",{}),gH=el("g",{id:"hl"}),gM=el("g",{id:"marks"}),gL=el("g",{});
-  root.children.forEach(d=>{ const a0=-Math.PI/2+(d.lo-0.5)*2*Math.PI/N, a1=-Math.PI/2+(d.hi+0.5)*2*Math.PI/N, rr=R+(MODE==="clades"?18:150);
+  if(!fr) root.children.forEach(d=>{ const a0=-Math.PI/2+(d.lo-0.5)*2*Math.PI/N, a1=-Math.PI/2+(d.hi+0.5)*2*Math.PI/N, rr=R+(MODE==="clades"?18:150);
     gW.appendChild(el("path",{class:"wedge",fill:DOM[d.name].c,d:`M0 0 L${rr*Math.cos(a0)} ${rr*Math.sin(a0)} A${rr} ${rr} 0 ${a1-a0>Math.PI?1:0} 1 ${rr*Math.cos(a1)} ${rr*Math.sin(a1)} Z`})); });
   const style=n=>n.dom?`--dc:${mix(DOM[n.dom].c,0.15+0.5*(1-n.depth/MAXH))};--dk:${DOM[n.dom].k}`:"";
-  const edgeGroups={}, dotGroups={};
+  const edgeGroups={}, dotGroups={}, discGroups={};
   nodes.forEach(n=>{ n.style=style(n);
     if(n.parent){ const p=n.parent;
-      n.d = p.r===0 ? `M0 0L${n.x} ${n.y}` : `M${p.x} ${p.y}A${p.r} ${p.r} 0 0 ${n.a>p.a?1:0} ${(p.r*Math.cos(n.a)).toFixed(1)} ${(p.r*Math.sin(n.a)).toFixed(1)}L${n.x} ${n.y}`;
+      if(fr){ const c1x=p.x+0.4*n.L*p.ux, c1y=p.y+0.4*n.L*p.uy, c2x=n.x-0.4*n.L*n.ux, c2y=n.y-0.4*n.L*n.uy;
+        n.d=`M${p.x.toFixed(2)} ${p.y.toFixed(2)}C${c1x.toFixed(2)} ${c1y.toFixed(2)} ${c2x.toFixed(2)} ${c2y.toFixed(2)} ${n.x.toFixed(2)} ${n.y.toFixed(2)}`; }
+      else n.d = p.r===0 ? `M0 0L${n.x} ${n.y}` : `M${p.x} ${p.y}A${p.r} ${p.r} 0 0 ${n.a>p.a?1:0} ${(p.r*Math.cos(n.a)).toFixed(1)} ${(p.r*Math.sin(n.a)).toFixed(1)}L${n.x} ${n.y}`;
       (edgeGroups[n.style]=edgeGroups[n.style]||[]).push(n.d); }
-    const r=n.children.length?2.6:3.2, k=n.style+"|"+r;
+    const r=fr?(n.children.length?Math.max(0.15,n.L*0.02):Math.min(3,Math.max(0.3,n.L*0.16))):(n.children.length?2.6:3.2), k=n.style+"|"+r.toFixed(2)+"|"+(fr&&!n.children.length?"leaf":"");
+    if(false){ const rr=n.rr; (discGroups[n.style]=discGroups[n.style]||[]).push(`M${(n.x-rr).toFixed(2)} ${n.y.toFixed(2)}a${rr.toFixed(2)} ${rr.toFixed(2)} 0 1 0 ${(2*rr).toFixed(2)} 0a${rr.toFixed(2)} ${rr.toFixed(2)} 0 1 0 ${(-2*rr).toFixed(2)} 0`); }
     (dotGroups[k]=dotGroups[k]||[]).push(`M${(n.x-r).toFixed(1)} ${n.y.toFixed(1)}a${r} ${r} 0 1 0 ${2*r} 0a${r} ${r} 0 1 0 ${-2*r} 0`);
-    if(!n.children.length && MODE!=="clades"){ (edgeGroups["tick"]=edgeGroups["tick"]||[]).push(`M${n.x.toFixed(1)} ${n.y.toFixed(1)}L${((R+10)*n.ux).toFixed(1)} ${((R+10)*n.uy).toFixed(1)}`); }
+    if(!fr && !n.children.length && MODE!=="clades"){ (edgeGroups["tick"]=edgeGroups["tick"]||[]).push(`M${n.x.toFixed(1)} ${n.y.toFixed(1)}L${((R+10)*n.ux).toFixed(1)} ${((R+10)*n.uy).toFixed(1)}`); }
   });
+  for(const k in discGroups){ gW.appendChild(el("path",{class:"disc",style:k,d:discGroups[k].join("")})); }
   for(const k in edgeGroups){ gE.appendChild(el("path",{class:k==="tick"?"tick":"edge",style:k==="tick"?"":k,d:edgeGroups[k].join("")})); }
-  for(const k in dotGroups){ const [st]=k.split("|"); gD.appendChild(el("path",{class:"dots-static",style:st,d:dotGroups[k].join("")})); }
+  for(const k in dotGroups){ const [st,,lf]=k.split("|"); gD.appendChild(el("path",{class:"dots-static"+(lf?" leafblob":""),style:st,d:dotGroups[k].join("")})); }
   nodes.forEach(n=>{
+    if(fr){
+      if(!n.children.length){ const deg=n.dir*180/Math.PI, left=n.ux<0; const fs=Math.min(4.5,Math.max(0.6,n.L*0.22));
+        const t=el("text",{class:"lbl fl",style:`font-size:${fs.toFixed(2)}px;stroke-width:${(fs*0.3).toFixed(2)}px`,transform:`translate(${n.x.toFixed(2)} ${n.y.toFixed(2)}) rotate(${(left?deg+180:deg).toFixed(1)})`,x:left?-(n.L*0.2):n.L*0.2,y:fs*0.35,"text-anchor":left?"end":"start"});
+        t.textContent=n.name.replace(/\s*\([^)]*\)/,"")+(LATIN[n.name]&&LATIN[n.name]!==n.name?" · "+LATIN[n.name]:""); n.lbl=t; n.fs=fs; gL.appendChild(t); }
+      else if(n!==root && (EASY||MAJOR.has(n.name))){ const deg=n.dir*180/Math.PI, left=n.ux<0; const fs=Math.max(0.5,Math.min(n.L*0.13, n.L*1.5/Math.max(4,n.name.length)));
+        const mx=(n.parent.x+n.x)/2, my=(n.parent.y+n.y)/2;
+        const t=el("text",{class:"clbl major fl"+(L1.has(n.name)?"":" l2"),"data-lvl":MAJOR.has(n.name)?"":"3",style:n.style+`;font-size:${fs.toFixed(2)}px;stroke-width:${(fs*0.3).toFixed(2)}px`,transform:`translate(${mx.toFixed(2)} ${my.toFixed(2)}) rotate(${(left?deg+180:deg).toFixed(1)})`,x:0,y:-fs*0.35,"text-anchor":"middle"});
+        t.textContent=n.name; n.lbl=t; n.fs=fs; n.major=true; gL.appendChild(t); }
+      return;
+    }
     if(!n.children.length){
       const deg=n.a*180/Math.PI, left=Math.cos(n.a)<0;
       const t=el("text",{class:"lbl",transform:`rotate(${deg.toFixed(2)}${left?"":""})`.replace(/rotate\(([-\d.]+)\)/,(m,v)=>`rotate(${left?(+v+180).toFixed(2):v})`),x:left?-(R+13):R+13,y:3.5,"text-anchor":left?"end":"start"});
       t.textContent=n.name.replace(/\s*\([^)]*\)/,"")+(LATIN[n.name]&&LATIN[n.name]!==n.name?" · "+LATIN[n.name]:""); n.lbl=t; gL.appendChild(t);
-    } else if(n!==root && MAJOR.has(n.name)){
+    } else if(n!==root && (EASY||MAJOR.has(n.name))){
       const deg=n.a*180/Math.PI, bottom=Math.sin(n.a)>0, rr=n.r-7;
-      const t=el("text",{class:"clbl major"+(L1.has(n.name)?"":" l2"),style:n.style,"text-anchor":"middle"});
+      const t=el("text",{class:"clbl major"+(L1.has(n.name)?"":" l2"),"data-lvl":MAJOR.has(n.name)?"":"3",style:n.style,"text-anchor":"middle"});
       t.textContent=n.name; n.lbl=t; n.major=true; gL.appendChild(t);
     }
   });
   view.append(gW,gE,gD,gH,gL,gM); placeMajors();
   $("legend").innerHTML=root.children.map(d=>`<span><i style="background:${DOM[d.name].c}"></i>${d.name}</span>`).join("");
 }
-function placeMajors(){ const fs=Math.max(9,Math.min(14/s,160)); view.style.setProperty("--fs",fs+"px"); view.style.setProperty("--eo",Math.min(1,0.18+s*1.4).toFixed(2)); view.classList.toggle("z2",s>0.42);
+function placeMajors(){ if(LAYOUT==="fractal"){ view.style.setProperty("--eo","1"); nodes.forEach(n=>{ if(!n.lbl) return; const px=n.fs*s; n.lbl.style.display=(px>=5&&px<=90)?"":"none"; }); return; }
+  const fs=Math.max(9,Math.min(14/s,160)); view.style.setProperty("--fs",fs+"px"); view.style.setProperty("--eo",Math.min(1,0.18+s*1.4).toFixed(2)); view.classList.toggle("z2",s>(EASY?0.2:0.42));
   nodes.forEach(n=>{ if(!n.major) return; const deg=n.a*180/Math.PI, bottom=Math.sin(n.a)>0, left=Math.cos(n.a)<0;
     const width=n.name.length*fs*0.58, sector=(n.hi-n.lo+1)*2*Math.PI/N*R;
     const room = n.depth<=1 || sector>=fs*1.15; n.lbl.style.display=room?"":"none"; if(!room) return;
     if(n.depth<=1 && s>0.5){ n.lbl.style.display="none"; return; }
-    const mid=n.depth<=1? R+fs*1.1 : (n.r+R)/2, arcMid=(n.hi-n.lo+1)*2*Math.PI/N*mid;
+    const cr=n.children.reduce((t,c)=>t+c.r,0)/n.children.length; const mid=n.depth<=1? R+fs*1.1 : Math.min((n.r+R)/2, n.r+(cr-n.r)*0.55+fs*0.6), arcMid=(n.hi-n.lo+1)*2*Math.PI/N*mid;
     if(width<arcMid*0.95){ n.lbl.setAttribute("transform",`rotate(${(bottom?deg-90:deg+90).toFixed(2)}) translate(0 ${(bottom?mid:-mid).toFixed(1)})`); n.lbl.setAttribute("x",0); n.lbl.setAttribute("y",fs*0.35); n.lbl.setAttribute("text-anchor","middle"); }
     else { n.lbl.setAttribute("transform",`rotate(${(left?deg+180:deg).toFixed(2)})`); n.lbl.setAttribute("x",left?-mid:mid); n.lbl.setAttribute("y",fs*0.35); n.lbl.setAttribute("text-anchor","middle"); }
   }); }
@@ -3128,6 +3456,7 @@ function hl(n,i){ const e=el("path",{class:"edge path draw",d:n.d}); $("hl").app
 const stage=document.getElementById("stage"), svg=document.getElementById("svg"), chip=document.getElementById("chip");
 let W=0,H=0,s=1,tx=0,ty=0,raf=null,chipNode=null;
 function size(){W=stage.clientWidth;H=stage.clientHeight;svg.setAttribute("viewBox",`0 0 ${W} ${H}`);}
+const MAXS=()=>LAYOUT==="fractal"?120:8; const MINS=()=>Math.min(.04, 0.6*(W-16)/(BBOX.x1-BBOX.x0));
 let cs=1,ctx=0,cty=0; // committed (rasterised) state
 function apply(){ if(raf) return; raf=requestAnimationFrame(()=>{raf=null;
   // express the current state as a CSS transform on top of the committed SVG state
@@ -3135,10 +3464,14 @@ function apply(){ if(raf) return; raf=requestAnimationFrame(()=>{raf=null;
   const dx=(W/2+tx)-(W/2+ctx)*k, dy=(H/2+ty)-(H/2+cty)*k;
   svg.style.transform=`translate(${dx}px,${dy}px) scale(${k})`;
   placeChip(); }); }
-function commit(){ cs=s;ctx=tx;cty=ty; svg.style.transform=""; view.setAttribute("transform",`translate(${W/2+tx} ${H/2+ty}) scale(${s})`); view.classList.toggle("zoomed",s>1.6); view.classList.toggle("lowzoom",s<0.55); placeMajors(); if(raf){cancelAnimationFrame(raf);raf=null;} placeChip(); }
+let flyRaf=null;
+function flyTo(s2,tx2,ty2,ms=550){ if(flyRaf) cancelAnimationFrame(flyRaf); const s1=s,tx1=tx,ty1=ty,t0=performance.now(); const ease=t=>1-Math.pow(1-t,3);
+  const step=now=>{ const t=Math.min(1,(now-t0)/ms), e=ease(t); s=s1*Math.pow(s2/s1,e); tx=tx1+(tx2-tx1)*e; ty=ty1+(ty2-ty1)*e; apply(); if(t<1) flyRaf=requestAnimationFrame(step); else { flyRaf=null; commit(); } };
+  flyRaf=requestAnimationFrame(step); }
+function commit(){ cs=s;ctx=tx;cty=ty; svg.style.transform=""; view.setAttribute("transform",`translate(${W/2+tx} ${H/2+ty}) scale(${s})`); view.classList.toggle("zoomed",s>1.6); view.classList.toggle("lowzoom",s<(EASY?0.3:0.55)); placeMajors(); if(raf){cancelAnimationFrame(raf);raf=null;} placeChip(); }
 function sheetH(){ const sh=document.getElementById("sheet"); return sh.classList.contains("hide")?0:sh.offsetHeight; }
-function fit(){ size(); const _c=commit; const Hv=H-sheetH()-70, bw=BBOX.x1-BBOX.x0, bh=BBOX.y1-BBOX.y0; s=Math.min((W-16)/bw, Hv/bh); if(LAYOUT!=="radial") s=Math.max(s,(W-16)/bw*0.999); s=Math.max(.04,Math.min(s,3));
-  const cx=(BBOX.x0+BBOX.x1)/2, cy=LAYOUT==="radial"?(BBOX.y0+BBOX.y1)/2:Math.min((BBOX.y0+BBOX.y1)/2, BBOX.y0+Hv/(2*s)); tx=-cx*s; ty=-cy*s-sheetH()/2+35; commit(); }
+function fit(){ size(); const _c=commit; const Hv=H-sheetH()-70, bw=BBOX.x1-BBOX.x0, bh=BBOX.y1-BBOX.y0; s=Math.min((W-16)/bw, Hv/bh); if(LAYOUT!=="radial") s=Math.max(s,(W-16)/bw*0.999); s=Math.max(MINS(),Math.min(s,3));
+  const cx=(BBOX.x0+BBOX.x1)/2, cy=LAYOUT==="radial"?(BBOX.y0+BBOX.y1)/2:Math.min((BBOX.y0+BBOX.y1)/2, BBOX.y0+Hv/(2*s)); const S=s,TX=-cx*s,TY=-cy*s-sheetH()/2+35; if(view.childNodes.length&&cs!==1){ s=cs;tx=ctx;ty=cty; flyTo(S,TX,TY); } else { tx=TX;ty=TY; commit(); } }
 function toWorld(cx,cy){const b=stage.getBoundingClientRect();return{x:(cx-b.left-W/2-tx)/s,y:(cy-b.top-H/2-ty)/s};}
 function toScreen(x,y){return{x:W/2+tx+x*s,y:H/2+ty+y*s};}
 function placeChip(){ if(!chipNode) return; const p=toScreen(chipNode.x,chipNode.y); chip.style.left=p.x+"px"; chip.style.top=p.y+"px"; }
@@ -3153,12 +3486,16 @@ stage.addEventListener("pointerdown",e=>{ stage.setPointerCapture(e.pointerId); 
   stage.classList.add("dragging"); });
 stage.addEventListener("pointermove",e=>{ if(!ptrs.has(e.pointerId)) return; ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
   if(ptrs.size===1&&start){ const dx=e.clientX-start.x, dy=e.clientY-start.y; if(Math.hypot(dx,dy)>6){ start.moved=true; cancelHold(); } tx=start.tx+dx; ty=start.ty+dy; apply(); }
-  else if(ptrs.size===2&&pinch){ const [a,b]=[...ptrs.values()]; s=Math.min(8,Math.max(.04,pinch.s*Math.hypot(a.x-b.x,a.y-b.y)/pinch.d));
+  else if(ptrs.size===2&&pinch){ const [a,b]=[...ptrs.values()]; s=Math.min(MAXS(),Math.max(MINS(),pinch.s*Math.hypot(a.x-b.x,a.y-b.y)/pinch.d));
     const bx=stage.getBoundingClientRect(); tx=(a.x+b.x)/2-bx.left-W/2-pinch.world.x*s; ty=(a.y+b.y)/2-bx.top-H/2-pinch.world.y*s; apply(); } });
 function up(e){ cancelHold(); const wasTap=SELECT==="tap"&&ptrs.size===1&&start&&!start.moved&&Date.now()-start.t<400; ptrs.delete(e.pointerId); if(ptrs.size<2) pinch=null;
   if(ptrs.size===0){ stage.classList.remove("dragging"); commit(); if(wasTap) tap(e.clientX,e.clientY); start=null; } }
+let hovRaf=null;
+stage.addEventListener("pointermove",e=>{ if(e.pointerType!=="mouse"||ptrs.size||locked||$("overlay").classList.contains("on")) return; if(hovRaf) return;
+  hovRaf=requestAnimationFrame(()=>{ hovRaf=null; const n=nearest(e.clientX,e.clientY); const hv=$("hover"); if(!n){hv.style.display="none";return;} const p=toScreen(n.x,n.y); hv.style.display=""; hv.style.left=p.x+"px"; hv.style.top=p.y+"px"; hv.querySelector("span").textContent=n.children.length?n.name+" (group)":n.name; }); });
+stage.addEventListener("pointerleave",()=>{ $("hover").style.display="none"; });
 stage.addEventListener("pointerup",up); stage.addEventListener("pointercancel",up);
-stage.addEventListener("wheel",e=>{ e.preventDefault(); const w=toWorld(e.clientX,e.clientY); s=Math.min(8,Math.max(.04,s*Math.exp(-e.deltaY*0.0015)));
+stage.addEventListener("wheel",e=>{ e.preventDefault(); const w=toWorld(e.clientX,e.clientY); s=Math.min(MAXS(),Math.max(MINS(),s*Math.exp(-e.deltaY*0.0015)));
   const b=stage.getBoundingClientRect(); tx=e.clientX-b.left-W/2-w.x*s; ty=e.clientY-b.top-H/2-w.y*s; apply(); clearTimeout(wheelT); wheelT=setTimeout(commit,120); },{passive:false});
 let wheelT=null;
 document.getElementById("fit").onclick=()=>{ if(SCOPE==="bacteria"&&!$("overlay").classList.contains("on")) fitTo(byName["Bacteria"]); else fit(); };
@@ -3175,18 +3512,19 @@ const dn=n=>n.name;
 
 function newGame(){ $("sheet").classList.add("hide"); render(); fit();
   $("card").innerHTML=`<p class="rank" style="font-size:26px;margin:0">Tree Tap</p><p class="sub" style="margin-bottom:0">Five organisms, easy to expert. Tap where each belongs on the circular tree. Tips carry scientific group names; kingdoms and phyla are labelled. Score is branches off; lower is better.</p>
-    <p class="opt">What to play</p><div class="seg" id="segM"><button data-v="all"><b>Everything</b><span>Organisms from all three domains, across ${N} tips.</span></button><button data-v="bacteria"><b>Bacteria only</b><span>Five bacteria, placed within the ${byName["Bacteria"].hi-byName["Bacteria"].lo+1} bacterial tips. The view starts zoomed to that sector.</span></button></div>
+    <p class="opt">Tree view</p><div class="seg" id="segV"><button data-v="radial"><b>Circular</b><span>Life radiates from the centre; tips around the rim.</span></button><button data-v="fractal"><b>Branching</b><span>OneZoom-style: every group is a smaller tree growing from its parent. Zoom in, and in, and in.</span></button></div>
+    <p class="opt">Difficulty</p><div class="seg" id="segM"><button data-v="normal"><b>Normal</b><span>Kingdoms and phyla labelled. 45 seconds a round.</span></button><button data-v="easy"><b>Easy</b><span>Every group labelled, all the way down. But only 15 seconds a round.</span></button></div>
     <p class="opt">How to select a branch</p><div class="seg" id="segS"><button data-v="tap"><b>Tap</b><span>Tap or click a branch to select it. Drag to pan.</span></button><button data-v="hold"><b>Press and hold</b><span>Hold on a branch for half a second to select it. Taps are ignored, so you can't mis-select while panning.</span></button></div>
     <button class="go" id="start" style="margin-top:16px">Start</button>`;
   const seg=(id,cur,set)=>{ const box=$(id); [...box.children].forEach(b=>{ b.classList.toggle("on",b.dataset.v===cur); b.onclick=()=>{ set(b.dataset.v); [...box.children].forEach(x=>x.classList.toggle("on",x===b)); }; }); };
-  seg("segM",SCOPE,v=>SCOPE=v); seg("segS",SELECT,v=>SELECT=v);
+  seg("segM",EASY?"easy":"normal",v=>{EASY=v==="easy";}); seg("segV",LAYOUT,v=>{LAYOUT=v;render();fit();}); seg("segS",SELECT,v=>SELECT=v);
   $("overlay").classList.add("on"); $("start").onclick=begin; }
 function scopedPools(){ if(SCOPE==="all") return POOLS; return POOLS.map(p=>p.filter(o=>byName[o.leaf].dom==="Bacteria")).map((p,i)=>p.length?p:POOLS[i]); }
 function fitTo(node){ size(); const Hv=H-sheetH()-70; const pts=[[node.x,node.y]]; const a0=-Math.PI/2+(node.lo-0.5)*2*Math.PI/N, a1=-Math.PI/2+(node.hi+0.5)*2*Math.PI/N;
   for(let a=a0;a<=a1;a+=(a1-a0)/12) pts.push([(R+120)*Math.cos(a),(R+120)*Math.sin(a)]);
   const xs=pts.map(p=>p[0]),ys=pts.map(p=>p[1]); const x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);
   s=Math.max(.04,Math.min(3,Math.min((W-16)/(x1-x0),Hv/(y1-y0)))); tx=-(x0+x1)/2*s; ty=-(y0+y1)/2*s-sheetH()/2+35; commit(); }
-function begin(){ render(); round=0;hist=[];totalMs=0; orgs=scopedPools().map(p=>rand(p));
+function begin(){ ROUND_SECONDS=EASY?15:45; render(); round=0;hist=[];totalMs=0; orgs=scopedPools().map(p=>rand(p));
   $("overlay").classList.remove("on"); $("sheet").classList.remove("hide"); startRound(); requestAnimationFrame(()=>{ if(SCOPE==="bacteria") fitTo(byName["Bacteria"]); else fit(); }); toast("Drag to pan · pinch or scroll to zoom"); }
 function dots(){ $("dots").innerHTML=orgs.map((_,i)=>`<i class="${i<round?'done'+(hist[i]&&hist[i].dist>0?' miss':''):i===round?'now':''}"></i>`).join(""); }
 function clearMarks(){ $("marks").innerHTML=""; $("hl").innerHTML=""; nodes.forEach(n=>{ if(n.marks){n.marks=null;} n.lbl&&n.lbl.classList.remove("picked","correct","lca"); }); chip.classList.remove("on","green"); chipNode=null; }
@@ -3194,7 +3532,7 @@ function startRound(){
   picked=null;locked=false; clearMarks(); stage.classList.remove("locked"); view.classList.remove("revealed");
 
   const o=orgs[round];
-  $("lvl").textContent=LEVELS[round]+(SCOPE==="bacteria"?" · bacteria":"");
+  $("lvl").textContent=LEVELS[round]+(EASY?" · easy":"");
   $("oname").innerHTML=`${o.name}<i>${o.sci}</i>`; $("blurb").textContent=o.blurb; loadImage(o);
   $("status").innerHTML=`${SELECT==="hold"?"Press and hold":"Tap"} where <b>${o.name}</b> belongs. Anywhere counts — it snaps to the nearest branch. A tip is exact; a labelled group is a safe hedge.`;
   const go=$("go"); go.disabled=true; go.className="go"; go.textContent=SELECT==="hold"?"Hold on the tree to place it":"Tap the tree to place it"; go.onclick=()=>confirm(false);
@@ -3226,7 +3564,7 @@ function confirm(timedOut){
   mark(c, g===c?"picked correct":"correct"); c.lbl.classList.add("correct");
   chipNode=c; chip.textContent=o.leaf; chip.classList.add("on","green"); placeChip();
   const mid={x:(g.x+c.x)/2,y:(g.y+c.y)/2}, Hv=H-sheetH()-70, spread=Math.hypot(g.x-c.x,g.y-c.y)+140;
-  s=Math.max(.15,Math.min(2.4,Math.min(W,Hv)/spread)); tx=-mid.x*s; ty=-mid.y*s-sheetH()/2+35; commit();
+  const s2=Math.max(.05,Math.min(LAYOUT==="fractal"?40:2.4,Math.min(W,Hv)/spread)); flyTo(s2,-mid.x*s2,-mid.y*s2-sheetH()/2+35);
   let msg;
   if(timedOut) msg=`Time's up — counted from the root. <b>${p.dist} branches</b> off.`;
   else if(p.dist===0) msg=`<span class="ok">Exactly right.</span>`;
@@ -3238,6 +3576,9 @@ function confirm(timedOut){
   go.onclick=()=>{ round++; round<orgs.length?startRound():results(); }; dots();
 }
 const pip=d=>d===0?"🟩":d<=2?"🟨":d<=5?"🟧":"🟥";
+const EMO=[["Humans","🧑"],["Great apes","🦍"],["Primates","🐒"],["Cats","🐈"],["Small cats & domestic cat","🐈"],["Big cats (lion, tiger, leopard, jaguar)","🦁"],["Dogs & foxes","🐕"],["Wolves & domestic dogs","🐕"],["Foxes","🦊"],["Bears","🐻"],["Giant panda","🐼"],["Seals","🦭"],["Sea lions & fur seals","🦭"],["Walrus","🦭"],["Otters","🦦"],["Skunks","🦨"],["Raccoons","🦝"],["Whales & dolphins","🐋"],["Dolphins & orca","🐬"],["Bats","🦇"],["Horses & zebras","🐎"],["Rhinos","🦏"],["Hippos","🦛"],["Pigs & warthogs","🐖"],["Camels","🐪"],["Llamas & alpacas","🦙"],["Deer","🦌"],["Moose & reindeer","🦌"],["Giraffes","🦒"],["Cattle & bison","🐂"],["Sheep & goats","🐑"],["Even-toed ungulates","🐄"],["Elephants","🐘"],["Sloths","🦥"],["Kangaroos & wallabies","🦘"],["Koala","🐨"],["Rodents","🐭"],["Beavers","🦫"],["Rabbits","🐇"],["Hares & jackrabbits","🐇"],["Hedgehogs","🦔"],["Monotremes","🦫"],["Mammals","🐾"],["Owls","🦉"],["Parrots","🦜"],["Penguins","🐧"],["Ducks","🦆"],["Geese & swans","🦢"],["Hawks & eagles","🦅"],["Chickens & junglefowl","🐔"],["Turkeys","🦃"],["Flamingos","🦩"],["Peacock","🦚"],["Pheasants & peafowl","🦚"],["Hummingbirds","🐦"],["Birds","🐦"],["Snakes","🐍"],["Turtles","🐢"],["Crocodilians","🐊"],["Lizards","🦎"],["Squamates","🦎"],["Reptiles","🦎"],["Frogs & toads","🐸"],["Amphibians","🐸"],["Sharks","🦈"],["Rays","🐟"],["Pufferfish","🐡"],["Seahorses","🐟"],["Teleosts","🐟"],["Cartilaginous fish","🦈"],["Ray-finned fish","🐟"],["Vertebrates","🐟"],["Butterflies & moths","🦋"],["Honeybees","🐝"],["Bumblebees","🐝"],["Ants","🐜"],["Beetles","🪲"],["Ladybirds","🐞"],["Cockroaches","🪳"],["Crickets & katydids","🦗"],["Grasshoppers & locusts","🦗"],["Mosquitoes","🦟"],["Flies","🪰"],["Insects","🐛"],["Spiders","🕷️"],["Scorpions","🦂"],["Chelicerates","🕷️"],["True crabs","🦀"],["Lobsters","🦞"],["Shrimp & prawns","🦐"],["Pancrustaceans","🦐"],["Arthropods","🦀"],["Octopuses","🐙"],["Squid","🦑"],["Cephalopods","🦑"],["Oysters","🦪"],["Land snails","🐌"],["Molluscs","🐚"],["Earthworms","🪱"],["Annelids","🪱"],["Roundworms","🪱"],["Flatworms","🪱"],["Cnidarians","🪼"],["Stony corals","🪸"],["Anthozoans","🪸"],["Sponges","🧽"],["Echinoderms","⭐"],["Animals","🦠"],["Fungi","🍄"],["Cacti","🌵"],["Conifers","🌲"],["Grasses","🌾"],["Palms","🌴"],["Sunflowers","🌻"],["Roses","🌹"],["Tulips & fritillaries","🌷"],["Cherries, plums & almonds","🍒"],["Apples & pears","🍎"],["Citrus","🍋"],["Bananas","🍌"],["Flowering plants","🌸"],["Ferns & horsetails","🌿"],["Mosses","🌱"],["Land plants","🌿"],["Kelps","🌊"],["Brown algae","🌊"],["Red algae","🌊"],["Archaeplastids","🌱"],["Diatoms","🔬"],["Ciliates","🔬"],["Amoebozoans","🔬"],["Eukaryotes","🔬"],["Cyanobacteria","🟢"],["Bacteria","🦠"],["Archaea","🧫"]];
+const emo=n=>{ for(let a=n;a;a=a.parent){ const e=EMO.find(x=>x[0]===a.name); if(e) return e[1]; } return "🌳"; };
+const verdict=d=>d===0?"Spot on":d<=2?"So close":d<=5?"Right neighbourhood":d<=12?"Same region":"Other side of the tree";
 const fmt=ms=>{const t=Math.round(ms/1000);return`${Math.floor(t/60)}:${String(t%60).padStart(2,"0")}`;};
 function results(){
   $("sheet").classList.add("hide"); round=orgs.length; dots(); view.classList.remove("nolabels"); fit();
@@ -3247,13 +3588,13 @@ function results(){
     total<=12?["Field naturalist","Solid instincts, with a slip in the deep branches."]:
     total<=25?["Curious amateur","The big groups are there; the fine structure needs another look."]:
     ["Cambrian explosion","Lots of branches in play. The tree makes more sense every run."];
-  const modeTxt=SCOPE==="bacteria"?"bacteria only":"all life";
+  const modeTxt=EASY?"easy mode":"normal mode";
   $("card").innerHTML=`<p class="big">${total}<small>branches off · ${fmt(totalMs)}</small></p><p class="rank">${rank}</p><p class="sub">${sub} ${modeTxt}.</p>
-    <div class="pips">${hist.map(h=>pip(h.dist)).join("")}</div>
-    ${hist.map(h=>`<div class="rr"><div><div class="n">${h.o.name}</div><div class="w">${h.dist===0?`<span>${h.o.leaf}</span>`:`${h.timedOut?"no placement":"you chose "+h.guess} · belongs with <span>${h.o.leaf}</span>`}</div></div><div class="d ${h.dist===0?'z':''}">${h.dist}</div></div>`).join("")}
+    <div class="pips">${hist.map(h=>emo(byName[h.o.leaf])+pip(h.dist)).join(" ")}</div>
+    ${hist.map(h=>`<div class="rr"><div class="em">${emo(byName[h.o.leaf])}</div><div><div class="n">${h.o.name} <small>${verdict(h.dist)}</small></div><div class="w">${h.dist===0?`<span>${h.o.leaf}</span>`:`${h.timedOut?"no placement":"you chose "+h.guess} · belongs with <span>${h.o.leaf}</span>`}</div></div><div class="d ${h.dist===0?'z':''}">${pip(h.dist)} ${h.dist}</div></div>`).join("")}
     <div class="row"><button class="go ghost" id="again">Play again</button><button class="go green" id="share">Share score</button></div>`;
   $("overlay").classList.add("on"); $("again").onclick=newGame;
-  $("share").onclick=async()=>{ const text=`Tree Tap 🌳 ${modeTxt} · ${total} branches off · ${fmt(totalMs)}\n${hist.map(h=>pip(h.dist)).join("")}\n${hist.map(h=>`${h.o.name} ${h.dist===0?"✓":h.dist}`).join(" · ")}\n${location.href.split("#")[0]}`;
+  $("share").onclick=async()=>{ const text=`Tree Tap 🌳 ${new Date().toLocaleDateString(undefined,{month:"short",day:"numeric"})} · ${modeTxt}\n${total} branches off · ${fmt(totalMs)}\n${hist.map(h=>`${emo(byName[h.o.leaf])}${pip(h.dist)} ${h.o.name} ${h.dist===0?"✓":h.dist}`).join("\n")}\n${location.href.split("#")[0]}`;
     try{ if(navigator.share) await navigator.share({title:"Tree Tap",text}); else { await navigator.clipboard.writeText(text); toast("Copied to clipboard"); } }
     catch(e){ try{await navigator.clipboard.writeText(text);toast("Copied to clipboard");}catch(_){toast("Couldn't share");} } };
 }
