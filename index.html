@@ -113,6 +113,10 @@
   .rank{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:22px;margin:10px 0 2px}
   .sub{color:var(--muted);font-size:14px;line-height:1.45;margin:0 0 16px}
   .pips{font-size:22px;letter-spacing:2px;margin-bottom:14px}
+  .scoreline{display:flex;flex-wrap:wrap;gap:10px 14px;font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:26px;margin:2px 0 10px}
+  .scoreline i,.rr .d i{font-style:normal;font-size:.85em;margin-left:2px}
+  .overlay.peek{background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;pointer-events:none}
+  .overlay.peek .card{pointer-events:auto;box-shadow:0 -10px 40px rgba(18,32,25,.25)}
   .rr .em{font-size:26px;line-height:1;width:34px;text-align:center}
   .rr .n small{font-weight:600;color:var(--muted);font-size:12px;margin-left:4px}
   .rr .d{white-space:nowrap}
@@ -3440,8 +3444,11 @@ function render(){
   view.append(gW,gE,gD,gH,gL,gM); placeMajors();
   $("legend").innerHTML=root.children.map(d=>`<span><i style="background:${DOM[d.name].c}"></i>${d.name}</span>`).join("");
 }
-function placeMajors(){ if(LAYOUT==="fractal"){ view.style.setProperty("--eo","1"); nodes.forEach(n=>{ if(!n.lbl) return; const px=n.fs*s; n.lbl.style.display=(px>=5&&px<=90)?"":"none"; }); return; }
-  const fs=Math.max(9,Math.min(14/s,160)); view.style.setProperty("--fs",fs+"px"); view.style.setProperty("--eo",Math.min(1,0.18+s*1.4).toFixed(2)); view.classList.toggle("z2",s>(EASY?0.2:0.42));
+function decollide(items){ // items: {el,x,y,w,h,pri}; greedy, higher pri first
+  items.sort((a,b)=>b.pri-a.pri); const kept=[];
+  items.forEach(it=>{ const hit=kept.some(k=>Math.abs(k.x-it.x)<(k.w+it.w)/2*0.85 && Math.abs(k.y-it.y)<(k.h+it.h)/2*0.9); if(hit) it.el.style.display="none"; else kept.push(it); }); }
+function placeMajors(){ if(LAYOUT==="fractal"){ view.style.setProperty("--eo","1"); const items=[]; nodes.forEach(n=>{ if(!n.lbl) return; const px=n.fs*s; const ok=(px>=5&&px<=90); n.lbl.style.display=ok?"":"none"; if(ok&&n.major){ const p=toScreen(n.x,n.y); const w=n.lbl.textContent.length*px*0.58; items.push({el:n.lbl,x:p.x,y:p.y,w:Math.max(w,px),h:Math.max(w,px)*0.5,pri:n.L}); } }); decollide(items); return; }
+  const items=[]; const fs=Math.max(9,Math.min(14/s,160)); view.style.setProperty("--fs",fs+"px"); view.style.setProperty("--eo",Math.min(1,0.18+s*1.4).toFixed(2)); view.classList.toggle("z2",s>(EASY?0.2:0.42));
   nodes.forEach(n=>{ if(!n.major) return; const deg=n.a*180/Math.PI, bottom=Math.sin(n.a)>0, left=Math.cos(n.a)<0;
     const width=n.name.length*fs*0.58, sector=(n.hi-n.lo+1)*2*Math.PI/N*R;
     const room = n.depth<=1 || sector>=fs*1.15; n.lbl.style.display=room?"":"none"; if(!room) return;
@@ -3449,7 +3456,9 @@ function placeMajors(){ if(LAYOUT==="fractal"){ view.style.setProperty("--eo","1
     const cr=n.children.reduce((t,c)=>t+c.r,0)/n.children.length; const mid=n.depth<=1? R+fs*1.1 : Math.min((n.r+R)/2, n.r+(cr-n.r)*0.55+fs*0.6), arcMid=(n.hi-n.lo+1)*2*Math.PI/N*mid;
     if(width<arcMid*0.95){ n.lbl.setAttribute("transform",`rotate(${(bottom?deg-90:deg+90).toFixed(2)}) translate(0 ${(bottom?mid:-mid).toFixed(1)})`); n.lbl.setAttribute("x",0); n.lbl.setAttribute("y",fs*0.35); n.lbl.setAttribute("text-anchor","middle"); }
     else { n.lbl.setAttribute("transform",`rotate(${(left?deg+180:deg).toFixed(2)})`); n.lbl.setAttribute("x",left?-mid:mid); n.lbl.setAttribute("y",fs*0.35); n.lbl.setAttribute("text-anchor","middle"); }
-  }); }
+    const cx=mid*Math.cos(n.a), cy=mid*Math.sin(n.a), p=toScreen(cx,cy), w=n.name.length*fs*0.58*s, hh=fs*s;
+    items.push({el:n.lbl,x:p.x,y:p.y,w:Math.max(w,hh)*0.8,h:Math.max(w,hh)*0.8,pri:(n.depth<=1?1e9:0)+(L1.has(n.name)?1e6:0)+sector});
+  }); decollide(items); }
 function mark(n,cls){ const c=el("circle",{class:"mark "+cls,cx:n.x,cy:n.y,r:cls.includes("lca")?4.2:6}); $("marks").appendChild(c); n.marks=(n.marks||[]); n.marks.push(c); return c; }
 function hl(n,i){ const e=el("path",{class:"edge path draw",d:n.d}); $("hl").appendChild(e); const len=e.getTotalLength(); e.style.setProperty("--len",len); e.style.animationDelay=(i*0.05)+"s"; return e; }
 // ================= PAN / ZOOM =================
@@ -3510,12 +3519,13 @@ const rand=a=>a[Math.floor(Math.random()*a.length)];
 function toast(m){const t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove("on"),1800);}
 const dn=n=>n.name;
 
-function newGame(){ $("sheet").classList.add("hide"); render(); fit();
+function newGame(){ $("overlay").classList.remove("peek"); $("sheet").classList.add("hide"); render(); fit();
   $("card").innerHTML=`<p class="rank" style="font-size:26px;margin:0">Tree Tap</p><p class="sub" style="margin-bottom:0">Five organisms, easy to expert. Tap where each belongs on the circular tree. Tips carry scientific group names; kingdoms and phyla are labelled. Score is branches off; lower is better.</p>
     <p class="opt">Tree view</p><div class="seg" id="segV"><button data-v="radial"><b>Circular</b><span>Life radiates from the centre; tips around the rim.</span></button><button data-v="fractal"><b>Branching</b><span>OneZoom-style: every group is a smaller tree growing from its parent. Zoom in, and in, and in.</span></button></div>
     <p class="opt">Difficulty</p><div class="seg" id="segM"><button data-v="normal"><b>Normal</b><span>Kingdoms and phyla labelled. 45 seconds a round.</span></button><button data-v="easy"><b>Easy</b><span>Every group labelled, all the way down. But only 15 seconds a round.</span></button></div>
     <p class="opt">How to select a branch</p><div class="seg" id="segS"><button data-v="tap"><b>Tap</b><span>Tap or click a branch to select it. Drag to pan.</span></button><button data-v="hold"><b>Press and hold</b><span>Hold on a branch for half a second to select it. Taps are ignored, so you can't mis-select while panning.</span></button></div>
-    <button class="go" id="start" style="margin-top:16px">Start</button>`;
+    <div class="row"><button class="go ghost" id="tut">Show tutorial</button><button class="go" id="start">Start</button></div>`;
+  $("tut").onclick=()=>tutorial(0);
   const seg=(id,cur,set)=>{ const box=$(id); [...box.children].forEach(b=>{ b.classList.toggle("on",b.dataset.v===cur); b.onclick=()=>{ set(b.dataset.v); [...box.children].forEach(x=>x.classList.toggle("on",x===b)); }; }); };
   seg("segM",EASY?"easy":"normal",v=>{EASY=v==="easy";}); seg("segV",LAYOUT,v=>{LAYOUT=v;render();fit();}); seg("segS",SELECT,v=>SELECT=v);
   $("overlay").classList.add("on"); $("start").onclick=begin; }
@@ -3524,6 +3534,21 @@ function fitTo(node){ size(); const Hv=H-sheetH()-70; const pts=[[node.x,node.y]
   for(let a=a0;a<=a1;a+=(a1-a0)/12) pts.push([(R+120)*Math.cos(a),(R+120)*Math.sin(a)]);
   const xs=pts.map(p=>p[0]),ys=pts.map(p=>p[1]); const x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);
   s=Math.max(.04,Math.min(3,Math.min((W-16)/(x1-x0),Hv/(y1-y0)))); tx=-(x0+x1)/2*s; ty=-(y0+y1)/2*s-sheetH()/2+35; commit(); }
+const TUT=[
+ {t:"This is the tree of life",b:"Every living thing, from E. coli to elephants, hangs off one tree. The centre is the last universal common ancestor, about four billion years ago. Time runs outward: the rim is today, and every tip on it is a living group. Blue is Bacteria, gold is Archaea, purple is Eukaryotes (everything with a nucleus, including you).",go:()=>fit()},
+ {t:"Reading the map",b:"Big labels mark kingdoms and phyla: Animals, Fungi, Land plants, Mammals, Insects, Proteobacteria. Pinch or scroll to zoom in and smaller groups appear, down to labelled tips like ‘Bears · Ursidae’. In Easy mode every group is labelled. The ⤢ button snaps back to the whole tree.",go:()=>{ const n=byName["Mammals"]; flyTo(0.7,-n.x*0.7,-n.y*0.7-sheetH()/2,700); }},
+ {t:"How a round works",b:"You get an organism, a photo, and a clue. Tap where you think it belongs — anywhere on the tree counts, the pin snaps to the nearest branch. Then press the orange button to lock it in. There is a timer, so don’t dither.",go:()=>fit()},
+ {t:"Scoring",b:"Your score is how many branches lie between your pin and the right tip, turned into points out of 100: exact is 100 🎯, one branch off is about 90 👑, five is about 60 🤨, twenty is 14 💀. Five rounds add up to a final score, Map Tap style.",go:null},
+ {t:"Strategy: hedge like a pro",b:"Not sure which family? Tap the group instead. Placing a cat on ‘Carnivorans’ costs a few branches; placing it on ‘Fish’ costs twenty. A confident hedge beats a wild guess every time — the sheet tells you the minimum branches a hedge costs before you commit.",go:()=>{ const n=byName["Carnivorans"]; flyTo(1.6,-n.x*1.6,-n.y*1.6-sheetH()/2,700); }},
+ {t:"Strategy: read the clue",b:"The blurb hides the taxonomy. ‘No nucleus’ means Bacteria or Archaea; ‘no nucleus but no bacterial cell wall’ means Archaea. ‘Milk’ means mammal, ‘feathers’ means bird, ‘lays eggs but has fur’ means monotreme. ‘Six legs’ is an insect; ‘eight legs, no antennae’ is an arachnid. ‘Spores, not seeds’ is a fern or moss; ‘cones, no flowers’ is a conifer.",go:null},
+ {t:"Strategy: know the traps",b:"Whales sit with hippos, not fish. Birds sit inside reptiles, next to crocodiles. Kelp is not a plant (it is with diatoms), fungi are closer to animals than to plants, and a slowworm is a lizard. Later rounds are built from exactly these.",go:null},
+ {t:"Modes",b:"Circular or Branching view; Normal (kingdoms and phyla labelled, 45 s) or Easy (everything labelled, 15 s); Tap or Press-and-hold selection. Share your score line at the end. Good luck.",go:null}
+];
+function tutorial(i){ if(i<0||i>=TUT.length){ newGame(); return; } const st=TUT[i]; $("sheet").classList.add("hide"); if(!view.childNodes.length) render();
+  $("card").innerHTML=`<p class="sub" style="margin:0 0 6px">Tutorial · ${i+1} of ${TUT.length}</p><p class="rank" style="margin-top:0">${st.t}</p><p class="sub">${st.b}</p>
+    <div class="row"><button class="go ghost" id="tb">${i===0?"Close":"Back"}</button><button class="go" id="tn">${i===TUT.length-1?"Done":"Next"}</button></div>`;
+  $("overlay").classList.add("on"); $("overlay").classList.add("peek"); $("tb").onclick=()=>{ if(i===0){ $("overlay").classList.remove("peek"); newGame(); } else tutorial(i-1); }; $("tn").onclick=()=>{ if(i===TUT.length-1){ $("overlay").classList.remove("peek"); newGame(); } else tutorial(i+1); };
+  if(st.go) st.go(); }
 function begin(){ ROUND_SECONDS=EASY?15:45; render(); round=0;hist=[];totalMs=0; orgs=scopedPools().map(p=>rand(p));
   $("overlay").classList.remove("on"); $("sheet").classList.remove("hide"); startRound(); requestAnimationFrame(()=>{ if(SCOPE==="bacteria") fitTo(byName["Bacteria"]); else fit(); }); toast("Drag to pan · pinch or scroll to zoom"); }
 function dots(){ $("dots").innerHTML=orgs.map((_,i)=>`<i class="${i<round?'done'+(hist[i]&&hist[i].dist>0?' miss':''):i===round?'now':''}"></i>`).join(""); }
@@ -3567,15 +3592,18 @@ function confirm(timedOut){
   const s2=Math.max(.05,Math.min(LAYOUT==="fractal"?40:2.4,Math.min(W,Hv)/spread)); flyTo(s2,-mid.x*s2,-mid.y*s2-sheetH()/2+35);
   let msg;
   if(timedOut) msg=`Time's up — counted from the root. <b>${p.dist} branches</b> off.`;
-  else if(p.dist===0) msg=`<span class="ok">Exactly right.</span>`;
+  else if(p.dist===0) msg=`<span class="ok">Exactly right. 100 ${tier(100)}</span>`;
   else if(p.dist<=2) msg=`<b>${p.dist} branch${p.dist>1?"es":""}</b> off. Very close.`;
   else if(p.dist<=5) msg=`<b>${p.dist} branches</b> off.`;
   else msg=`<b>${p.dist} branches</b> off. Last shared ancestor: ${p.lca.name}.`;
+  if(p.dist>0&&!timedOut) msg+=` <b>${pts(p.dist,false)} pts</b> ${tier(pts(p.dist,false))}`;
   $("status").innerHTML=`${msg} <span class="path">${o.name} sits at ${ancestors(c).slice(0,4).map(n=>n.name).join(" ‹ ")}.</span>`;
   const go=$("go"); go.className="go"+(p.dist===0?" green":""); go.textContent=round===orgs.length-1?"See results":"Next organism";
   go.onclick=()=>{ round++; round<orgs.length?startRound():results(); }; dots();
 }
 const pip=d=>d===0?"🟩":d<=2?"🟨":d<=5?"🟧":"🟥";
+const pts=(d,timedOut)=>timedOut?0:Math.round(100*Math.exp(-d/10));
+const tier=p=>p>=99?"🎯":p>=96?"🔥":p>=95?"🥇":p>=89?"👑":p>=88?"🎉":p>=85?"🎓":p>=80?"🤗":p>=76?"🙂":p>=68?"😁":p>=60?"🤨":p>=45?"😬":p>=25?"🫠":"💀";
 const EMO=[["Humans","🧑"],["Great apes","🦍"],["Primates","🐒"],["Cats","🐈"],["Small cats & domestic cat","🐈"],["Big cats (lion, tiger, leopard, jaguar)","🦁"],["Dogs & foxes","🐕"],["Wolves & domestic dogs","🐕"],["Foxes","🦊"],["Bears","🐻"],["Giant panda","🐼"],["Seals","🦭"],["Sea lions & fur seals","🦭"],["Walrus","🦭"],["Otters","🦦"],["Skunks","🦨"],["Raccoons","🦝"],["Whales & dolphins","🐋"],["Dolphins & orca","🐬"],["Bats","🦇"],["Horses & zebras","🐎"],["Rhinos","🦏"],["Hippos","🦛"],["Pigs & warthogs","🐖"],["Camels","🐪"],["Llamas & alpacas","🦙"],["Deer","🦌"],["Moose & reindeer","🦌"],["Giraffes","🦒"],["Cattle & bison","🐂"],["Sheep & goats","🐑"],["Even-toed ungulates","🐄"],["Elephants","🐘"],["Sloths","🦥"],["Kangaroos & wallabies","🦘"],["Koala","🐨"],["Rodents","🐭"],["Beavers","🦫"],["Rabbits","🐇"],["Hares & jackrabbits","🐇"],["Hedgehogs","🦔"],["Monotremes","🦫"],["Mammals","🐾"],["Owls","🦉"],["Parrots","🦜"],["Penguins","🐧"],["Ducks","🦆"],["Geese & swans","🦢"],["Hawks & eagles","🦅"],["Chickens & junglefowl","🐔"],["Turkeys","🦃"],["Flamingos","🦩"],["Peacock","🦚"],["Pheasants & peafowl","🦚"],["Hummingbirds","🐦"],["Birds","🐦"],["Snakes","🐍"],["Turtles","🐢"],["Crocodilians","🐊"],["Lizards","🦎"],["Squamates","🦎"],["Reptiles","🦎"],["Frogs & toads","🐸"],["Amphibians","🐸"],["Sharks","🦈"],["Rays","🐟"],["Pufferfish","🐡"],["Seahorses","🐟"],["Teleosts","🐟"],["Cartilaginous fish","🦈"],["Ray-finned fish","🐟"],["Vertebrates","🐟"],["Butterflies & moths","🦋"],["Honeybees","🐝"],["Bumblebees","🐝"],["Ants","🐜"],["Beetles","🪲"],["Ladybirds","🐞"],["Cockroaches","🪳"],["Crickets & katydids","🦗"],["Grasshoppers & locusts","🦗"],["Mosquitoes","🦟"],["Flies","🪰"],["Insects","🐛"],["Spiders","🕷️"],["Scorpions","🦂"],["Chelicerates","🕷️"],["True crabs","🦀"],["Lobsters","🦞"],["Shrimp & prawns","🦐"],["Pancrustaceans","🦐"],["Arthropods","🦀"],["Octopuses","🐙"],["Squid","🦑"],["Cephalopods","🦑"],["Oysters","🦪"],["Land snails","🐌"],["Molluscs","🐚"],["Earthworms","🪱"],["Annelids","🪱"],["Roundworms","🪱"],["Flatworms","🪱"],["Cnidarians","🪼"],["Stony corals","🪸"],["Anthozoans","🪸"],["Sponges","🧽"],["Echinoderms","⭐"],["Animals","🦠"],["Fungi","🍄"],["Cacti","🌵"],["Conifers","🌲"],["Grasses","🌾"],["Palms","🌴"],["Sunflowers","🌻"],["Roses","🌹"],["Tulips & fritillaries","🌷"],["Cherries, plums & almonds","🍒"],["Apples & pears","🍎"],["Citrus","🍋"],["Bananas","🍌"],["Flowering plants","🌸"],["Ferns & horsetails","🌿"],["Mosses","🌱"],["Land plants","🌿"],["Kelps","🌊"],["Brown algae","🌊"],["Red algae","🌊"],["Archaeplastids","🌱"],["Diatoms","🔬"],["Ciliates","🔬"],["Amoebozoans","🔬"],["Eukaryotes","🔬"],["Cyanobacteria","🟢"],["Bacteria","🦠"],["Archaea","🧫"]];
 const emo=n=>{ for(let a=n;a;a=a.parent){ const e=EMO.find(x=>x[0]===a.name); if(e) return e[1]; } return "🌳"; };
 const verdict=d=>d===0?"Spot on":d<=2?"So close":d<=5?"Right neighbourhood":d<=12?"Same region":"Other side of the tree";
@@ -3583,18 +3611,21 @@ const fmt=ms=>{const t=Math.round(ms/1000);return`${Math.floor(t/60)}:${String(t
 function results(){
   $("sheet").classList.add("hide"); round=orgs.length; dots(); view.classList.remove("nolabels"); fit();
   const total=hist.reduce((a,h)=>a+h.dist,0);
-  const [rank,sub]=total===0?["Perfect cladist","Every organism on the right tip. Willi Hennig salutes you."]:
-    total<=5?["Systematist","You know your clades. Misses were a branch or two at most."]:
-    total<=12?["Field naturalist","Solid instincts, with a slip in the deep branches."]:
-    total<=25?["Curious amateur","The big groups are there; the fine structure needs another look."]:
+  const finalPre=hist.reduce((a,h)=>a+pts(h.dist,h.timedOut),0);
+  const [rank,sub]=finalPre>=495?["Perfect cladist","Every organism on the right tip. Willi Hennig salutes you."]:
+    finalPre>=420?["Systematist","You know your clades. Misses were a branch or two at most."]:
+    finalPre>=320?["Field naturalist","Solid instincts, with a slip in the deep branches."]:
+    finalPre>=200?["Curious amateur","The big groups are there; the fine structure needs another look."]:
     ["Cambrian explosion","Lots of branches in play. The tree makes more sense every run."];
   const modeTxt=EASY?"easy mode":"normal mode";
-  $("card").innerHTML=`<p class="big">${total}<small>branches off · ${fmt(totalMs)}</small></p><p class="rank">${rank}</p><p class="sub">${sub} ${modeTxt}.</p>
-    <div class="pips">${hist.map(h=>emo(byName[h.o.leaf])+pip(h.dist)).join(" ")}</div>
-    ${hist.map(h=>`<div class="rr"><div class="em">${emo(byName[h.o.leaf])}</div><div><div class="n">${h.o.name} <small>${verdict(h.dist)}</small></div><div class="w">${h.dist===0?`<span>${h.o.leaf}</span>`:`${h.timedOut?"no placement":"you chose "+h.guess} · belongs with <span>${h.o.leaf}</span>`}</div></div><div class="d ${h.dist===0?'z':''}">${pip(h.dist)} ${h.dist}</div></div>`).join("")}
+  const scores=hist.map(h=>pts(h.dist,h.timedOut)), final=scores.reduce((a,b)=>a+b,0);
+  $("card").innerHTML=`<p class="sub" style="margin:0 0 4px">Tree Tap · ${new Date().toLocaleDateString(undefined,{month:"long",day:"numeric"})} · ${modeTxt}</p>
+    <div class="scoreline">${scores.map(p=>`<span>${p}<i>${tier(p)}</i></span>`).join("")}</div>
+    <p class="big">${final}<small>final score · ${total} branches off · ${fmt(totalMs)}</small></p><p class="rank">${rank}</p><p class="sub">${sub}</p>
+    ${hist.map(h=>`<div class="rr"><div class="em">${emo(byName[h.o.leaf])}</div><div><div class="n">${h.o.name} <small>${h.timedOut?"no placement":h.dist+" branch"+(h.dist===1?"":"es")+" · "+verdict(h.dist)}</small></div><div class="w">${h.dist===0?`<span>${h.o.leaf}</span>`:`${h.timedOut?"no placement":"you chose "+h.guess} · belongs with <span>${h.o.leaf}</span>`}</div></div><div class="d ${h.dist===0?'z':''}">${pts(h.dist,h.timedOut)}<i>${tier(pts(h.dist,h.timedOut))}</i></div></div>`).join("")}
     <div class="row"><button class="go ghost" id="again">Play again</button><button class="go green" id="share">Share score</button></div>`;
   $("overlay").classList.add("on"); $("again").onclick=newGame;
-  $("share").onclick=async()=>{ const text=`Tree Tap 🌳 ${new Date().toLocaleDateString(undefined,{month:"short",day:"numeric"})} · ${modeTxt}\n${total} branches off · ${fmt(totalMs)}\n${hist.map(h=>`${emo(byName[h.o.leaf])}${pip(h.dist)} ${h.o.name} ${h.dist===0?"✓":h.dist}`).join("\n")}\n${location.href.split("#")[0]}`;
+  $("share").onclick=async()=>{ const text=`Tree Tap ${new Date().toLocaleDateString(undefined,{month:"long",day:"numeric"})}\n${scores.map(p=>p+tier(p)).join(" ")}\nFinal score: ${final}\n${location.href.split("#")[0]}`;
     try{ if(navigator.share) await navigator.share({title:"Tree Tap",text}); else { await navigator.clipboard.writeText(text); toast("Copied to clipboard"); } }
     catch(e){ try{await navigator.clipboard.writeText(text);toast("Copied to clipboard");}catch(_){toast("Couldn't share");} } };
 }
