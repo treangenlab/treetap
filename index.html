@@ -20,14 +20,14 @@
   #svg{width:100%;height:100%;display:block;user-select:none;-webkit-user-select:none;will-change:transform;transform-origin:0 0;text-rendering:optimizeSpeed}
   #view.lowzoom .lbl,#view.lowzoom .tick{visibility:hidden}
   
-  .dots-static{fill:#fff;stroke:var(--dc,var(--line));stroke-width:1.2;vector-effect:non-scaling-stroke}
+  .dots-static{fill:#fff;stroke:var(--dc,var(--line));stroke-width:1.2;vector-effect:non-scaling-stroke;opacity:var(--eo,1)}
   .mark{fill:#fff;stroke:var(--line);stroke-width:1.2;vector-effect:non-scaling-stroke;transform-box:fill-box;transform-origin:center}
   .mark.picked{fill:var(--orange);stroke:var(--orange)}
   .mark.correct{fill:var(--green);stroke:var(--green);animation:pop .5s var(--ease)}
   .mark.picked.correct{fill:var(--green);stroke:var(--orange);stroke-width:3}
   .mark.lca{fill:#fff;stroke:var(--ink);stroke-width:2.5}
-  .edge{fill:none;stroke:var(--dc,var(--line));stroke-width:1.3;vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}
-  .edge.path{stroke:var(--ink);stroke-width:3}
+  .edge{fill:none;stroke:var(--dc,var(--line));stroke-width:1.3;stroke-opacity:var(--eo,1);vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}
+  .edge.path{stroke:var(--ink);stroke-width:3;stroke-opacity:1}
   .edge.path.draw{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:draw .55s var(--ease) forwards}
   @keyframes draw{to{stroke-dashoffset:0}}
   .tick{stroke:#d3dcd6;stroke-width:1;vector-effect:non-scaling-stroke;stroke-dasharray:2 3}
@@ -151,78 +151,164 @@ const TREE_TXT=`Life
  Bacteria
   Aquificae|Aquificota
   Thermotogae|Thermotogota
+  Deferribacteres|Deferribacterota
+  Synergistetes|Synergistota
   Terrabacteria
    Cyanobacteria
-    Nostoc & Anabaena (filament fixers)|Nostocales
-    Synechococcus & Prochlorococcus|Synechococcales
-    Oscillatoria & Spirulina|Oscillatoriales
-    Microcystis (bloom-formers)|Chroococcales
+    Gloeobacter (no thylakoids)|Gloeobacterales
+    Nostoc|Nostoc
+    Anabaena|Anabaena
+    Trichodesmium (sea sawdust)|Trichodesmium
+    Synechococcus|Synechococcus
+    Prochlorococcus|Prochlorococcus
+    Spirulina (Arthrospira)|Arthrospira
+    Oscillatoria & Lyngbya|Oscillatoriales
+    Microcystis (bloom-formers)|Microcystis
+    Chroococcidiopsis (desert rock dwellers)|Chroococcidiopsidales
    Deinococcus|Deinococcales
    Thermus|Thermales
-   Chloroflexi|Chloroflexota
+   Chloroflexi
+    Chloroflexus (green non-sulfur)|Chloroflexales
+    Dehalococcoides (solvent-breathers)|Dehalococcoidia
+   Armatimonadetes|Armatimonadota
    Firmicutes
-    Bacillus & anthrax|Bacillaceae
+    Bacillus subtilis & hay bacilli|Bacillus subtilis group
+    Anthrax & Bacillus cereus|Bacillus cereus group
+    Geobacillus (hot compost)|Geobacillus
+    Paenibacillus|Paenibacillaceae
     Listeria|Listeriaceae
-    Staphylococci|Staphylococcaceae
-    Streptococci|Streptococcaceae
+    Staphylococcus aureus|Staphylococcus aureus
+    Skin staphylococci|Staphylococcus epidermidis
+    Streptococcus pyogenes (strep throat)|Streptococcus pyogenes
+    Pneumococcus|Streptococcus pneumoniae
+    Mouth streptococci|Streptococcus mutans
+    Lactococcus (cheese)|Lactococcus
+    Enterococcus|Enterococcaceae
     Lactobacilli|Lactobacillaceae
-    Clostridia|Clostridia
-    Mycoplasmas|Mollicutes
+    Leuconostoc (sauerkraut)|Leuconostoc
+    Clostridium botulinum|Clostridium botulinum
+    Tetanus bacillus|Clostridium tetani
+    C. difficile|Clostridioides difficile
+    Ruminococcus & gut clostridia|Ruminococcaceae & Lachnospiraceae
+    Heliobacteria (photosynthetic Firmicutes)|Heliobacteriaceae
+    Veillonella|Veillonellaceae
+    Erysipelothrix|Erysipelotrichia
+    Mycoplasmas|Mycoplasma
+    Spiroplasma|Spiroplasma
+    Phytoplasmas (plant yellows)|Phytoplasma
    Actinobacteria
-    Streptomyces|Streptomycetales
-    Mycobacteria|Mycobacteriaceae
-    Corynebacteria|Corynebacteriaceae
-    Bifidobacteria|Bifidobacteriales
-    Cutibacterium (acne)|Propionibacteriales
-    Frankia (root-nodule fixers)|Frankiales
-    Actinomyces|Actinomycetales
+    Streptomyces|Streptomyces
+    Tuberculosis bacterium|Mycobacterium tuberculosis
+    Leprosy bacterium|Mycobacterium leprae
+    Environmental mycobacteria|Mycobacterium avium complex
+    Nocardia & Rhodococcus|Nocardiaceae
+    Corynebacteria|Corynebacterium
+    Bifidobacteria|Bifidobacterium
+    Cutibacterium (acne)|Cutibacterium
+    Frankia (root-nodule fixers)|Frankia
+    Actinomyces|Actinomyces
+    Micrococcus & Kocuria|Micrococcaceae
+    Gardnerella|Gardnerella
+    Brevibacterium (cheese rind)|Brevibacterium
   Gracilicutes
    Proteobacteria
     Alphaproteobacteria
-     Rhizobia|Rhizobiales
+     Rhizobium|Rhizobium
+     Bradyrhizobium|Bradyrhizobium
      Agrobacterium (crown gall)|Agrobacterium
-     Rickettsias|Rickettsiales
+     Brucella|Brucella
+     Bartonella (cat-scratch)|Bartonella
+     Rickettsias|Rickettsia
+     Ehrlichia & Anaplasma|Anaplasmataceae
      Wolbachia (insect symbionts)|Wolbachia
-     Caulobacter|Caulobacterales
-     Rhodobacter (purple non-sulfur)|Rhodobacterales
-     Pelagibacter (SAR11)|Pelagibacterales
+     Caulobacter|Caulobacter
+     Rhodobacter (purple non-sulfur)|Rhodobacter
+     Roseobacter (marine)|Roseobacter
+     Rhodospirillum|Rhodospirillum
+     Magnetospirillum (magnetotactic)|Magnetospirillum
+     Pelagibacter (SAR11)|Pelagibacter
+     Sphingomonas|Sphingomonas
+     Zymomonas (pulque)|Zymomonas
+     Acetobacter (vinegar)|Acetobacter
+     Methylobacterium (pink leaf dwellers)|Methylobacterium
     Betaproteobacteria
-     Neisseria|Neisseriaceae
-     Bordetella|Alcaligenaceae
-     Burkholderia|Burkholderiaceae
-     Nitrosomonas (ammonia oxidisers)|Nitrosomonadales
+     Neisseria|Neisseria
+     Bordetella|Bordetella
+     Burkholderia|Burkholderia
+     Ralstonia|Ralstonia
+     Cupriavidus (hydrogen-eaters)|Cupriavidus
+     Nitrosomonas (ammonia oxidisers)|Nitrosomonas
+     Thiobacillus|Thiobacillus
+     Comamonas & Delftia|Comamonadaceae
     Gammaproteobacteria
-     Enterobacteria (E. coli, Salmonella)|Enterobacterales
-     Yersinia (plague)|Yersiniaceae
-     Vibrios (cholera)|Vibrionales
-     Pseudomonads|Pseudomonadales
-     Acinetobacter|Moraxellaceae
-     Legionella|Legionellales
-     Haemophilus & Pasteurella|Pasteurellales
-     Xanthomonas & Xylella (plant pathogens)|Xanthomonadales
-     Chromatium (purple sulfur)|Chromatiales
-     Thiomargarita (giant sulfur bacteria)|Thiotrichales
-     Shewanella (metal-breathers)|Alteromonadales
-    Helicobacter & Campylobacter|Campylobacterota
-    Myxobacteria|Myxococcota
-    Desulfovibrio (sulfate reducers)|Desulfobacterota
-    Bdellovibrio (bacterial predators)|Bdellovibrionota
+     E. coli|Escherichia
+     Salmonella|Salmonella
+     Shigella|Shigella
+     Klebsiella|Klebsiella
+     Proteus|Proteus
+     Serratia (red slime)|Serratia
+     Yersinia (plague)|Yersinia
+     Erwinia & Pectobacterium (soft rot)|Erwiniaceae
+     Vibrio cholerae|Vibrio cholerae
+     Vibrio fischeri (glowing squid symbiont)|Aliivibrio fischeri
+     Photobacterium|Photobacterium
+     Aeromonas|Aeromonas
+     Pseudomonas aeruginosa|Pseudomonas aeruginosa
+     Pseudomonas fluorescens & putida|Pseudomonas fluorescens
+     Azotobacter|Azotobacter
+     Acinetobacter|Acinetobacter
+     Moraxella|Moraxella
+     Legionella|Legionella
+     Coxiella (Q fever)|Coxiella
+     Francisella (tularaemia)|Francisella
+     Haemophilus|Haemophilus
+     Pasteurella|Pasteurella
+     Xanthomonas|Xanthomonas
+     Xylella|Xylella
+     Stenotrophomonas|Stenotrophomonas
+     Chromatium (purple sulfur)|Chromatium
+     Thiomargarita (giant sulfur bacteria)|Thiomargarita
+     Beggiatoa (sulfur mats)|Beggiatoa
+     Shewanella (metal-breathers)|Shewanella
+     Alteromonas & Pseudoalteromonas|Alteromonadaceae
+     Methylococcus (methane-eaters)|Methylococcales
+     Thiotrichales vent symbionts|Thiotrichales
+    Helicobacter|Helicobacter
+    Campylobacter|Campylobacter
+    Myxobacteria|Myxococcus
+    Desulfovibrio (sulfate reducers)|Desulfovibrio
+    Geobacter (electric mud)|Geobacter
+    Bdellovibrio (bacterial predators)|Bdellovibrio
+    Zetaproteobacteria (iron-oxidising mats)|Mariprofundus
    Acidobacteria|Acidobacteriota
-   Nitrospira (nitrite oxidisers)|Nitrospirota
+   Nitrospira (nitrite oxidisers)|Nitrospira
+   Nitrospinae|Nitrospinota
    FCB group
-    Bacteroides|Bacteroidales
-    Flavobacteria|Flavobacteriales
-    Chlorobi (green sulfur)|Chlorobiota
-    Fibrobacters (rumen cellulose digesters)|Fibrobacterota
+    Bacteroides|Bacteroides
+    Prevotella|Prevotella
+    Porphyromonas (gum disease)|Porphyromonas
+    Flavobacteria|Flavobacterium
+    Cytophaga|Cytophaga
+    Chlorobi (green sulfur)|Chlorobium
+    Fibrobacters (rumen cellulose digesters)|Fibrobacter
+    Gemmatimonadetes|Gemmatimonadota
+    Ignavibacteria|Ignavibacteriota
    PVC group
-    Planctomycetes|Planctomycetota
-    Chlamydiae|Chlamydiota
-    Verrucomicrobia (Akkermansia)|Verrucomicrobiota
+    Planctomyces|Planctomyces
+    Gemmata|Gemmata
+    Anammox bacteria|Brocadiales
+    Chlamydia trachomatis|Chlamydia
+    Parachlamydia (amoeba symbionts)|Parachlamydiaceae
+    Verrucomicrobia (Akkermansia)|Akkermansia
+    Lentisphaerae|Lentisphaerota
    Spirochaetes
-    Borrelia (Lyme, relapsing fever)|Borreliaceae
-    Treponema (syphilis)|Treponemataceae
-    Leptospira|Leptospiraceae
-   Fusobacteria|Fusobacteriota
+    Borrelia (Lyme, relapsing fever)|Borrelia
+    Treponema (syphilis)|Treponema
+    Leptospira|Leptospira
+    Spirochaeta (free-living)|Spirochaeta
+    Brachyspira|Brachyspira
+   Fusobacteria|Fusobacterium
+   Elusimicrobia (termite gut)|Elusimicrobiota
    CPR ultrasmall bacteria|Patescibacteria
  Archaea
   Euryarchaeota
@@ -1491,9 +1577,9 @@ Wasp|Vespula vulgaris|Paper wasps & hornets|A narrow waist, a papery nest, and a
 Scots pine|Pinus sylvestris|Pines|Needles in pairs, resin, seeds on the scales of a cone.
 Garden snail|Cornu aspersum|Land snails|A rasping tongue, a coiled shell and a muscular foot.
 Lily|Lilium|Lilies|Six-petalled trumpet flowers from a bulb.
-Nostoc|Nostoc|Nostoc & Anabaena (filament fixers)|Green jelly-like colonies of bead-chain filaments that fix nitrogen.
-Staphylococcus|Staphylococcus aureus|Staphylococci|Grape-like clusters of round cells; the 'staph' of skin infections.
-Yoghurt bacterium|Streptococcus thermophilus|Streptococci|Chains of round cells that thicken milk into yoghurt.
+Nostoc|Nostoc|Nostoc|Green jelly-like colonies of bead-chain filaments that fix nitrogen.
+Staphylococcus|Staphylococcus aureus|Staphylococcus aureus|Grape-like clusters of round cells; the 'staph' of skin infections.
+Yoghurt bacterium|Streptococcus thermophilus|Lactobacilli|Chains of round cells that thicken milk into yoghurt.
 Rabbit|Oryctolagus cuniculus|Rabbits|Long ears, twitching nose, lives in warrens.
 Cheetah|Acinonyx jubatus|Cheetah & puma|The fastest land animal; claws that don't fully retract.
 Giant panda|Ailuropoda melanoleuca|Giant panda|A bear that eats bamboo with a false thumb.
@@ -1613,6 +1699,12 @@ Song sparrow|Melospiza melodia|New World sparrows|A streaky brown bird with a bo
 Yellowhammer|Emberiza citrinella|Buntings|Sings 'a little bit of bread and no cheese'.
 Robin (European)|Erithacus rubecula|Old World flycatchers, robins & chats|A red-breasted chat that follows gardeners.
 Mynah|Acridotheres tristis|Starlings & mynas|A bold, talkative starling.
+Bacillus subtilis|Bacillus subtilis|Bacillus subtilis & hay bacilli|The hay bacillus; makes natto and tough spores.
+Pneumococcus|Streptococcus pneumoniae|Pneumococcus|Paired cocci in a capsule; the classic pneumonia bug.
+Mouth streptococcus|Streptococcus mutans|Mouth streptococci|Turns sugar into acid and holes in teeth.
+Klebsiella|Klebsiella pneumoniae|Klebsiella|A capsuled gut rod behind hospital pneumonias.
+Shigella|Shigella|Shigella|A close cousin of E. coli that causes dysentery.
+Campylobacter|Campylobacter jejuni|Campylobacter|A corkscrew from undercooked chicken; the top cause of food poisoning.
 # round 2
 Red kangaroo|Osphranter rufus|Kangaroos & wallabies|Born the size of a jellybean and finishes developing in a pouch.
 Common octopus|Octopus vulgaris|Octopuses|Eight arms, three hearts, a beak, no shell.
@@ -1712,10 +1804,10 @@ Chlorella|Chlorella vulgaris|Chlorella & lichen algae|A single green cell sold a
 Bolete|Boletus edulis|Boletes|A mushroom with a sponge of tubes instead of gills.
 Puffball|Lycoperdon|Puffballs|A ball that puffs out spores when squeezed.
 Stinkhorn|Phallus impudicus|Stinkhorns|Smells of carrion so flies spread its spores.
-Streptococcus|Streptococcus pyogenes|Streptococci|Chains of round cells; causes strep throat.
-Salmonella|Salmonella enterica|Enterobacteria (E. coli, Salmonella)|A gut bacterium with tails all over; causes food poisoning.
-Helicobacter|Helicobacter pylori|Helicobacter & Campylobacter|A spiral cell that lives in stomach acid and causes ulcers.
-Prochlorococcus|Prochlorococcus marinus|Synechococcus & Prochlorococcus|The smallest and most abundant photosynthetic cell on Earth.
+Streptococcus|Streptococcus pyogenes|Streptococcus pyogenes (strep throat)|Chains of round cells; causes strep throat.
+Salmonella|Salmonella enterica|Salmonella|A gut bacterium with tails all over; causes food poisoning.
+Helicobacter|Helicobacter pylori|Helicobacter|A spiral cell that lives in stomach acid and causes ulcers.
+Prochlorococcus|Prochlorococcus marinus|Prochlorococcus|The smallest and most abundant photosynthetic cell on Earth.
 Plague bacterium|Yersinia pestis|Yersinia (plague)|Spread by fleas; caused the Black Death.
 Listeria|Listeria monocytogenes|Listeria|Grows in the fridge and rockets through cells on actin tails.
 Acne bacterium|Cutibacterium acnes|Cutibacterium (acne)|Lives in hair follicles and eats sebum.
@@ -1922,7 +2014,20 @@ Fire-bellied toad|Bombina|Fire-bellied toads|Flashes its red belly when threaten
 Mealworm beetle|Tenebrio molitor|Darkling beetles|Its larvae are the mealworms sold as pet food.
 Cockle|Cerastoderma edule|Clams & cockles|A ribbed heart-shaped shell that jumps with its foot.
 Periwinkle snail|Littorina littorea|Periwinkles|A small grey sea snail grazing rocky shores.
+Lactococcus|Lactococcus lactis|Lactococcus (cheese)|The starter culture for cheese and buttermilk.
+Enterococcus|Enterococcus faecalis|Enterococcus|A gut coccus notorious for vancomycin resistance.
+C. difficile|Clostridioides difficile|C. difficile|Takes over the gut after antibiotics.
+Tetanus bacillus|Clostridium tetani|Tetanus bacillus|A drumstick-shaped spore-former from soil.
+Leprosy bacterium|Mycobacterium leprae|Leprosy bacterium|Grows so slowly it has never been cultured in a dish.
+Proteus|Proteus mirabilis|Proteus|Swarms across agar in waves; urinary infections.
+Serratia|Serratia marcescens|Serratia (red slime)|A red-pigmented rod once mistaken for bleeding bread.
+Azotobacter|Azotobacter vinelandii|Azotobacter|A free-living nitrogen fixer with the highest known respiration rate.
+Prevotella|Prevotella copri|Prevotella|A gut bacterium common on fibre-rich diets.
+Porphyromonas|Porphyromonas gingivalis|Porphyromonas (gum disease)|A black-pigmented mouth anaerobe behind periodontitis.
+Vinegar bacterium|Acetobacter aceti|Acetobacter (vinegar)|Turns wine into vinegar.
+Trichodesmium|Trichodesmium|Trichodesmium (sea sawdust)|Floating red-brown filaments that fix nitrogen in tropical seas.
 # round 3
+Oscillatoria|Oscillatoria|Oscillatoria & Lyngbya|Filaments that glide back and forth on wet soil and ponds.
 Starfish|Asteroidea|Starfish|Five-fold symmetry and hydraulic tube feet.
 Bracken fern|Pteridium aquilinum|Bracken|Veins to move water, but spreads by spores, not seeds.
 Baker's yeast|Saccharomyces cerevisiae|Budding yeasts|A single cell that ferments sugar into alcohol.
@@ -1943,7 +2048,7 @@ Walrus|Odobenus rosmarus|Walrus|Tusked, blubbery, hauls out on ice.
 Venus flytrap|Dionaea muscipula|Sundews & Venus flytrap|Snaps shut on insects. A flowering plant from the Carolinas.
 Vanilla|Vanilla planifolia|Orchids|A climbing vine whose seed pods flavour ice cream.
 Coconut palm|Cocos nucifera|Palms|No true wood, no branches, parallel-veined leaves.
-E. coli|Escherichia coli|Enterobacteria (E. coli, Salmonella)|No nucleus, one circular chromosome, divides every 20 minutes.
+E. coli|Escherichia coli|E. coli|No nucleus, one circular chromosome, divides every 20 minutes.
 Dragonfly|Anisoptera|Dragonflies|Wings that don't fold, huge eyes, a nymph stage underwater.
 Axolotl|Ambystoma mexicanum|Mole salamanders & axolotl|Keeps its gills for life and regrows lost limbs.
 Hummingbird|Trochilidae|Hummingbirds|Hovers, beats its wings 50 times a second, drinks nectar.
@@ -2010,7 +2115,7 @@ Protea|Protea cynaroides|Proteas|A goblet-sized flower head from the Cape fynbos
 Penicillium|Penicillium chrysogenum|Penicillium|The blue-green mould that gave us penicillin.
 Chanterelle|Cantharellus cibarius|Chanterelles|A golden funnel-shaped mushroom with ridges, not gills.
 Amoeba|Amoeba proteus|Amoeba proteus & lobose amoebas|A single cell that crawls and engulfs prey with false feet.
-Cholera bacterium|Vibrio cholerae|Vibrios (cholera)|A comma-shaped cell with a single tail. Causes cholera.
+Cholera bacterium|Vibrio cholerae|Vibrio cholerae|A comma-shaped cell with a single tail. Causes cholera.
 Peccary|Pecari tajacu|Peccaries|A New World pig-like animal with straight tusks.
 Tarsier|Tarsius|Tarsiers|Huge eyes, each as big as its brain; a leaping night primate.
 Slow loris|Nycticebus|Lorises & pottos|A venomous, slow-moving night primate.
@@ -2083,12 +2188,12 @@ Corn smut|Ustilago maydis|Smuts|Turns corn kernels into grey galls; a Mexican de
 Powdery mildew|Erysiphales|Powdery mildews|A white dusting on leaves from a fungus.
 Naegleria|Naegleria fowleri|Heteroloboseans (Naegleria)|The 'brain-eating amoeba' of warm lakes; also grows a whip.
 Entamoeba|Entamoeba histolytica|Entamoeba (dysentery)|An amoeba that causes dysentery and has no mitochondria.
-Clostridium|Clostridium botulinum|Clostridia|A spore-former that makes the deadliest toxin known.
+Clostridium|Clostridium botulinum|Clostridium botulinum|A spore-former that makes the deadliest toxin known.
 Mycoplasma|Mycoplasma pneumoniae|Mycoplasmas|A bacterium with no cell wall and one of the smallest genomes.
 Bifidobacterium|Bifidobacterium|Bifidobacteria|A Y-shaped probiotic that colonises babies' guts.
 Neisseria|Neisseria meningitidis|Neisseria|Paired round cells that can cause meningitis.
 Cichlid|Cichlidae|Cichlids|African lake fish that brood eggs in their mouths; a thousand species from one ancestor.
-Anthrax bacterium|Bacillus anthracis|Bacillus & anthrax|A spore-forming rod that survives decades in soil.
+Anthrax bacterium|Bacillus anthracis|Anthrax & Bacillus cereus|A spore-forming rod that survives decades in soil.
 Streptomyces|Streptomyces coelicolor|Streptomyces|Soil filaments that smell of rain and make most antibiotics.
 Agrobacterium|Agrobacterium tumefaciens|Agrobacterium (crown gall)|Injects its own DNA into plants; the original genetic engineer.
 Wolbachia|Wolbachia pipientis|Wolbachia (insect symbionts)|Lives inside insect cells and manipulates their sex ratios.
@@ -2096,9 +2201,9 @@ Caulobacter|Caulobacter crescentus|Caulobacter|A stalked cell that glues itself 
 Rhodobacter|Rhodobacter sphaeroides|Rhodobacter (purple non-sulfur)|A purple photosynthesiser that makes no oxygen.
 Burkholderia|Burkholderia cepacia|Burkholderia|A soil rod that rots onions and infects lungs.
 Nitrosomonas|Nitrosomonas europaea|Nitrosomonas (ammonia oxidisers)|Eats ammonia for energy; a keystone of the nitrogen cycle.
-Haemophilus|Haemophilus influenzae|Haemophilus & Pasteurella|The first free-living organism to have its genome sequenced.
+Haemophilus|Haemophilus influenzae|Haemophilus|The first free-living organism to have its genome sequenced.
 Acinetobacter|Acinetobacter baumannii|Acinetobacter|A hospital superbug that shrugs off most antibiotics.
-Xylella|Xylella fastidiosa|Xanthomonas & Xylella (plant pathogens)|Clogs the plumbing of olive trees; spread by spittlebugs.
+Xylella|Xylella fastidiosa|Xylella|Clogs the plumbing of olive trees; spread by spittlebugs.
 Desulfovibrio|Desulfovibrio vulgaris|Desulfovibrio (sulfate reducers)|Breathes sulfate and makes rotten-egg gas.
 Bdellovibrio|Bdellovibrio bacteriovorus|Bdellovibrio (bacterial predators)|A tiny predator that burrows into other bacteria and eats them from inside.
 Flavobacterium|Flavobacterium|Flavobacteria|Yellow gliding cells that digest dead algae in lakes and seas.
@@ -2356,6 +2461,44 @@ Galápagos finch|Geospiza|Darwin's finches|Beaks that inspired natural selection
 Cardinal|Cardinalis|Cardinals & grosbeaks|A crested red songbird with a thick bill.
 Devil's coach horse|Ocypus olens|Rove beetles|A short-winged beetle that raises its tail like a scorpion.
 Cutworm moth|Agrotis|Owlet moths|A drab night moth whose caterpillars fell seedlings.
+Gloeobacter|Gloeobacter violaceus|Gloeobacter (no thylakoids)|The most primitive cyanobacterium; photosynthesises in its outer membrane.
+Synechococcus|Synechococcus|Synechococcus|A tiny marine cyanobacterium second only to Prochlorococcus.
+Dehalococcoides|Dehalococcoides mccartyi|Dehalococcoides (solvent-breathers)|Breathes chlorinated solvents and cleans up groundwater.
+Geobacillus|Geobacillus stearothermophilus|Geobacillus (hot compost)|A hot-compost spore-former used to test autoclaves.
+Leuconostoc|Leuconostoc mesenteroides|Leuconostoc (sauerkraut)|Starts sauerkraut and kimchi fermentations.
+Ruminococcus|Ruminococcus|Ruminococcus & gut clostridia|Digests resistant starch in your gut.
+Veillonella|Veillonella|Veillonella|Eats lactate; more abundant in elite runners.
+Spiroplasma|Spiroplasma|Spiroplasma|A wall-less spiral cell that kills male insects.
+Nocardia|Nocardia asteroides|Nocardia & Rhodococcus|A branching soil bacterium that can infect lungs.
+Micrococcus|Micrococcus luteus|Micrococcus & Kocuria|Yellow tetrads of cocci from skin and dust.
+Brucella|Brucella|Brucella|Causes undulant fever from unpasteurised milk.
+Bartonella|Bartonella henselae|Bartonella (cat-scratch)|Cat-scratch disease.
+Ehrlichia|Ehrlichia|Ehrlichia & Anaplasma|A tick-borne bacterium that lives inside white blood cells.
+Roseobacter|Roseobacter|Roseobacter (marine)|A pink marine bacterium that makes the smell of the sea.
+Sphingomonas|Sphingomonas|Sphingomonas|A yellow bacterium that degrades pollutants.
+Zymomonas|Zymomonas mobilis|Zymomonas (pulque)|Ferments agave sap into pulque faster than yeast.
+Ralstonia|Ralstonia solanacearum|Ralstonia|Wilts tomatoes and bananas.
+Thiobacillus|Thiobacillus|Thiobacillus|Oxidises sulfur and corrodes concrete sewers.
+Vibrio fischeri|Aliivibrio fischeri|Vibrio fischeri (glowing squid symbiont)|Lights up the bobtail squid.
+Erwinia|Pectobacterium carotovorum|Erwinia & Pectobacterium (soft rot)|Turns potatoes to mush.
+Pseudomonas fluorescens|Pseudomonas fluorescens|Pseudomonas fluorescens & putida|A root-protecting soil bacterium that glows under UV.
+Moraxella|Moraxella catarrhalis|Moraxella|A paired coccus of ear and sinus infections.
+Coxiella|Coxiella burnetii|Coxiella (Q fever)|Q fever; survives as a spore-like form in dust.
+Francisella|Francisella tularensis|Francisella (tularaemia)|Ten cells can infect; rabbit fever.
+Pasteurella|Pasteurella multocida|Pasteurella|The bacterium in a cat bite.
+Xanthomonas|Xanthomonas campestris|Xanthomonas|Black rot of cabbages; source of xanthan gum.
+Stenotrophomonas|Stenotrophomonas maltophilia|Stenotrophomonas|An intrinsically drug-resistant hospital rod.
+Beggiatoa|Beggiatoa|Beggiatoa (sulfur mats)|White filaments gliding on sulfide mud.
+Methanotroph|Methylococcus capsulatus|Methylococcus (methane-eaters)|Eats methane; makes single-cell protein.
+Geobacter|Geobacter sulfurreducens|Geobacter (electric mud)|Conducts electrons through protein nanowires.
+Cytophaga|Cytophaga|Cytophaga|Glides and digests cellulose.
+Prevotella dentalis|Prevotella intermedia|Prevotella|A mouth anaerobe in gum disease.
+Anammox bacterium|Candidatus Brocadia|Anammox bacteria|Makes nitrogen gas from ammonia inside a membrane-bound compartment.
+Spirochaeta|Spirochaeta|Spirochaeta (free-living)|A free-living corkscrew of mud and hot springs.
+Brachyspira|Brachyspira|Brachyspira|A spirochaete of pig and human guts.
+Deferribacter|Deferribacter|Deferribacteres|Breathes iron in hot vents.
+Synergistes|Synergistes|Synergistetes|An amino-acid fermenter of guts and sludge.
+Gemmatimonas|Gemmatimonas|Gemmatimonadetes|A common soil phylum that photosynthesises without oxygen.
 # round 4
 Platypus|Ornithorhynchus anatinus|Platypus|Fur and milk, but it lays eggs. Venomous spur on the hind leg.
 Giant kelp|Macrocystis pyrifera|Kelps|Grows half a metre a day in undersea forests.
@@ -2431,19 +2574,19 @@ Porcupine|Hystrix|Old World porcupines|Quilled, gnawing, with ever-growing incis
 Pika|Ochotona|Pikas|A round-eared mountain haymaker. Not a rodent.
 Sea snake|Hydrophiinae|Sea snakes|A paddle-tailed reef snake with fixed front fangs.
 Deinococcus|Deinococcus radiodurans|Deinococcus|Survives a thousand times the radiation that kills a human.
-Pseudomonas|Pseudomonas aeruginosa|Pseudomonads|A rod with a polar tail that forms slimy biofilms.
+Pseudomonas|Pseudomonas aeruginosa|Pseudomonas aeruginosa|A rod with a polar tail that forms slimy biofilms.
 Lyme spirochaete|Borrelia burgdorferi|Borrelia (Lyme, relapsing fever)|A corkscrew-shaped cell spread by ticks.
-Chlamydia|Chlamydia trachomatis|Chlamydiae|Lives only inside other cells; among the smallest bacteria.
-Rhizobium|Rhizobium leguminosarum|Rhizobia|Lives in root nodules and turns air into fertiliser.
+Chlamydia|Chlamydia trachomatis|Chlamydia trachomatis|Lives only inside other cells; among the smallest bacteria.
+Rhizobium|Rhizobium leguminosarum|Rhizobium|Lives in root nodules and turns air into fertiliser.
 Halobacterium|Halobacterium salinarum|Halophiles|Turns salt lakes pink with a light-harvesting purple pigment. No nucleus.
 Methanosarcina|Methanosarcina barkeri|Methanomicrobia (Methanosarcina)|Makes methane in swamps and cattle. No nucleus, no bacterial cell wall.
-Tuberculosis bacterium|Mycobacterium tuberculosis|Mycobacteria|A waxy-walled rod that hides inside immune cells.
+Tuberculosis bacterium|Mycobacterium tuberculosis|Tuberculosis bacterium|A waxy-walled rod that hides inside immune cells.
 Aquifex|Aquifex aeolicus|Aquificae|Grows at 95 °C and breathes hydrogen; near the root of bacteria.
 Thermus|Thermus aquaticus|Thermus|A Yellowstone hot-spring microbe that gave us the PCR enzyme.
 Myxobacterium|Myxococcus xanthus|Myxobacteria|Bacteria that swarm and build fruiting bodies together.
-Planctomycete|Gemmata obscuriglobus|Planctomycetes|A bacterium with a membrane around its DNA.
+Planctomycete|Gemmata obscuriglobus|Planctomyces|A bacterium with a membrane around its DNA.
 Whooping cough bacterium|Bordetella pertussis|Bordetella|A small rod that clings to the windpipe.
-Chloroflexus|Chloroflexus aurantiacus|Chloroflexi|A gliding, photosynthetic filament in hot-spring mats.
+Chloroflexus|Chloroflexus aurantiacus|Chloroflexus (green non-sulfur)|A gliding, photosynthetic filament in hot-spring mats.
 Pyrococcus|Pyrococcus furiosus|Thermococci|Grows best at 100 °C on the sea floor.
 Thermoplasma|Thermoplasma acidophilum|Thermoplasmata|Lives in hot acid coal waste with no cell wall.
 Ammonia-oxidising archaeon|Nitrosopumilus maritimus|Marine ammonia-oxidisers|One of the most abundant cells in the ocean.
@@ -2624,6 +2767,32 @@ Sunbittern|Eurypyga helias|Kagu & sunbittern|Flashes eyespots on its wings.
 Seriema|Cariama cristata|Seriemas|A long-legged snake-killer; closest to falcons and parrots.
 Puffbird|Bucconidae|Jacamars & puffbirds|A stolid, big-headed sit-and-wait hunter.
 Whale louse|Cyamus|Amphipods|A crab-like amphipod that clings to whales.
+Chroococcidiopsis|Chroococcidiopsis|Chroococcidiopsis (desert rock dwellers)|Lives inside desert rocks; a candidate for Mars.
+Paenibacillus|Paenibacillus larvae|Paenibacillus|Kills honeybee larvae (foulbrood).
+Skin staphylococcus|Staphylococcus epidermidis|Skin staphylococci|Your skin's dominant staph; harmless until a catheter.
+Erysipelothrix|Erysipelothrix rhusiopathiae|Erysipelothrix|Fish-handler's disease.
+Phytoplasma|Candidatus Phytoplasma|Phytoplasmas (plant yellows)|Wall-less plant parasites that turn flowers into leaves.
+Avian mycobacterium|Mycobacterium avium|Environmental mycobacteria|Lurks in showerheads and infects the immunocompromised.
+Gardnerella|Gardnerella vaginalis|Gardnerella|The bacterium of bacterial vaginosis.
+Brevibacterium|Brevibacterium linens|Brevibacterium (cheese rind)|Gives Limburger and feet their smell.
+Bradyrhizobium|Bradyrhizobium japonicum|Bradyrhizobium|The slow-growing nodule symbiont of soybeans.
+Rhodospirillum|Rhodospirillum rubrum|Rhodospirillum|A red spiral photosynthesiser.
+Magnetospirillum|Magnetospirillum|Magnetospirillum (magnetotactic)|Grows chains of magnetite crystals and swims along field lines.
+Methylobacterium|Methylobacterium|Methylobacterium (pink leaf dwellers)|Pink bacteria that eat methanol on leaves.
+Cupriavidus|Cupriavidus necator|Cupriavidus (hydrogen-eaters)|Eats hydrogen and makes biodegradable plastic.
+Comamonas|Comamonas|Comamonas & Delftia|A common wastewater rod.
+Photobacterium|Photobacterium phosphoreum|Photobacterium|Makes fish glow in the dark.
+Aeromonas|Aeromonas hydrophila|Aeromonas|A freshwater rod that infects fish and wounds.
+Alteromonas|Alteromonas|Alteromonas & Pseudoalteromonas|A marine generalist that eats algal slime.
+Vent symbiont|Candidatus Endoriftia|Thiotrichales vent symbionts|Feeds tube worms by oxidising sulfide.
+Mariprofundus|Mariprofundus ferrooxydans|Zetaproteobacteria (iron-oxidising mats)|Makes rusty twisted stalks on the seafloor.
+Nitrospina|Nitrospina|Nitrospinae|The ocean's main nitrite oxidiser.
+Ignavibacterium|Ignavibacterium|Ignavibacteria|A hot-spring relative of green sulfur bacteria that doesn't photosynthesise.
+Parachlamydia|Parachlamydia acanthamoebae|Parachlamydia (amoeba symbionts)|Lives inside amoebae.
+Lentisphaera|Lentisphaera|Lentisphaerae|A marine slime-producing bacterium.
+Elusimicrobium|Elusimicrobium|Elusimicrobia (termite gut)|A termite-gut lineage long known only from DNA.
+Armatimonas|Armatimonas|Armatimonadetes|A soil phylum first cultured in 2011.
+Planctomyces|Planctomyces|Planctomyces|Buds on a stalk and lacks peptidoglycan in the classic sense.
 # round 5
 Tardigrade|Hypsibius exemplaris|Tardigrades|Eight stubby legs, a moulting cuticle, survives vacuum.
 Coelacanth|Latimeria chalumnae|Coelacanths|Fleshy, limb-like fins. Thought extinct until 1938.
@@ -2635,7 +2804,7 @@ Diatom|Bacillariophyceae|Pennate diatoms|A single photosynthetic cell in a glass
 Gut methanogen|Methanobrevibacter smithii|Methanobacteria (gut & rumen)|Makes methane in your gut. No nucleus, but no bacterial cell wall either.
 Tuatara|Sphenodon punctatus|Tuatara|Lizard-like, with a third eye. Not a lizard.
 Toxoplasma|Toxoplasma gondii|Toxoplasma & coccidia|A single-celled parasite that breeds in cats and infects a third of humans.
-Spirulina|Arthrospira platensis|Oscillatoria & Spirulina|Photosynthetic, sold as a powder, no nucleus.
+Spirulina|Arthrospira platensis|Spirulina (Arthrospira)|Photosynthetic, sold as a powder, no nucleus.
 Lancelet|Branchiostoma|Lancelets|Fish-shaped, with a stiff rod along its back but no skull and no bones.
 Velvet worm|Peripatus|Velvet worms|Soft, many-legged, sprays glue at prey.
 Acorn worm|Enteropneusta|Acorn worms|A burrowing marine worm with gill slits.
@@ -2747,13 +2916,13 @@ Dipper|Cinclus cinclus|Dippers|A songbird that walks underwater.
 Weaver|Ploceus cucullatus|Weavers|Knots grass into hanging basket nests.
 Tanager|Tangara|Tanagers|A jewel-coloured songbird of the Neotropics.
 Babbler|Turdoides|Babblers & laughingthrushes|A gregarious, chattering bird that raises young cooperatively.
-Gemmata|Gemmata obscuriglobus|Planctomycetes|A budding bacterium with DNA wrapped in membrane.
+Gemmata|Gemmata obscuriglobus|Gemmata|A budding bacterium with DNA wrapped in membrane.
 ANME archaeon|Candidatus Methanoperedens|Anaerobic methane oxidisers (ANME)|Runs methane production in reverse, eating methane in seafloor mud.
 Micrarchaeon|Micrarchaeota|Micrarchaea|An ultrasmall parasitic archaeon from acid mine drainage.
 Aigarchaeon|Caldiarchaeum subterraneum|Aigarchaea|A hot-spring archaeon with a eukaryote-like ubiquitin system.
 CPR bacterium|Candidatus Saccharibacteria|CPR ultrasmall bacteria|Ultra-small bacteria with no ability to make their own amino acids.
-Heliobacterium|Heliobacterium modesticaldum|Clostridia|A photosynthetic Firmicute from rice paddies that also makes spores.
-Anabaena|Anabaena|Nostoc & Anabaena (filament fixers)|Bead-chain filaments with special nitrogen-fixing cells every tenth bead.
+Heliobacterium|Heliobacterium modesticaldum|Heliobacteria (photosynthetic Firmicutes)|A photosynthetic Firmicute from rice paddies that also makes spores.
+Anabaena|Anabaena|Anabaena|Bead-chain filaments with special nitrogen-fixing cells every tenth bead.
 Bodonid|Bodo saltans|Bodonids|A common pond flagellate, free-living cousin of trypanosomes.
 Retortamonad|Retortamonas|Retortamonads|A gut flagellate with no mitochondria.
 Malawimonas|Malawimonas|Malawimonads|A tiny flagellate of uncertain but deep position.
@@ -2804,10 +2973,24 @@ Palmchat|Dulus dominicus|Waxwings|Hispaniola's only endemic family, a communal n
 Bearded reedling|Panurus biarmicus|Old World warblers & whitethroats|A moustached reedbed bird in a family of its own.
 Ibisbill|Ibidorhyncha struthersii|Avocets & stilts|A curved-billed Himalayan wader in its own family.
 Plains-wanderer|Pedionomus torquatus|Jacanas|An Australian grassland bird that is really a shorebird.
+Mycoplasma genitalium|Mycoplasma genitalium|Mycoplasmas|The smallest genome of any free-living cell; template for synthetic life.
+Rhodococcus|Rhodococcus|Nocardia & Rhodococcus|Degrades oil and rubber.
+Kocuria|Kocuria|Micrococcus & Kocuria|A skin coccus that hitchhikes on space stations.
+Delftia|Delftia acidovorans|Comamonas & Delftia|Precipitates gold nuggets.
+Pseudoalteromonas|Pseudoalteromonas|Alteromonas & Pseudoalteromonas|Makes antifouling compounds on marine surfaces.
+Endoriftia|Endoriftia persephone|Thiotrichales vent symbionts|The bacterium that feeds Riftia tube worms.
+Brocadia|Brocadia anammoxidans|Anammox bacteria|Uses rocket fuel (hydrazine) as an intermediate.
+Ignavibacterium album|Ignavibacterium album|Ignavibacteria|A non-photosynthetic cousin of green sulfur bacteria.
 `;
 const WIKI={"Dog": "Dog", "House cat": "Cat", "Honeybee": "Western honey bee", "Common frog": "Common frog", "Chicken": "Red junglefowl", "Button mushroom": "Agaricus bisporus", "Human": "Human", "Monarch butterfly": "Monarch butterfly", "Brown rat": "Brown rat", "Ladybird": "Coccinellidae", "Atlantic salmon": "Atlantic salmon", "Giant sequoia": "Sequoiadendron giganteum", "Garden strawberry": "Strawberry", "Grey squirrel": "Eastern gray squirrel", "Mallard duck": "Mallard", "Crow": "Carrion crow", "Goldfish": "Goldfish", "Giraffe": "Northern giraffe", "Green sea urchin": "Strongylocentrotus", "Garden pea": "Pea", "Zebra": "Plains zebra", "Robin": "American robin", "Oak tree": "Quercus robur", "Lemon": "Lemon", "Bottlenose dolphin": "Common bottlenose dolphin", "Blue whale": "Blue whale", "Pigeon": "Rock dove", "Lion": "Lion", "Cabbage white butterfly": "Pieris rapae", "Grasshopper": "Caelifera", "Apple tree": "Apple", "Swan": "Mute swan", "Grey wolf": "Wolf", "Potato": "Potato", "Red kangaroo": "Red kangaroo", "Common octopus": "Common octopus", "American lobster": "American lobster", "Tarantula": "Tarantula", "Great white shark": "Great white shark", "Earthworm": "Lumbricus terrestris", "Moon jellyfish": "Aurelia aurita", "Green sea turtle": "Green sea turtle", "Emperor penguin": "Emperor penguin", "Killer whale": "Orca", "Bamboo": "Bamboo", "African elephant": "African bush elephant", "Rattlesnake": "Crotalus", "Sunflower": "Common sunflower", "Fruit bat": "Pteropus", "Grizzly bear": "Brown bear", "Cuttlefish": "Common cuttlefish", "Bald eagle": "Bald eagle", "Barn owl": "Western barn owl", "Red fox": "Red fox", "Meerkat": "Meerkat", "Beaver": "Beaver", "Sea otter": "Sea otter", "Capybara": "Capybara", "Ring-tailed lemur": "Ring-tailed lemur", "Baboon": "Baboon", "Hedgehog": "European hedgehog", "Opossum": "Opossum", "Tasmanian devil": "Tasmanian devil", "Armadillo": "Nine-banded armadillo", "Giant anteater": "Giant anteater", "Dromedary camel": "Dromedary", "Red deer": "Red deer", "Wild boar": "Wild boar", "Bison": "American bison", "Tapir": "Tapir", "Spotted hyena": "Spotted hyena", "Gecko": "Gecko", "Reticulated python": "Reticulated python", "King cobra": "King cobra", "American alligator": "American alligator", "Galápagos tortoise": "Galápagos tortoise", "Atlantic puffin": "Atlantic puffin", "Wandering albatross": "Snowy albatross", "Pelican": "Pelican", "White stork": "White stork", "Kingfisher": "Common kingfisher", "Macaw": "Macaw", "European eel": "European eel", "Bluefin tuna": "Atlantic bluefin tuna", "Manta ray": "Giant oceanic manta ray", "Praying mantis": "Mantis", "Scorpion": "Scorpion", "Millipede": "Millipede", "Nautilus": "Chambered nautilus", "Coral": "Coral", "Monkey puzzle tree": "Araucaria araucana", "Avocado": "Avocado", "Banana": "Banana", "Grapevine": "Vitis", "Poppy": "Papaver", "Lactobacillus": "Lactobacillus", "Starfish": "Starfish", "Bracken fern": "Pteridium aquilinum", "Baker's yeast": "Saccharomyces cerevisiae", "Nile crocodile": "Nile crocodile", "Slowworm": "Common slow worm", "Sphagnum moss": "Sphagnum", "Bath sponge": "Spongia officinalis", "Sea anemone": "Sea anemone", "Barnacle": "Barnacle", "Woodlouse": "Woodlouse", "Scallop": "Scallop", "Mosquito": "Mosquito", "Cicada": "Cicadidae", "Firefly": "Firefly", "House centipede": "Scutigera coleoptrata", "Three-toed sloth": "Three-toed sloth", "Walrus": "Walrus", "Venus flytrap": "Venus flytrap", "Vanilla": "Vanilla planifolia", "Coconut palm": "Coconut", "E. coli": "Escherichia coli", "Dragonfly": "Dragonfly", "Axolotl": "Axolotl", "Hummingbird": "Hummingbird", "Hippopotamus": "Hippopotamus", "Seahorse": "Hippocampus", "Koala": "Koala", "Broccoli": "Broccoli", "Dandelion": "Taraxacum", "Termite": "Termite", "Great crested newt": "Northern crested newt", "Clownfish": "Clownfish", "Catfish": "Catfish", "Cod": "Atlantic cod", "Plaice": "European plaice", "Pufferfish": "Tetraodontidae", "Herring": "Atlantic herring", "Mayfly": "Mayfly", "Silverfish": "Silverfish", "Stick insect": "Phasmatodea", "Earwig": "Earwig", "Head louse": "Head louse", "Cat flea": "Cat flea", "Green lacewing": "Chrysopidae", "Caddisfly": "Caddisfly", "Water flea": "Daphnia", "Copepod": "Copepod", "Sand hopper": "Talitridae", "Tiger prawn": "Penaeus monodon", "Blue mussel": "Blue mussel", "Giant clam": "Giant clam", "Common whelk": "Buccinum undatum", "Squid": "European squid", "Brittle star": "Brittle star", "Rotifer": "Rotifer", "Leech": "Hirudo medicinalis", "Lugworm": "Blow lugworm", "Bootlace worm": "Lineus longissimus", "Box jellyfish": "Chironex fleckeri", "Glass sponge": "Hexactinellid", "Nightjar": "Nightjar", "House sparrow": "House sparrow", "Chameleon": "Chameleon", "Lemur": "Lemur", "Otter": "Otter", "Raccoon": "Raccoon", "Horsetail": "Equisetum", "Pineapple": "Pineapple", "Agave": "Agave americana", "Coffee": "Coffee", "Peppermint": "Mentha", "Carrot": "Carrot", "Chanterelle": "Chanterelle", "Platypus": "Platypus", "Slime mould": "Physarum polycephalum", "Sea cucumber": "Sea cucumber", "Manatee": "Manatee", "Rock hyrax": "Rock hyrax", "Antarctic krill": "Antarctic krill", "Ostrich": "Ostrich", "Comb jelly": "Ctenophora", "Pangolin": "Pangolin", "Aardvark": "Aardvark", "Nudibranch": "Nudibranch", "Falcon": "Falcon", "Gharial": "Gharial", "Giardia": "Giardia duodenalis", "Radiolarian": "Radiolaria", "Podocarp": "Podocarpus", "Oyster": "Oyster", "Ostracod": "Ostracod", "Hummingbird hawk-moth": "Hummingbird hawk-moth", "Coral snake": "Micrurus", "Caiman": "Spectacled caiman", "Dugong": "Dugong", "Porcupine": "Porcupine", "Tuberculosis bacterium": "Tuberculosis", "Echidna": "Echidna", "Tuatara": "Tuatara", "Toxoplasma": "Toxoplasma gondii", "Liverwort": "Liverwort", "Foraminiferan": "Foraminifera", "Kiwi": "Kiwi (bird)", "Bichir": "Bichir", "Acoel flatworm": "Symsagittifera roscoffensis", "Mite": "Mite", "Aye-aye": "Aye-aye", "Springhare": "Pedetes", "Pronghorn": "Pronghorn", "Loki": "Loki"};
 // ================= DATA =================
 const MAJOR = new Set(["Bacteria","Archaea","Eukaryotes","Cyanobacteria","Firmicutes","Actinobacteria","Proteobacteria","Spirochaetes","PVC group","FCB group","Euryarchaeota","TACK archaea","Asgard archaea","DPANN archaea","Excavates","SAR supergroup","Rhizarians","Stramenopiles","Alveolates","Haptophytes & cryptophytes","Archaeplastids","Red algae","Green plants","Land plants","Liverworts","Mosses","Lycophytes","Ferns & horsetails","Gymnosperms","Flowering plants","Amoebozoans","Fungi","Sac fungi","Club fungi","Animals","Sponges","Cnidarians","Roundworms","Tardigrades","Arthropods","Chelicerates","Insects","Flatworms","Annelids","Molluscs","Echinoderms","Hemichordates","Chordates","Tunicates","Vertebrates","Cartilaginous fish","Teleosts","Amphibians","Mammals","Reptiles","Birds"]);
+const AGES={"Life":4000,"Bacteria":3600,"Archaea":3500,"Eukaryotes":1900,"Terrabacteria":3200,"Gracilicutes":3000,"Cyanobacteria":2700,"Chloroflexi":2600,"Firmicutes":2600,"Actinobacteria":2400,"Proteobacteria":2600,"Alphaproteobacteria":2100,"Betaproteobacteria":1800,"Gammaproteobacteria":2000,"FCB group":2500,"PVC group":2400,"Spirochaetes":2300,"Euryarchaeota":3100,"Methanogens":2800,"DPANN archaea":2600,"TACK archaea":2800,"Crenarchaea":2400,"Thaumarchaea":2000,"Asgard archaea":2300,
+"Excavates":1700,"Euglenozoans":1300,"Metamonads":1300,"Other deep eukaryote lineages":1700,"SAR supergroup":1500,"Rhizarians":1100,"Forams":700,"Radiolarians":700,"Cercozoans":900,"Stramenopiles":1100,"Diatoms":250,"Brown algae":250,"Water moulds":400,"Alveolates":1100,"Ciliates":800,"Dinoflagellates":600,"Apicomplexans":600,"Haptophytes & cryptophytes":1300,
+"Archaeplastids":1600,"Red algae":1300,"Green plants":1200,"Chlorophytes":1000,"Streptophytes":1000,"Land plants":480,"Liverworts":400,"Mosses":380,"Vascular plants":430,"Lycophytes":380,"Euphyllophytes":410,"Ferns & horsetails":370,"Polypod ferns":200,"Seed plants":330,"Gymnosperms":310,"Gnetophytes":220,"Conifers":270,"Pine family":170,"Cypress family":180,"Flowering plants":145,"Magnoliids":130,"Monocots":125,"Grasses":75,"Eudicots":128,"Rosids":112,"Asterids":108,
+"Amoebozoans":1100,"Opisthokonts":1200,"Fungi":1050,"Dikarya":650,"Sac fungi":550,"Club fungi":500,"Animals":750,"Sponges":650,"Cnidarians":620,"True jellyfish":350,"Anthozoans":500,"Hydrozoans":450,"Bilaterians":620,"Protostomes":580,"Ecdysozoans":570,"Roundworms":450,"Arthropods":550,"Chelicerates":500,"Scorpions":350,"Spiders":320,"Mites & ticks":420,"Myriapods":420,"Pancrustaceans":520,"Barnacles":300,"True crabs":180,"Insects":420,"Insects with metamorphosis":320,"Beetles":270,"Butterflies & moths":180,"Flies":250,"Hymenopterans":250,"Lophotrochozoans":570,"Flatworms":450,"Annelids":520,"Molluscs":540,"Gastropods":470,"Bivalves":500,"Cephalopods":420,
+"Deuterostomes":590,"Echinoderms":520,"Hemichordates":520,"Chordates":560,"Tunicates":420,"Vertebrates":520,"Jawed vertebrates":460,"Cartilaginous fish":420,"Sharks":280,"Rays":220,"Bony vertebrates":440,"Ray-finned fish":410,"Teleosts":270,"Eels":110,"Catfish":110,"Anglerfish":110,"Lobe-finned lineage":420,"Tetrapods":375,"Amphibians":310,"Frogs & toads":200,"Salamanders & newts":170,"Amniotes":320,"Mammals":200,"Monotremes":50,"Therians":165,"Marsupials":85,"Placentals":100,"Xenarthrans":65,"Afrotherians":75,"Boreoeutherians":92,"Euarchontoglires":87,"Primates":68,"Rodents":66,"Laurasiatherians":88,"Bats":62,"Carnivorans":52,"Odd-toed ungulates":56,"Even-toed ungulates":62,"Whales & dolphins":36,"Reptiles":285,"Turtles":160,"Lepidosaurs":250,"Squamates":195,"Snakes":125,"Archosaurs":250,"Crocodilians":95,"Birds":105,"Palaeognaths":80,"Neognath birds":95,"Fowl & waterfowl":85,"Neoaves":72,"Parrots":45,"Songbirds":58};
+const ROOT_AGE=4000;
 const ROUND_SECONDS=45, BLIND_FROM=3;
 const L1=new Set(["Bacteria","Archaea","Cyanobacteria","Firmicutes","Actinobacteria","Proteobacteria","Euryarchaeota","TACK archaea","Asgard archaea","Excavates","SAR supergroup","Archaeplastids","Land plants","Flowering plants","Amoebozoans","Fungi","Animals","Cnidarians","Arthropods","Insects","Molluscs","Echinoderms","Chordates","Vertebrates","Teleosts","Amphibians","Mammals","Reptiles","Birds"]);
 const DOM={"Bacteria":{c:"#3f7fcf",k:"#2b5a99"},"Archaea":{c:"#d39a2a",k:"#8a6216"},"Eukaryotes":{c:"#8f6fd0",k:"#5a3f96"}};
@@ -2837,6 +3020,9 @@ function build(a,parent,depth){const n={name:a[0],parent,depth,children:[]};node
 const root=build(T,null,0);
 nodes.forEach(n=>{ let a=n; while(a.parent&&a.parent.parent) a=a.parent; n.dom=a===root?null:a.name; });
 function height(n){ n.h=n.children.length?1+Math.max(...n.children.map(height)):0; return n.h; } height(root); const MAXH=root.h;
+(function minAge(n){ n.minAge=n.children.length?Math.max(...n.children.map(minAge)):0; return n.age!==undefined?n.age:(AGES[n.name]!==undefined?AGES[n.name]:n.minAge); })(root);
+(function fillAge(n,pa){ if(!n.children.length){n.age=0;return;} let a=AGES[n.name]; if(a===undefined){ a=Math.max(n.minAge*1.25+8, pa*0.55); } a=Math.min(a,pa*0.92); n.age=a; n.children.forEach(c=>fillAge(c,a)); })(root,ROOT_AGE*1.05);
+root.age=ROOT_AGE;
 leaves.forEach((l,i)=>l.i=i);
 (function span(n){ if(!n.children.length){n.lo=n.hi=n.i;return;} n.children.forEach(span); n.lo=n.children[0].lo; n.hi=n.children[n.children.length-1].hi; })(root);
 const ancestors=n=>{const a=[];while(n){a.push(n);n=n.parent;}return a;};
@@ -2845,7 +3031,7 @@ function pathBetween(a,b){const A=new Set(ancestors(a));let l=b;while(!A.has(l))
 // ================= LAYOUT =================
 const N=leaves.length, R=Math.round(N*14.5/(2*Math.PI)), ROW=14, XW=Math.round(MAXH*34);
 let BBOX;
-const rad=n=>n===root?0:Math.pow((MAXH-n.h)/MAXH,.7);
+const rad=n=>n===root?0:1-Math.pow(n.age/ROOT_AGE,0.5);
 function layout(){
   if(LAYOUT==="radial"){
     nodes.forEach(n=>{ n.a=-Math.PI/2+((n.lo+n.hi)/2)*2*Math.PI/N; n.r=R*rad(n); n.x=n.r*Math.cos(n.a); n.y=n.r*Math.sin(n.a); n.ux=Math.cos(n.a); n.uy=Math.sin(n.a); });
@@ -2878,7 +3064,7 @@ function render(){
     if(!n.children.length){
       const deg=n.a*180/Math.PI, left=Math.cos(n.a)<0;
       const t=el("text",{class:"lbl",transform:`rotate(${deg.toFixed(2)}${left?"":""})`.replace(/rotate\(([-\d.]+)\)/,(m,v)=>`rotate(${left?(+v+180).toFixed(2):v})`),x:left?-(R+13):R+13,y:3.5,"text-anchor":left?"end":"start"});
-      t.textContent=MODE==="latin"?LATIN[n.name]:n.name; n.lbl=t; gL.appendChild(t);
+      t.textContent=n.name.replace(/\s*\([^)]*\)/,"")+(LATIN[n.name]&&LATIN[n.name]!==n.name?" · "+LATIN[n.name]:""); n.lbl=t; gL.appendChild(t);
     } else if(n!==root && MAJOR.has(n.name)){
       const deg=n.a*180/Math.PI, bottom=Math.sin(n.a)>0, rr=n.r-7;
       const t=el("text",{class:"clbl major"+(L1.has(n.name)?"":" l2"),style:n.style,"text-anchor":"middle"});
@@ -2888,7 +3074,7 @@ function render(){
   view.append(gW,gE,gD,gH,gL,gM); placeMajors();
   $("legend").innerHTML=root.children.map(d=>`<span><i style="background:${DOM[d.name].c}"></i>${d.name}</span>`).join("");
 }
-function placeMajors(){ const fs=Math.max(9,Math.min(14/s,160)); view.style.setProperty("--fs",fs+"px"); view.classList.toggle("z2",s>0.42);
+function placeMajors(){ const fs=Math.max(9,Math.min(14/s,160)); view.style.setProperty("--fs",fs+"px"); view.style.setProperty("--eo",Math.min(1,0.18+s*1.4).toFixed(2)); view.classList.toggle("z2",s>0.42);
   nodes.forEach(n=>{ if(!n.major) return; const deg=n.a*180/Math.PI, bottom=Math.sin(n.a)>0, left=Math.cos(n.a)<0;
     const width=n.name.length*fs*0.58, arc=(n.hi-n.lo+1)*2*Math.PI/N*Math.max(n.r,40), sector=(n.hi-n.lo+1)*2*Math.PI/N*R;
     const room = n.depth<=1 || sector>=fs*1.15; n.lbl.style.display=room?"":"none"; if(!room) return;
@@ -2937,14 +3123,14 @@ let wheelT=null;
 document.getElementById("fit").onclick=()=>{ if(SCOPE==="bacteria"&&!$("overlay").classList.contains("on")) fitTo(byName["Bacteria"]); else fit(); };
 function nearest(cx,cy){ const w=toWorld(cx,cy); let best=null,bd=Infinity;
   nodes.forEach(n=>{ let d=Math.hypot(n.x-w.x,n.y-w.y);
-    if(!n.children.length && !(MODE==="clades")){ const len=(n.lbl.textContent.length*5.2)+13; const proj=(w.x-n.x)*n.ux+(w.y-n.y)*n.uy; const c=Math.max(0,Math.min(len,proj)); d=Math.min(d,Math.hypot(n.x+n.ux*c-w.x,n.y+n.uy*c-w.y)*0.9); }
+    if(!n.children.length && !(MODE==="clades")){ const len=(n.lbl.textContent.length*5.0)+13; const proj=(w.x-n.x)*n.ux+(w.y-n.y)*n.uy; const c=Math.max(0,Math.min(len,proj)); d=Math.min(d,Math.hypot(n.x+n.ux*c-w.x,n.y+n.uy*c-w.y)*0.9); }
     if(d<bd){bd=d;best=n;} }); return best; }
 
 // ================= GAME =================
 let round=0,picked=null,locked=false,hist=[],orgs=[],timerId=null,tLeft=0,roundStart=0,totalMs=0;
 const rand=a=>a[Math.floor(Math.random()*a.length)];
 function toast(m){const t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove("on"),1800);}
-const dn=n=>(MODE==="latin"&&!n.children.length)?LATIN[n.name]:n.name;
+const dn=n=>n.name;
 
 function newGame(){ $("sheet").classList.add("hide"); render(); fit();
   $("card").innerHTML=`<p class="rank" style="font-size:26px;margin:0">Tree Tap</p><p class="sub" style="margin-bottom:0">Five organisms, easy to expert. Tap where each belongs on the circular tree. Tips carry scientific group names; kingdoms and phyla are labelled. Score is branches off; lower is better.</p>
@@ -3023,7 +3209,7 @@ function results(){
   const modeTxt=SCOPE==="bacteria"?"bacteria only":"all life";
   $("card").innerHTML=`<p class="big">${total}<small>branches off · ${fmt(totalMs)}</small></p><p class="rank">${rank}</p><p class="sub">${sub} ${modeTxt}.</p>
     <div class="pips">${hist.map(h=>pip(h.dist)).join("")}</div>
-    ${hist.map(h=>`<div class="rr"><div><div class="n">${h.o.name}</div><div class="w">${h.dist===0?`<span>${h.o.leaf}</span>`:`${h.timedOut?"no placement":"you chose "+(LATIN[h.guess]?LATIN[h.guess]+" ("+h.guess+")":h.guess)} · belongs with <span>${h.o.leaf}</span>`}</div></div><div class="d ${h.dist===0?'z':''}">${h.dist}</div></div>`).join("")}
+    ${hist.map(h=>`<div class="rr"><div><div class="n">${h.o.name}</div><div class="w">${h.dist===0?`<span>${h.o.leaf}</span>`:`${h.timedOut?"no placement":"you chose "+h.guess} · belongs with <span>${h.o.leaf}</span>`}</div></div><div class="d ${h.dist===0?'z':''}">${h.dist}</div></div>`).join("")}
     <div class="row"><button class="go ghost" id="again">Play again</button><button class="go green" id="share">Share score</button></div>`;
   $("overlay").classList.add("on"); $("again").onclick=newGame;
   $("share").onclick=async()=>{ const text=`Tree Tap 🌳 ${modeTxt} · ${total} branches off · ${fmt(totalMs)}\n${hist.map(h=>pip(h.dist)).join("")}\n${hist.map(h=>`${h.o.name} ${h.dist===0?"✓":h.dist}`).join(" · ")}\n${location.href.split("#")[0]}`;
