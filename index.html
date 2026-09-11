@@ -34,14 +34,15 @@
   .mark.lca{fill:#fff;stroke:var(--ink);stroke-width:2.5}
   .edge{fill:none;stroke:var(--dc,var(--line));stroke-width:1.3;stroke-opacity:var(--eo,1);vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}
   .edge.path{stroke:var(--ink);stroke-width:3;stroke-opacity:1}
-  .route-glow{fill:none;stroke:url(#routeGrad);stroke-width:14;stroke-opacity:.35;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;filter:url(#glow)}
-  .route{fill:none;stroke:url(#routeGrad);stroke-width:4;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:draw var(--dur,1.1s) cubic-bezier(.3,0,.2,1) forwards}
-  .comet{fill:#fff;stroke:var(--ink);stroke-width:2;vector-effect:non-scaling-stroke;filter:url(#glow)}
+  .route-glow{fill:none;stroke:url(#routeGrad);stroke-width:22;stroke-opacity:.5;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;filter:url(#glow)}
+  .route{fill:none;stroke:url(#routeGrad);stroke-width:5;filter:drop-shadow(0 0 4px rgba(255,255,255,.9));stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:draw var(--dur,.7s) cubic-bezier(.2,0,.1,1) forwards}
+  .comet{fill:#fff;stroke:#ffd23f;stroke-width:3;vector-effect:non-scaling-stroke;filter:url(#glow)}
   .comet.t1{opacity:.6} .comet.t2{opacity:.35} .comet.t3{opacity:.18}
   .ping{fill:none;stroke-width:2.5;vector-effect:non-scaling-stroke;transform-box:fill-box;transform-origin:center;animation:ping 1.1s cubic-bezier(.2,.8,.2,1) infinite}
   .ping.o{stroke:var(--orange)} .ping.g{stroke:var(--green)}
-  @keyframes ping{0%{transform:scale(.4);opacity:.9}100%{transform:scale(3.2);opacity:0}}
-  .lcaTag{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:12px;fill:var(--ink);paint-order:stroke;stroke:#fff;stroke-width:4px;stroke-linejoin:round;opacity:0;animation:fadeup .5s .9s var(--ease) forwards}
+  @keyframes ping{0%{transform:scale(.4);opacity:1}100%{transform:scale(4);opacity:0}}
+  .ping{animation-duration:.8s}
+  .lcaTag{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:12px;fill:var(--ink);paint-order:stroke;stroke:#fff;stroke-width:4px;stroke-linejoin:round;opacity:0;animation:fadeup .4s .45s var(--ease) forwards}
   @keyframes fadeup{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
   .confetti{position:absolute;width:8px;height:8px;border-radius:2px;pointer-events:none;will-change:transform,opacity}
   .status .pts{display:inline-block;font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:22px;color:var(--ink);min-width:2.2ch}
@@ -95,7 +96,15 @@
   .dots{display:flex;gap:4px}
   .dots i{width:16px;height:6px;border-radius:3px;background:var(--soft);transition:background .2s}
   .dots i.now{background:var(--orange)} .dots i.done{background:var(--green)} .dots i.done.miss{background:#f3c26b}
-  .timer{margin-left:auto;font-variant-numeric:tabular-nums;min-width:74px;justify-content:center;position:relative;overflow:hidden}
+  .timer{margin-left:auto;font-variant-numeric:tabular-nums;min-width:84px;justify-content:center;position:relative;overflow:hidden;font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:20px;padding:6px 14px}
+  .timer .tlab{font-size:13px;opacity:.6} .timer .bar{height:4px}
+  .timer.crit{background:var(--orange);color:#fff;animation:tpulse .5s ease-in-out infinite} .timer.crit .bar{background:#fff}
+  @keyframes tpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+  #stage.crit::after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 0 6px rgba(255,60,40,.9),inset 0 0 90px rgba(255,60,40,.55);animation:redflash .5s ease-in-out infinite}
+  @keyframes redflash{0%,100%{opacity:.25}50%{opacity:1}}
+  .bigt{position:fixed;left:50%;top:38%;transform:translate(-50%,-50%);font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:140px;color:rgba(255,60,40,.9);pointer-events:none;opacity:0;text-shadow:0 0 30px rgba(255,255,255,.9)}
+  .bigt.on{opacity:1} .bigt.beat{animation:beat .5s var(--ease)}
+  @keyframes beat{0%{transform:translate(-50%,-50%) scale(1.5);opacity:.4}100%{transform:translate(-50%,-50%) scale(1);opacity:1}}
   .timer .bar{position:absolute;left:0;bottom:0;height:3px;background:var(--green);width:100%;transition:width .2s linear}
   .timer.low{color:var(--orange-ink)} .timer.low .bar{background:var(--orange)}
   .icon{width:38px;height:38px;padding:0;justify-content:center;border:0;cursor:pointer;font-size:16px}
@@ -159,7 +168,7 @@
   <div id="layer">
   <canvas id="cv"></canvas>
   <svg id="svg" aria-label="Tree of life. Drag to pan, pinch or scroll to zoom, tap a branch to place the organism."><g id="view"></g></svg>
-  <svg id="fx"><defs><filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter><linearGradient id="routeGrad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff5d38"/><stop offset="1" stop-color="#17b26a"/></linearGradient></defs><g id="fxview"><g id="hl"></g><g id="marks"></g></g></svg>
+  <svg id="fx"><defs><filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5"/></filter><linearGradient id="routeGrad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff5d38"/><stop offset="1" stop-color="#17b26a"/></linearGradient></defs><g id="fxview"><g id="hl"></g><g id="marks"></g></g></svg>
   </div>
   <div class="chip" id="chip"></div>
   <div class="hold" id="hold"></div>
@@ -167,7 +176,7 @@
 </div>
 <div class="top">
   <div class="pill"><span class="brand">Tree Tap</span><span class="dots" id="dots"></span></div>
-  <div class="pill timer" id="timer"><span id="tval">0:45</span><span class="bar" id="tbar"></span></div>
+  <div class="pill timer" id="timer"><span class="tlab">⏱</span><span id="tval">30</span><span class="bar" id="tbar"></span></div>
   <button class="pill icon" id="fit" title="Fit whole tree" aria-label="Fit whole tree">⤢</button>
 </div>
 <div class="legend" id="legend"></div>
@@ -182,6 +191,7 @@
 </div></div>
 <div class="overlay" id="overlay"><div class="card" id="card"></div></div>
 <div class="toast" id="toast"></div>
+<div class="bigt" id="bigt"></div>
 <script>
 const TREE_TXT=`Life
  Bacteria
@@ -11347,7 +11357,7 @@ const L1=new Set(["Bacteria","Archaea","Cyanobacteria","Firmicutes","Actinobacte
 const DOM={"Bacteria":{c:"#3f7fcf",k:"#2b5a99"},"Archaea":{c:"#d39a2a",k:"#8a6216"},"Eukaryotes":{c:"#8f6fd0",k:"#5a3f96"}};
 const mix=(hex,t)=>{const n=parseInt(hex.slice(1),16),r=n>>16,gg=n>>8&255,b=n&255;const f=v=>Math.round(v+(255-v)*t);return `rgb(${f(r)},${f(gg)},${f(b)})`;};
 const LEVELS=["Round 1 · warm-up","Round 2 · familiar","Round 3 · trickier","Round 4 · hard","Round 5 · expert"];
-let MODE="latin", SELECT="tap", SCOPE="all", EASY=false, LAYOUT="radial"; const HOLD_MS=450;
+let MODE="latin", SELECT="tap", SCOPE="all", EASY=false; const LAYOUT="radial"; const HOLD_MS=450;
 
 // parse indented tree: depth = leading spaces; leaves are "Common name|Latin"
 const LATIN={};
@@ -11504,9 +11514,9 @@ function playReveal(g,c,p,exact){
   const pts=routePoints(p); const d="M"+pts.map(q=>q[0].toFixed(1)+" "+q[1].toFixed(1)).join("L");
   const grad=document.getElementById("routeGrad"); grad.setAttribute("x1",g.x); grad.setAttribute("y1",g.y); grad.setAttribute("x2",c.x); grad.setAttribute("y2",c.y);
   const glow=el("path",{class:"route-glow",d}); const core=el("path",{class:"route",d}); H.append(glow,core);
-  const len=core.getTotalLength(); const dur=Math.min(2.2,0.6+len/1400); core.style.setProperty("--len",len); core.style.setProperty("--dur",dur+"s"); glow.style.strokeDasharray=len; glow.style.strokeDashoffset=len; glow.style.animation=`draw ${dur}s cubic-bezier(.3,0,.2,1) forwards`;
+  const len=core.getTotalLength(); const dur=Math.min(0.9,0.35+len/4000); core.style.setProperty("--len",len); core.style.setProperty("--dur",dur+"s"); glow.style.strokeDasharray=len; glow.style.strokeDashoffset=len; glow.style.animation=`draw ${dur}s cubic-bezier(.3,0,.2,1) forwards`;
   // comet + tail riding the route
-  [["",0],["t1",0.06],["t2",0.12],["t3",0.18]].forEach(([cls,lag],i)=>{ const dot=el("circle",{class:"comet "+cls,r:i?4-i*0.8:6}); const am=el("animateMotion",{dur:dur+"s",begin:(lag*dur)+"s",fill:"freeze",calcMode:"linear",keyPoints:"0;1",keyTimes:"0;1"}); am.setAttribute("path",d); dot.appendChild(am); H.appendChild(dot); });
+  [["",0],["t1",0.05],["t2",0.1],["t3",0.15]].forEach(([cls,lag],i)=>{ const dot=el("circle",{class:"comet "+cls,r:i?5-i:8}); const am=el("animateMotion",{dur:dur+"s",begin:(lag*dur)+"s",fill:"freeze",calcMode:"linear",keyPoints:"0;1",keyTimes:"0;1"}); am.setAttribute("path",d); dot.appendChild(am); H.appendChild(dot); });
   // LCA tag
   const tag=el("text",{class:"lcaTag",x:p.lca.x,y:p.lca.y-12,"text-anchor":"middle"}); tag.textContent="↳ "+p.lca.name; tag.style.fontSize=(12/Math.max(s,0.3))+"px"; H.appendChild(tag);
 }
@@ -11582,13 +11592,13 @@ const dn=n=>n.name;
 
 function newGame(){ $("overlay").classList.remove("peek"); $("sheet").classList.add("hide"); render(); fit();
   $("card").innerHTML=`<p class="rank" style="font-size:26px;margin:0">Tree Tap</p><p class="sub" style="margin-bottom:0">Five organisms, easy to expert. Tap where each belongs on the circular tree. Tips carry scientific group names; kingdoms and phyla are labelled. Score is branches off; lower is better.</p>
-    <p class="opt">Tree view</p><div class="seg" id="segV"><button data-v="radial"><b>Circular</b><span>Life radiates from the centre; tips around the rim.</span></button><button data-v="fractal"><b>Branching</b><span>OneZoom-style: every group is a smaller tree growing from its parent. Zoom in, and in, and in.</span></button></div>
-    <p class="opt">Difficulty</p><div class="seg" id="segM"><button data-v="normal"><b>Normal</b><span>Kingdoms and phyla labelled. 45 seconds a round.</span></button><button data-v="easy"><b>Easy</b><span>Every group labelled, all the way down. But only 15 seconds a round.</span></button></div>
+    <p class="opt">Organisms</p><div class="seg" id="segO"><button data-v="all"><b>All of life</b><span>Five organisms from anywhere on the tree.</span></button><button data-v="bacteria"><b>Bacteria only</b><span>Five bacteria; the view opens on the bacterial sector.</span></button></div>
+    <p class="opt">Difficulty</p><div class="seg" id="segM"><button data-v="normal"><b>Normal</b><span>Kingdoms and phyla labelled. 30 seconds a round.</span></button><button data-v="easy"><b>Easy</b><span>Every group labelled, all the way down. But only 15 seconds a round.</span></button></div>
     <p class="opt">How to select a branch</p><div class="seg" id="segS"><button data-v="tap"><b>Tap</b><span>Tap or click a branch to select it. Drag to pan.</span></button><button data-v="hold"><b>Press and hold</b><span>Hold on a branch for half a second to select it. Taps are ignored, so you can't mis-select while panning.</span></button></div>
     <div class="row"><button class="go ghost" id="tut">Show tutorial</button><button class="go" id="start">Start</button></div>`;
   $("tut").onclick=()=>tutorial(0);
   const seg=(id,cur,set)=>{ const box=$(id); [...box.children].forEach(b=>{ b.classList.toggle("on",b.dataset.v===cur); b.onclick=()=>{ set(b.dataset.v); [...box.children].forEach(x=>x.classList.toggle("on",x===b)); }; }); };
-  seg("segM",EASY?"easy":"normal",v=>{EASY=v==="easy";}); seg("segV",LAYOUT,v=>{LAYOUT=v;render();fit();}); seg("segS",SELECT,v=>SELECT=v);
+  seg("segM",EASY?"easy":"normal",v=>{EASY=v==="easy";}); seg("segO",SCOPE,v=>{SCOPE=v;}); seg("segS",SELECT,v=>SELECT=v);
   $("overlay").classList.add("on"); $("start").onclick=begin; }
 function scopedPools(){ if(SCOPE==="all") return POOLS; return POOLS.map(p=>p.filter(o=>byName[o.leaf].dom==="Bacteria")).map((p,i)=>p.length?p:POOLS[i]); }
 function fitTo(node){ size(); const Hv=H-sheetH()-70; const pts=[[node.x,node.y]]; const a0=-Math.PI/2+(node.lo-0.5)*2*Math.PI/N, a1=-Math.PI/2+(node.hi+0.5)*2*Math.PI/N;
@@ -11603,14 +11613,14 @@ const TUT=[
  {t:"Strategy: hedge like a pro",b:"Not sure which family? Tap the group instead. Placing a cat on ‘Carnivorans’ costs a few branches; placing it on ‘Fish’ costs twenty. A confident hedge beats a wild guess every time — the sheet tells you the minimum branches a hedge costs before you commit.",go:()=>{ const n=byName["Carnivorans"]; flyTo(1.6,-n.x*1.6,-n.y*1.6-sheetH()/2,700); }},
  {t:"Strategy: read the clue",b:"The blurb hides the taxonomy. ‘No nucleus’ means Bacteria or Archaea; ‘no nucleus but no bacterial cell wall’ means Archaea. ‘Milk’ means mammal, ‘feathers’ means bird, ‘lays eggs but has fur’ means monotreme. ‘Six legs’ is an insect; ‘eight legs, no antennae’ is an arachnid. ‘Spores, not seeds’ is a fern or moss; ‘cones, no flowers’ is a conifer.",go:null},
  {t:"Strategy: know the traps",b:"Whales sit with hippos, not fish. Birds sit inside reptiles, next to crocodiles. Kelp is not a plant (it is with diatoms), fungi are closer to animals than to plants, and a slowworm is a lizard. Later rounds are built from exactly these.",go:null},
- {t:"Modes",b:"Circular or Branching view; Normal (kingdoms and phyla labelled, 45 s) or Easy (everything labelled, 15 s); Tap or Press-and-hold selection. Share your score line at the end. Good luck.",go:null}
+ {t:"Modes",b:"All of life or Bacteria only; Normal (kingdoms and phyla labelled, 30 s) or Easy (everything labelled, 15 s); Tap or Press-and-hold selection. When the clock hits five seconds the screen flashes red — commit. Share your score line at the end. Good luck.",go:null}
 ];
 function tutorial(i){ if(i<0||i>=TUT.length){ newGame(); return; } const st=TUT[i]; $("sheet").classList.add("hide"); if(!view.childNodes.length) render();
   $("card").innerHTML=`<p class="sub" style="margin:0 0 6px">Tutorial · ${i+1} of ${TUT.length}</p><p class="rank" style="margin-top:0">${st.t}</p><p class="sub">${st.b}</p>
     <div class="row"><button class="go ghost" id="tb">${i===0?"Close":"Back"}</button><button class="go" id="tn">${i===TUT.length-1?"Done":"Next"}</button></div>`;
   $("overlay").classList.add("on"); $("overlay").classList.add("peek"); $("tb").onclick=()=>{ if(i===0){ $("overlay").classList.remove("peek"); newGame(); } else tutorial(i-1); }; $("tn").onclick=()=>{ if(i===TUT.length-1){ $("overlay").classList.remove("peek"); newGame(); } else tutorial(i+1); };
   if(st.go) st.go(); }
-function begin(){ ROUND_SECONDS=EASY?15:45; render(); round=0;hist=[];totalMs=0; orgs=scopedPools().map(p=>rand(p));
+function begin(){ ROUND_SECONDS=EASY?15:30; render(); round=0;hist=[];totalMs=0; orgs=scopedPools().map(p=>rand(p));
   $("overlay").classList.remove("on"); $("sheet").classList.remove("hide"); startRound(); requestAnimationFrame(()=>{ if(SCOPE==="bacteria") fitTo(byName["Bacteria"]); else fit(); }); toast("Drag to pan · pinch or scroll to zoom"); }
 function dots(){ $("dots").innerHTML=orgs.map((_,i)=>`<i class="${i<round?'done'+(hist[i]&&hist[i].dist>0?' miss':''):i===round?'now':''}"></i>`).join(""); }
 function clearMarks(){ $("marks").innerHTML=""; $("hl").innerHTML=""; nodes.forEach(n=>{ if(n.marks){n.marks=null;} n.lbl&&n.lbl.classList.remove("picked","correct","lca"); }); chip.classList.remove("on","green"); chipNode=null; }
@@ -11618,7 +11628,7 @@ function startRound(){
   picked=null;locked=false; clearMarks(); stage.classList.remove("locked"); view.classList.remove("revealed");
 
   const o=orgs[round];
-  $("lvl").textContent=LEVELS[round]+(EASY?" · easy":"");
+  $("lvl").textContent=LEVELS[round]+(EASY?" · easy":"")+(SCOPE==="bacteria"?" · bacteria":"");
   $("oname").innerHTML=`${o.name}<i>${o.sci}</i>`; $("blurb").textContent=o.blurb; loadImage(o);
   $("status").innerHTML=`${SELECT==="hold"?"Press and hold":"Tap"} where <b>${o.name}</b> belongs. Anywhere counts — it snaps to the nearest branch. A tip is exact; a labelled group is a safe hedge.`;
   const go=$("go"); go.disabled=true; go.className="go"; go.textContent=SELECT==="hold"?"Hold on the tree to place it":"Tap the tree to place it"; go.onclick=()=>confirm(false);
@@ -11633,7 +11643,8 @@ async function loadImage(o){ const seq=++imgSeq, img=$("img"), ph=$("ph"), cr=$(
 }
 function startTimer(){ clearInterval(timerId); tLeft=ROUND_SECONDS; roundStart=Date.now(); tick();
   timerId=setInterval(()=>{ tLeft=ROUND_SECONDS-(Date.now()-roundStart)/1000; if(tLeft<=0){tLeft=0;tick();clearInterval(timerId);timeout();} else tick(); },100); }
-function tick(){ const m=Math.floor(tLeft/60), sec=Math.floor(tLeft%60); $("tval").textContent=`${m}:${String(sec).padStart(2,"0")}`; $("tbar").style.width=(tLeft/ROUND_SECONDS*100)+"%"; $("timer").classList.toggle("low",tLeft<=10); }
+function tick(){ const sec=Math.ceil(tLeft); $("tval").textContent=sec; $("tbar").style.width=(tLeft/ROUND_SECONDS*100)+"%"; const low=tLeft<=10, crit=tLeft>0&&tLeft<=5; $("timer").classList.toggle("low",low); $("timer").classList.toggle("crit",crit); stage.classList.toggle("crit",crit); const bt=$("bigt"); bt.textContent=crit?sec:""; bt.classList.toggle("on",crit); if(crit&&sec!==lastSec){ lastSec=sec; bt.classList.remove("beat"); void bt.offsetWidth; bt.classList.add("beat"); if(navigator.vibrate) navigator.vibrate(30); } }
+let lastSec=-1;
 function timeout(){ if(locked) return; if(picked) confirm(false); else { picked=root.name; confirm(true); } }
 function tap(cx,cy){ if(locked) return; const n=nearest(cx,cy); if(n) pick(n); }
 function pick(n){ picked=n.name; $("marks").innerHTML=""; nodes.forEach(m=>{ m.lbl&&m.lbl.classList.toggle("picked",m===n); }); mark(n,"picked");
@@ -11641,13 +11652,13 @@ function pick(n){ picked=n.name; $("marks").innerHTML=""; nodes.forEach(m=>{ m.l
   const o=orgs[round]; const go=$("go"); go.disabled=false; go.className="go orange"; go.textContent=`Place ${o.name} here`;
   $("status").innerHTML=n.children.length?`Placing in the <b>${n.name}</b> clade — a hedge, so at least ${n.h} branch${n.h>1?"es":""} off.`:hide?`Placing <b>${o.name}</b> at an unlabelled tip, inside <b>${realUp(n.parent).name}</b>.`:`Placing <b>${o.name}</b> with <b>${dn(n)}</b>.`; }
 function confirm(timedOut){
-  if(!picked||locked) return; locked=true; clearInterval(timerId); stage.classList.add("locked"); totalMs+=Date.now()-roundStart;
+  if(!picked||locked) return; locked=true; clearInterval(timerId); stage.classList.add("locked"); stage.classList.remove("crit"); $("timer").classList.remove("crit"); $("bigt").classList.remove("on"); totalMs+=Date.now()-roundStart;
   const o=orgs[round], g=byName[picked], c=byName[o.leaf], p=pathBetween(g,c);
   hist.push({o,guess:g.name,dist:p.dist,timedOut:!!timedOut});
   view.classList.add("revealed"); $("marks").innerHTML="";
   if(p.dist>0){ mark(p.lca,"lca"); p.lca.lbl&&p.lca.lbl.classList.add("lca"); mark(g,"picked"); }
   mark(c, g===c?"picked correct":"correct"); c.lbl.classList.add("correct");
-  setTimeout(()=>{ playReveal(g,c,p,p.dist===0); if(p.dist===0){ const q=toScreen(c.x,c.y); confetti(q.x,q.y); if(navigator.vibrate) navigator.vibrate([20,40,20]); } },380);
+  setTimeout(()=>{ playReveal(g,c,p,p.dist===0); if(p.dist===0){ const q=toScreen(c.x,c.y); confetti(q.x,q.y); if(navigator.vibrate) navigator.vibrate([20,40,20]); } },250);
   chipNode=c; chip.textContent=o.leaf; chip.classList.add("on","green"); placeChip();
   const mid={x:(g.x+c.x)/2,y:(g.y+c.y)/2}, Hv=H-sheetH()-70, spread=Math.hypot(g.x-c.x,g.y-c.y)+140;
   const s2=Math.max(.05,Math.min(LAYOUT==="fractal"?40:2.4,Math.min(W,Hv)/spread)); flyTo(s2,-mid.x*s2,-mid.y*s2-sheetH()/2+35);
@@ -11679,7 +11690,7 @@ function results(){
     finalPre>=320?["Field naturalist","Solid instincts, with a slip in the deep branches."]:
     finalPre>=200?["Curious amateur","The big groups are there; the fine structure needs another look."]:
     ["Cambrian explosion","Lots of branches in play. The tree makes more sense every run."];
-  const modeTxt=EASY?"easy mode":"normal mode";
+  const modeTxt=(EASY?"easy":"normal")+(SCOPE==="bacteria"?" · bacteria only":"");
   const scores=hist.map(h=>pts(h.dist,h.timedOut)), final=scores.reduce((a,b)=>a+b,0);
   $("card").innerHTML=`<p class="sub" style="margin:0 0 4px">Tree Tap · ${new Date().toLocaleDateString(undefined,{month:"long",day:"numeric"})} · ${modeTxt}</p>
     <div class="scoreline">${scores.map(p=>`<span>${p}<i>${tier(p)}</i></span>`).join("")}</div>
