@@ -172,7 +172,7 @@
 </div>
 <div class="top">
   <div class="pill"><span class="brand">Tree Tap</span><span class="dots" id="dots"></span></div>
-  <div class="pill timer" id="timer"><span class="tlab">⏱</span><span id="tval">30</span><span class="bar" id="tbar"></span></div>
+  <div class="pill timer" id="timer"><span class="tlab">⏱</span><span id="tval">25</span><span class="bar" id="tbar"></span></div>
   <button class="pill icon" id="fit" title="Fit whole tree" aria-label="Fit whole tree">⤢</button>
 </div>
 <div class="legend" id="legend"></div>
@@ -245,6 +245,89 @@ const TREE_TXT=`Life
      Planktothrix|Planktothrix
      Pleurocapsa|Pleurocapsa
      Prochloron (sea squirt symbiont)|Prochloron
+     Synechocystis (model, PCC 6803)|Synechocystis
+     Synechococcus elongatus (circadian model)|Synechococcus elongatus
+     Prochlorococcus marinus|Prochlorococcus marinus
+     Cyanobium|Cyanobium
+     Gloeothece|Gloeothece
+     Aphanothece|Aphanothece
+     Merismopedia (flat sheets)|Merismopedia
+     Chroococcus|Chroococcus
+     Microcystis aeruginosa|Microcystis aeruginosa
+     Woronichinia|Woronichinia
+     Snowella|Snowella
+     Coelosphaerium|Coelosphaerium
+     Chamaesiphon|Chamaesiphon
+     Dermocarpella|Dermocarpella
+     Xenococcus|Xenococcus
+     Myxosarcina|Myxosarcina
+     Hyella (rock-borer)|Hyella
+     Oscillatoria princeps|Oscillatoria princeps
+     Lyngbya majuscula (fireweed)|Lyngbya majuscula
+     Moorea (Moorena) producens|Moorena producens
+     Trichodesmium erythraeum|Trichodesmium erythraeum
+     Arthrospira platensis|Arthrospira platensis
+     Arthrospira maxima|Arthrospira maxima
+     Planktothrix agardhii|Planktothrix agardhii
+     Planktothrix rubescens (Burgundy blood)|Planktothrix rubescens
+     Microcoleus (soil crust)|Microcoleus
+     Geitlerinema|Geitlerinema
+     Leptolyngbya boryana|Leptolyngbya boryana
+     Pseudanabaena|Pseudanabaena
+     Limnothrix|Limnothrix
+     Spirulina major|Spirulina major
+     Halospirulina|Halospirulina
+     Halomicronema|Halomicronema
+     Phormidium autumnale|Phormidium autumnale
+     Symploca|Symploca
+     Kamptonema|Kamptonema
+     Tychonema|Tychonema
+     Jaaginema|Jaaginema
+     Romeria|Romeria
+     Nostoc commune (star jelly)|Nostoc commune
+     Nostoc punctiforme|Nostoc punctiforme
+     Nostoc flagelliforme (facai)|Nostoc flagelliforme
+     Anabaena cylindrica|Anabaena cylindrica
+     Dolichospermum (flos-aquae)|Dolichospermum
+     Anabaena azollae (water-fern symbiont)|Anabaena azollae
+     Anabaenopsis|Anabaenopsis
+     Aphanizomenon flos-aquae|Aphanizomenon flos-aquae
+     Cuspidothrix|Cuspidothrix
+     Raphidiopsis|Raphidiopsis
+     Cylindrospermum|Cylindrospermum
+     Nodularia spumigena|Nodularia spumigena
+     Calothrix parietina|Calothrix parietina
+     Rivularia|Rivularia
+     Gloeotrichia (lake blooms)|Gloeotrichia
+     Tolypothrix|Tolypothrix
+     Scytonema hofmannii|Scytonema hofmannii
+     Brasilonema|Brasilonema
+     Hassallia|Hassallia
+     Fischerella muscicola|Fischerella muscicola
+     Hapalosiphon|Hapalosiphon
+     Westiellopsis|Westiellopsis
+     Stigonema|Stigonema
+     Mastigocladus (hot-spring)|Mastigocladus
+     Chlorogloeopsis|Chlorogloeopsis
+     Nostochopsis|Nostochopsis
+     Richelia intracellularis|Richelia intracellularis
+     Calothrix rhizosoleniae|Calothrix rhizosoleniae
+     Candidatus Atelocyanobacterium (UCYN-A)|Atelocyanobacterium
+     Crocosphaera watsonii|Crocosphaera watsonii
+     Cyanothece 51142|Cyanothece 51142
+     Acaryochloris marina|Acaryochloris marina
+     Thermosynechococcus elongatus|Thermosynechococcus elongatus
+     Gloeobacter violaceus|Gloeobacter violaceus
+     Gloeobacter kilaueensis|Gloeobacter kilaueensis
+     Pseudanabaena 2|Pseudanabaena biceps
+     Prochlorothrix hollandica|Prochlorothrix hollandica
+     Prochloron didemni|Prochloron didemni
+     Cyanidium-associated cyanobacteria|Cyanobacteria incertae sedis
+     Chroococcidiopsis thermalis|Chroococcidiopsis thermalis
+     Pleurocapsa minor|Pleurocapsa minor
+     Melainabacteria (non-photosynthetic cyanos)|Melainabacteria
+     Sericytochromatia|Sericytochromatia
+     Margulisbacteria 2|Margulisbacteria sp.
     Cyanothece|Cyanothece
     Stanieria|Stanieria
     Prochlorothrix|Prochlorothrix
@@ -277,6 +360,98 @@ const TREE_TXT=`Life
      Planococcus|Planococcus
      Oceanobacillus|Oceanobacillus
      Halobacillus|Halobacillus
+     Bacillus licheniformis|Bacillus licheniformis
+     Bacillus megaterium|Bacillus megaterium
+     Bacillus pumilus|Bacillus pumilus
+     Bacillus amyloliquefaciens|Bacillus amyloliquefaciens
+     Bacillus velezensis|Bacillus velezensis
+     Bacillus mycoides (rhizoid colonies)|Bacillus mycoides
+     Bacillus weihenstephanensis|Bacillus weihenstephanensis
+     Bacillus coagulans (probiotic)|Bacillus coagulans
+     Bacillus clausii|Bacillus clausii
+     Bacillus halodurans|Bacillus halodurans
+     Bacillus pseudofirmus|Bacillus pseudofirmus
+     Bacillus circulans|Bacillus circulans
+     Bacillus firmus|Bacillus firmus
+     Bacillus smithii|Bacillus smithii
+     Bacillus infantis|Bacillus infantis
+     Anoxybacillus|Anoxybacillus
+     Aneurinibacillus|Aneurinibacillus
+     Parageobacillus|Parageobacillus
+     Geobacillus kaustophilus|Geobacillus kaustophilus
+     Geobacillus thermodenitrificans|Geobacillus thermodenitrificans
+     Caldibacillus|Caldibacillus
+     Amphibacillus|Amphibacillus
+     Gracilibacillus|Gracilibacillus
+     Virgibacillus|Virgibacillus
+     Lentibacillus|Lentibacillus
+     Ornithinibacillus|Ornithinibacillus
+     Pontibacillus|Pontibacillus
+     Salinibacillus|Salinibacillus
+     Terribacillus|Terribacillus
+     Thalassobacillus|Thalassobacillus
+     Marinococcus|Marinococcus
+     Salinicoccus|Salinicoccus
+     Jeotgalicoccus|Jeotgalicoccus
+     Nosocomiicoccus|Nosocomiicoccus
+     Staphylococcus saprophyticus|Staphylococcus saprophyticus
+     Staphylococcus haemolyticus|Staphylococcus haemolyticus
+     Staphylococcus lugdunensis|Staphylococcus lugdunensis
+     Staphylococcus hominis|Staphylococcus hominis
+     Staphylococcus capitis|Staphylococcus capitis
+     Staphylococcus warneri|Staphylococcus warneri
+     Staphylococcus xylosus|Staphylococcus xylosus
+     Staphylococcus carnosus (sausage starter)|Staphylococcus carnosus
+     Staphylococcus pseudintermedius (dogs)|Staphylococcus pseudintermedius
+     Staphylococcus hyicus|Staphylococcus hyicus
+     Staphylococcus sciuri|Staphylococcus sciuri
+     Macrococcus caseolyticus|Macrococcus caseolyticus
+     Listeria innocua|Listeria innocua
+     Listeria ivanovii|Listeria ivanovii
+     Listeria seeligeri|Listeria seeligeri
+     Brochothrix (meat spoilage)|Brochothrix
+     Paenibacillus polymyxa|Paenibacillus polymyxa
+     Paenibacillus alvei|Paenibacillus alvei
+     Paenibacillus popilliae (milky disease)|Paenibacillus popilliae
+     Paenibacillus lentimorbus|Paenibacillus lentimorbus
+     Paenibacillus vortex (pattern-forming)|Paenibacillus vortex
+     Paenibacillus dendritiformis|Paenibacillus dendritiformis
+     Brevibacillus brevis (gramicidin)|Brevibacillus brevis
+     Brevibacillus laterosporus|Brevibacillus laterosporus
+     Thermobacillus|Thermobacillus
+     Cohnella|Cohnella
+     Fontibacillus|Fontibacillus
+     Saccharibacillus|Saccharibacillus
+     Ammoniphilus|Ammoniphilus
+     Oxalophagus|Oxalophagus
+     Sporosarcina ureae|Sporosarcina ureae
+     Sporosarcina pasteurii|Sporosarcina pasteurii
+     Sporosarcina psychrophila|Sporosarcina psychrophila
+     Planococcus citreus|Planococcus citreus
+     Planomicrobium|Planomicrobium
+     Kurthia zopfii|Kurthia zopfii
+     Caryophanon (cow-dung filaments)|Caryophanon
+     Filibacter|Filibacter
+     Lysinibacillus sphaericus|Lysinibacillus sphaericus
+     Lysinibacillus fusiformis|Lysinibacillus fusiformis
+     Solibacillus|Solibacillus
+     Viridibacillus|Viridibacillus
+     Rummeliibacillus|Rummeliibacillus
+     Psychrobacillus|Psychrobacillus
+     Ureibacillus|Ureibacillus
+     Kyrpidia|Kyrpidia
+     Alicyclobacillus acidocaldarius|Alicyclobacillus acidocaldarius
+     Alicyclobacillus acidoterrestris|Alicyclobacillus acidoterrestris
+     Sulfobacillus (acid mine)|Sulfobacillus
+     Tumebacillus|Tumebacillus
+     Pasteuria (nematode parasite)|Pasteuria
+     Thermoactinomyces (hay, farmer's lung)|Thermoactinomyces
+     Laceyella|Laceyella
+     Thermoflavimicrobium|Thermoflavimicrobium
+     Seinonella|Seinonella
+     Desmospora|Desmospora
+     Exiguobacterium sibiricum|Exiguobacterium sibiricum
+     Exiguobacterium aurantiacum|Exiguobacterium aurantiacum
      Listeria|Listeriaceae
      Staphylococci
       Staphylococcus aureus|Staphylococcus aureus
@@ -296,6 +471,58 @@ const TREE_TXT=`Life
      Weissella|Weissella
      Carnobacterium|Carnobacterium
      Aerococcus|Aerococcus
+     Lactobacillus acidophilus|Lactobacillus acidophilus
+     Lactobacillus delbrueckii (yoghurt)|Lactobacillus delbrueckii
+     Lactobacillus helveticus|Lactobacillus helveticus
+     Lactobacillus gasseri|Lactobacillus gasseri
+     Lactobacillus crispatus|Lactobacillus crispatus
+     Lacticaseibacillus (casei, rhamnosus)|Lacticaseibacillus
+     Lactiplantibacillus (plantarum)|Lactiplantibacillus
+     Limosilactobacillus (reuteri, fermentum)|Limosilactobacillus
+     Levilactobacillus (brevis)|Levilactobacillus
+     Ligilactobacillus (salivarius)|Ligilactobacillus
+     Latilactobacillus (sakei)|Latilactobacillus
+     Fructilactobacillus|Fructilactobacillus
+     Apilactobacillus (bee)|Apilactobacillus
+     Secundilactobacillus|Secundilactobacillus
+     Pediococcus pentosaceus|Pediococcus pentosaceus
+     Pediococcus damnosus (beer spoilage)|Pediococcus damnosus
+     Oenococcus oeni|Oenococcus oeni
+     Leuconostoc citreum|Leuconostoc citreum
+     Weissella cibaria|Weissella cibaria
+     Fructobacillus|Fructobacillus
+     Lactococcus garvieae|Lactococcus garvieae
+     Lactococcus cremoris|Lactococcus cremoris
+     Streptococcus thermophilus|Streptococcus thermophilus
+     Streptococcus suis|Streptococcus suis
+     Streptococcus equi (strangles)|Streptococcus equi
+     Streptococcus salivarius|Streptococcus salivarius
+     Streptococcus sanguinis|Streptococcus sanguinis
+     Streptococcus mitis|Streptococcus mitis
+     Streptococcus gordonii|Streptococcus gordonii
+     Streptococcus sobrinus|Streptococcus sobrinus
+     Streptococcus anginosus|Streptococcus anginosus
+     Streptococcus dysgalactiae|Streptococcus dysgalactiae
+     Streptococcus iniae|Streptococcus iniae
+     Streptococcus uberis (mastitis)|Streptococcus uberis
+     Enterococcus faecium|Enterococcus faecium
+     Enterococcus hirae|Enterococcus hirae
+     Enterococcus casseliflavus|Enterococcus casseliflavus
+     Tetragenococcus (soy sauce)|Tetragenococcus
+     Vagococcus|Vagococcus
+     Melissococcus (foulbrood)|Melissococcus
+     Carnobacterium maltaromaticum|Carnobacterium maltaromaticum
+     Aerococcus urinae|Aerococcus urinae
+     Abiotrophia|Abiotrophia
+     Granulicatella|Granulicatella
+     Globicatella|Globicatella
+     Facklamia|Facklamia
+     Alloiococcus|Alloiococcus
+     Dolosigranulum|Dolosigranulum
+     Eremococcus|Eremococcus
+     Atopobacter|Atopobacter
+     Catellicoccus|Catellicoccus
+     Pilibacter|Pilibacter
     Clostridia
      Clostridium
       Clostridium botulinum|Clostridium botulinum
@@ -318,6 +545,188 @@ const TREE_TXT=`Life
      Caldicellulosiruptor|Caldicellulosiruptor
      Moorella (acetogens)|Moorella
      Epulopiscium (giant fish-gut bacterium)|Epulopiscium
+     Clostridium sporogenes|Clostridium sporogenes
+     Clostridium beijerinckii|Clostridium beijerinckii
+     Clostridium pasteurianum|Clostridium pasteurianum
+     Clostridium butyricum|Clostridium butyricum
+     Clostridium novyi|Clostridium novyi
+     Clostridium septicum|Clostridium septicum
+     Clostridium chauvoei (blackleg)|Clostridium chauvoei
+     Clostridium histolyticum|Clostridium histolyticum
+     Clostridium kluyveri|Clostridium kluyveri
+     Clostridium ljungdahlii (syngas)|Clostridium ljungdahlii
+     Clostridium autoethanogenum|Clostridium autoethanogenum
+     Clostridium thermocellum|Clostridium thermocellum
+     Hungateiclostridium|Hungateiclostridium
+     Ruminiclostridium|Ruminiclostridium
+     Clostridioides|Clostridioides
+     Paraclostridium|Paraclostridium
+     Terrisporobacter|Terrisporobacter
+     Romboutsia|Romboutsia
+     Intestinibacter|Intestinibacter
+     Sarcina (packet cocci)|Sarcina
+     Anaerococcus|Anaerococcus
+     Finegoldia|Finegoldia
+     Peptoniphilus|Peptoniphilus
+     Parvimonas|Parvimonas
+     Peptostreptococcus anaerobius|Peptostreptococcus anaerobius
+     Filifactor alocis|Filifactor alocis
+     Fusibacter|Fusibacter
+     Acidaminobacter|Acidaminobacter
+     Eubacterium rectale|Eubacterium rectale
+     Eubacterium limosum|Eubacterium limosum
+     Anaerostipes|Anaerostipes
+     Coprococcus|Coprococcus
+     Dorea|Dorea
+     Roseburia intestinalis|Roseburia intestinalis
+     Blautia obeum|Blautia obeum
+     Ruminococcus gnavus|Ruminococcus gnavus
+     Ruminococcus bromii|Ruminococcus bromii
+     Ruminococcus albus|Ruminococcus albus
+     Ruminococcus flavefaciens|Ruminococcus flavefaciens
+     Faecalibacterium prausnitzii|Faecalibacterium prausnitzii
+     Subdoligranulum|Subdoligranulum
+     Oscillibacter|Oscillibacter
+     Flavonifractor|Flavonifractor
+     Pseudoflavonifractor|Pseudoflavonifractor
+     Anaerotruncus|Anaerotruncus
+     Ethanoligenens|Ethanoligenens
+     Papillibacter|Papillibacter
+     Sporobacter|Sporobacter
+     Acetivibrio|Acetivibrio
+     Acetanaerobacterium|Acetanaerobacterium
+     Christensenella (gut, heritable)|Christensenella
+     Catabacter|Catabacter
+     Butyrivibrio fibrisolvens|Butyrivibrio fibrisolvens
+     Pseudobutyrivibrio|Pseudobutyrivibrio
+     Lachnospira pectinoschiza|Lachnospira pectinoschiza
+     Lachnoclostridium|Lachnoclostridium
+     Hungatella|Hungatella
+     Tyzzerella|Tyzzerella
+     Cellulosilyticum|Cellulosilyticum
+     Marvinbryantia|Marvinbryantia
+     Moryella|Moryella
+     Oribacterium|Oribacterium
+     Shuttleworthia|Shuttleworthia
+     Syntrophococcus|Syntrophococcus
+     Anaerosporobacter|Anaerosporobacter
+     Cellulomonas 2|Cellulomonas fimi
+     Moorella thermoacetica|Moorella thermoacetica
+     Thermoanaerobacter ethanolicus|Thermoanaerobacter ethanolicus
+     Thermoanaerobacterium|Thermoanaerobacterium
+     Caldanaerobacter|Caldanaerobacter
+     Caldicellulosiruptor bescii|Caldicellulosiruptor bescii
+     Carboxydothermus (CO-eater)|Carboxydothermus
+     Thermosediminibacter|Thermosediminibacter
+     Desulfotomaculum nigrificans|Desulfotomaculum nigrificans
+     Desulfosporosinus|Desulfosporosinus
+     Desulfitobacterium (dechlorinator)|Desulfitobacterium
+     Pelotomaculum|Pelotomaculum
+     Sporotomaculum|Sporotomaculum
+     Desulfofundulus|Desulfofundulus
+     Heliobacterium modesticaldum|Heliobacterium modesticaldum
+     Heliobacillus|Heliobacillus
+     Heliophilum|Heliophilum
+     Heliorestis|Heliorestis
+     Symbiobacterium thermophilum|Symbiobacterium thermophilum
+     Syntrophomonas|Syntrophomonas
+     Syntrophothermus|Syntrophothermus
+     Thermosyntropha|Thermosyntropha
+     Pelospora|Pelospora
+     Epulopiscium fishelsoni|Epulopiscium fishelsoni
+     Metabacterium (guinea pig gut)|Metabacterium
+     Anaerofustis|Anaerofustis
+     Eubacterium 2|Eubacterium hallii
+     Lutispora|Lutispora
+     Sporanaerobacter|Sporanaerobacter
+     Tissierella|Tissierella
+     Soehngenia|Soehngenia
+     Anaerovirgula|Anaerovirgula
+     Natronincola (soda-lake)|Natronincola
+     Alkaliphilus|Alkaliphilus
+     Halanaerobium (salt-loving fermenter)|Halanaerobium
+     Halothermothrix|Halothermothrix
+     Halobacteroides|Halobacteroides
+     Orenia|Orenia
+     Acetohalobium|Acetohalobium
+     Selenihalanaerobacter|Selenihalanaerobacter
+     Sporohalobacter|Sporohalobacter
+     Halanaerobacter|Halanaerobacter
+     Halocella|Halocella
+     Natroniella|Natroniella
+     Acetonema|Acetonema
+     Anaeromusa|Anaeromusa
+     Anaerosinus|Anaerosinus
+     Anaerovibrio|Anaerovibrio
+     Centipeda|Centipeda
+     Dendrosporobacter|Dendrosporobacter
+     Mitsuokella|Mitsuokella
+     Pectinatus (beer spoilage)|Pectinatus
+     Phascolarctobacterium|Phascolarctobacterium
+     Propionispira|Propionispira
+     Propionispora|Propionispora
+     Quinella|Quinella
+     Schwartzia|Schwartzia
+     Sporomusa|Sporomusa
+     Succinispira|Succinispira
+     Thermosinus|Thermosinus
+     Zymophilus|Zymophilus
+     Megamonas|Megamonas
+     Allisonella|Allisonella
+     Negativicoccus|Negativicoccus
+     Veillonella parvula|Veillonella parvula
+     Veillonella atypica|Veillonella atypica
+     Megasphaera elsdenii|Megasphaera elsdenii
+     Dialister invisus|Dialister invisus
+     Selenomonas ruminantium|Selenomonas ruminantium
+     Selenomonas sputigena|Selenomonas sputigena
+     Acidaminococcus fermentans|Acidaminococcus fermentans
+     Erysipelothrix rhusiopathiae|Erysipelothrix rhusiopathiae
+     Holdemania|Holdemania
+     Holdemanella|Holdemanella
+     Solobacterium|Solobacterium
+     Turicibacter|Turicibacter
+     Catenibacterium|Catenibacterium
+     Coprobacillus|Coprobacillus
+     Bulleidia|Bulleidia
+     Allobaculum|Allobaculum
+     Dubosiella|Dubosiella
+     Faecalibaculum|Faecalibaculum
+     Ileibacterium|Ileibacterium
+     Kandleria|Kandleria
+     Sharpea|Sharpea
+     Eggerthia|Eggerthia
+     Anaerorhabdus|Anaerorhabdus
+     Breznakia|Breznakia
+     Mycoplasma pneumoniae|Mycoplasma pneumoniae
+     Mycoplasma genitalium|Mycoplasma genitalium
+     Mycoplasma hominis|Mycoplasma hominis
+     Mycoplasma mycoides (cattle pleuropneumonia)|Mycoplasma mycoides
+     Mycoplasma bovis|Mycoplasma bovis
+     Mycoplasma gallisepticum|Mycoplasma gallisepticum
+     Mycoplasma hyopneumoniae|Mycoplasma hyopneumoniae
+     Mycoplasma capricolum|Mycoplasma capricolum
+     Mycoplasma synoviae|Mycoplasma synoviae
+     Mycoplasma haemofelis (feline anaemia)|Mycoplasma haemofelis
+     Mycoplasma suis|Mycoplasma suis
+     Ureaplasma urealyticum|Ureaplasma urealyticum
+     Ureaplasma parvum|Ureaplasma parvum
+     Spiroplasma citri (citrus stubborn)|Spiroplasma citri
+     Spiroplasma kunkelii (corn stunt)|Spiroplasma kunkelii
+     Spiroplasma poulsonii (fly male-killer)|Spiroplasma poulsonii
+     Spiroplasma melliferum (bee)|Spiroplasma melliferum
+     Spiroplasma apis|Spiroplasma apis
+     Phytoplasma asteris (aster yellows)|Phytoplasma asteris
+     Phytoplasma mali (apple proliferation)|Phytoplasma mali
+     Phytoplasma pruni|Phytoplasma pruni
+     Acholeplasma laidlawii|Acholeplasma laidlawii
+     Anaeroplasma|Anaeroplasma
+     Asteroleplasma|Asteroleplasma
+     Mesoplasma|Mesoplasma
+     Entomoplasma luminosum|Entomoplasma luminosum
+     Hepatoplasma (isopod gut)|Hepatoplasma
+     Haloplasma|Haloplasma
+     Izemoplasma|Izemoplasma
      Symbiobacterium|Symbiobacterium
     Negativicutes
      Veillonella|Veillonellaceae
@@ -352,6 +761,282 @@ const TREE_TXT=`Life
     Eggerthella|Eggerthella
     Atopobium|Atopobium
     Slackia|Slackia
+    Streptomyces coelicolor|Streptomyces coelicolor
+    Streptomyces griseus (streptomycin)|Streptomyces griseus
+    Streptomyces avermitilis (ivermectin)|Streptomyces avermitilis
+    Streptomyces scabies (potato scab)|Streptomyces scabies
+    Streptomyces venezuelae (chloramphenicol)|Streptomyces venezuelae
+    Streptomyces clavuligerus (clavulanic acid)|Streptomyces clavuligerus
+    Streptomyces hygroscopicus (rapamycin)|Streptomyces hygroscopicus
+    Streptomyces lividans|Streptomyces lividans
+    Streptomyces albus|Streptomyces albus
+    Streptomyces rimosus (oxytetracycline)|Streptomyces rimosus
+    Streptomyces fradiae (neomycin)|Streptomyces fradiae
+    Streptomyces peucetius (doxorubicin)|Streptomyces peucetius
+    Streptomyces noursei (nystatin)|Streptomyces noursei
+    Streptomyces nodosus (amphotericin)|Streptomyces nodosus
+    Streptomyces tsukubaensis (tacrolimus)|Streptomyces tsukubaensis
+    Streptomyces verticillus (bleomycin)|Streptomyces verticillus
+    Streptomyces roseosporus (daptomycin)|Streptomyces roseosporus
+    Streptacidiphilus|Streptacidiphilus
+    Kitasatospora setae|Kitasatospora setae
+    Micromonospora purpurea|Micromonospora purpurea
+    Salinispora tropica|Salinispora tropica
+    Verrucosispora|Verrucosispora
+    Actinoplanes teichomyceticus (teicoplanin)|Actinoplanes teichomyceticus
+    Dactylosporangium|Dactylosporangium
+    Couchioplanes|Couchioplanes
+    Pilimelia|Pilimelia
+    Catenuloplanes|Catenuloplanes
+    Catellatospora|Catellatospora
+    Amycolatopsis orientalis|Amycolatopsis orientalis
+    Amycolatopsis mediterranei (rifamycin)|Amycolatopsis mediterranei
+    Saccharopolyspora erythraea|Saccharopolyspora erythraea
+    Saccharopolyspora spinosa (spinosad)|Saccharopolyspora spinosa
+    Pseudonocardia dioxanivorans|Pseudonocardia dioxanivorans
+    Kibdelosporangium|Kibdelosporangium
+    Saccharothrix|Saccharothrix
+    Actinosynnema (maytansine)|Actinosynnema
+    Lechevalieria|Lechevalieria
+    Lentzea|Lentzea
+    Kutzneria|Kutzneria
+    Prauserella|Prauserella
+    Crossiella|Crossiella
+    Actinokineospora|Actinokineospora
+    Actinomadura (madurella foot)|Actinomadura
+    Nonomuraea|Nonomuraea
+    Microbispora|Microbispora
+    Microtetraspora|Microtetraspora
+    Planobispora|Planobispora
+    Planomonospora|Planomonospora
+    Streptosporangium|Streptosporangium
+    Herbidospora|Herbidospora
+    Spirillospora|Spirillospora
+    Thermomonospora curvata|Thermomonospora curvata
+    Actinocorallia|Actinocorallia
+    Thermobifida fusca|Thermobifida fusca
+    Nocardiopsis dassonvillei|Nocardiopsis dassonvillei
+    Streptomonospora|Streptomonospora
+    Thermobispora|Thermobispora
+    Glycomyces|Glycomyces
+    Stackebrandtia|Stackebrandtia
+    Jiangella|Jiangella
+    Haloglycomyces|Haloglycomyces
+    Frankia alni|Frankia alni
+    Frankia casuarinae|Frankia casuarinae
+    Geodermatophilus obscurus|Geodermatophilus obscurus
+    Blastococcus|Blastococcus
+    Modestobacter|Modestobacter
+    Acidothermus cellulolyticus|Acidothermus cellulolyticus
+    Sporichthya|Sporichthya
+    Nakamurella|Nakamurella
+    Kineococcus radiotolerans|Kineococcus radiotolerans
+    Kineosporia|Kineosporia
+    Cryptosporangium|Cryptosporangium
+    Catenulispora|Catenulispora
+    Actinospica|Actinospica
+    Mycobacterium bovis (BCG)|Mycobacterium bovis
+    Mycobacterium ulcerans (Buruli ulcer)|Mycobacterium ulcerans
+    Mycobacterium marinum (fish tank)|Mycobacterium marinum
+    Mycobacterium abscessus|Mycobacterium abscessus
+    Mycobacterium chelonae|Mycobacterium chelonae
+    Mycobacterium fortuitum|Mycobacterium fortuitum
+    Mycobacterium kansasii|Mycobacterium kansasii
+    Mycobacterium smegmatis (lab model)|Mycobacterium smegmatis
+    Mycobacterium paratuberculosis (Johne's)|Mycobacterium paratuberculosis
+    Mycobacterium lepromatosis|Mycobacterium lepromatosis
+    Mycobacterium vaccae (soil, mood)|Mycobacterium vaccae
+    Mycobacterium gordonae|Mycobacterium gordonae
+    Mycobacterium xenopi|Mycobacterium xenopi
+    Mycobacterium africanum|Mycobacterium africanum
+    Mycobacterium microti (vole)|Mycobacterium microti
+    Mycolicibacterium|Mycolicibacterium
+    Mycobacteroides|Mycobacteroides
+    Nocardia farcinica|Nocardia farcinica
+    Nocardia brasiliensis|Nocardia brasiliensis
+    Nocardia nova|Nocardia nova
+    Nocardia cyriacigeorgica|Nocardia cyriacigeorgica
+    Rhodococcus equi (foal pneumonia)|Rhodococcus equi
+    Rhodococcus jostii|Rhodococcus jostii
+    Rhodococcus erythropolis|Rhodococcus erythropolis
+    Rhodococcus fascians (leafy gall)|Rhodococcus fascians
+    Gordonia bronchialis|Gordonia bronchialis
+    Gordonia amarae (foaming sludge)|Gordonia amarae
+    Tsukamurella paurometabola|Tsukamurella paurometabola
+    Dietzia maris|Dietzia maris
+    Williamsia muralis|Williamsia muralis
+    Skermania|Skermania
+    Millisia|Millisia
+    Smaragdicoccus|Smaragdicoccus
+    Corynebacterium glutamicum (MSG maker)|Corynebacterium glutamicum
+    Corynebacterium ulcerans|Corynebacterium ulcerans
+    Corynebacterium pseudotuberculosis|Corynebacterium pseudotuberculosis
+    Corynebacterium jeikeium|Corynebacterium jeikeium
+    Corynebacterium striatum|Corynebacterium striatum
+    Corynebacterium amycolatum|Corynebacterium amycolatum
+    Corynebacterium urealyticum|Corynebacterium urealyticum
+    Corynebacterium minutissimum (erythrasma)|Corynebacterium minutissimum
+    Corynebacterium bovis|Corynebacterium bovis
+    Corynebacterium renale|Corynebacterium renale
+    Corynebacterium kutscheri|Corynebacterium kutscheri
+    Corynebacterium efficiens|Corynebacterium efficiens
+    Turicella|Turicella
+    Bifidobacterium longum|Bifidobacterium longum
+    Bifidobacterium bifidum|Bifidobacterium bifidum
+    Bifidobacterium breve|Bifidobacterium breve
+    Bifidobacterium infantis|Bifidobacterium infantis
+    Bifidobacterium adolescentis|Bifidobacterium adolescentis
+    Bifidobacterium animalis (lactis)|Bifidobacterium animalis
+    Bifidobacterium dentium|Bifidobacterium dentium
+    Bifidobacterium pseudocatenulatum|Bifidobacterium pseudocatenulatum
+    Bifidobacterium catenulatum|Bifidobacterium catenulatum
+    Bifidobacterium asteroides (bee)|Bifidobacterium asteroides
+    Alloscardovia|Alloscardovia
+    Scardovia (caries)|Scardovia
+    Parascardovia|Parascardovia
+    Aeriscardovia|Aeriscardovia
+    Gardnerella vaginalis|Gardnerella vaginalis
+    Cutibacterium avidum|Cutibacterium avidum
+    Cutibacterium granulosum|Cutibacterium granulosum
+    Propionibacterium freudenreichii (Swiss cheese)|Propionibacterium freudenreichii
+    Propionibacterium acidipropionici|Propionibacterium acidipropionici
+    Acidipropionibacterium|Acidipropionibacterium
+    Pseudopropionibacterium|Pseudopropionibacterium
+    Tessaracoccus|Tessaracoccus
+    Luteococcus|Luteococcus
+    Microlunatus|Microlunatus
+    Friedmanniella|Friedmanniella
+    Micropruina|Micropruina
+    Propioniciclava|Propioniciclava
+    Aestuariimicrobium|Aestuariimicrobium
+    Nocardioides|Nocardioides
+    Aeromicrobium|Aeromicrobium
+    Marmoricola|Marmoricola
+    Kribbella|Kribbella
+    Pimelobacter|Pimelobacter
+    Actinopolymorpha|Actinopolymorpha
+    Actinomyces israelii|Actinomyces israelii
+    Actinomyces naeslundii|Actinomyces naeslundii
+    Actinomyces viscosus|Actinomyces viscosus
+    Actinomyces odontolyticus|Actinomyces odontolyticus
+    Actinomyces bovis (lumpy jaw)|Actinomyces bovis
+    Schaalia|Schaalia
+    Actinotignum|Actinotignum
+    Varibaculum|Varibaculum
+    Arcanobacterium|Arcanobacterium
+    Trueperella (pyogenes)|Trueperella
+    Mobiluncus|Mobiluncus
+    Actinobaculum|Actinobaculum
+    Micrococcus luteus|Micrococcus luteus
+    Micrococcus lylae|Micrococcus lylae
+    Kocuria rhizophila|Kocuria rhizophila
+    Kocuria rosea|Kocuria rosea
+    Kocuria kristinae|Kocuria kristinae
+    Arthrobacter globiformis|Arthrobacter globiformis
+    Arthrobacter aurescens|Arthrobacter aurescens
+    Pseudarthrobacter|Pseudarthrobacter
+    Paenarthrobacter|Paenarthrobacter
+    Glutamicibacter|Glutamicibacter
+    Paeniglutamicibacter|Paeniglutamicibacter
+    Rothia mucilaginosa|Rothia mucilaginosa
+    Rothia dentocariosa|Rothia dentocariosa
+    Nesterenkonia|Nesterenkonia
+    Citricoccus|Citricoccus
+    Zhihengliuella|Zhihengliuella
+    Yaniella|Yaniella
+    Renibacterium salmoninarum|Renibacterium salmoninarum
+    Sinomonas|Sinomonas
+    Cellulomonas flavigena|Cellulomonas flavigena
+    Oerskovia|Oerskovia
+    Actinotalea|Actinotalea
+    Clavibacter michiganensis|Clavibacter michiganensis
+    Leifsonia xyli|Leifsonia xyli
+    Curtobacterium flaccumfaciens|Curtobacterium flaccumfaciens
+    Rathayibacter (gumming disease)|Rathayibacter
+    Microbacterium testaceum|Microbacterium testaceum
+    Agromyces ramosus|Agromyces ramosus
+    Agrococcus|Agrococcus
+    Cryobacterium|Cryobacterium
+    Frigoribacterium|Frigoribacterium
+    Subtercola|Subtercola
+    Plantibacter|Plantibacter
+    Frondihabitans|Frondihabitans
+    Okibacterium|Okibacterium
+    Mycetocola|Mycetocola
+    Salinibacterium|Salinibacterium
+    Amnibacterium|Amnibacterium
+    Humibacter|Humibacter
+    Labedella|Labedella
+    Glaciibacter|Glaciibacter
+    Pseudoclavibacter|Pseudoclavibacter
+    Schumannella|Schumannella
+    Yonghaparkia|Yonghaparkia
+    Brevibacterium linens|Brevibacterium linens
+    Brevibacterium casei|Brevibacterium casei
+    Brevibacterium aurantiacum|Brevibacterium aurantiacum
+    Dermacoccus nishinomiyaensis|Dermacoccus nishinomiyaensis
+    Kytococcus sedentarius (pitted keratolysis)|Kytococcus sedentarius
+    Dermatophilus (rain scald)|Dermatophilus
+    Austwickia|Austwickia
+    Kineosphaera|Kineosphaera
+    Janibacter limosus|Janibacter limosus
+    Ornithinimicrobium|Ornithinimicrobium
+    Serinicoccus|Serinicoccus
+    Tetrasphaera (phosphate-accumulating)|Tetrasphaera
+    Intrasporangium|Intrasporangium
+    Terrabacter|Terrabacter
+    Terracoccus|Terracoccus
+    Knoellia|Knoellia
+    Arsenicicoccus|Arsenicicoccus
+    Humihabitans|Humihabitans
+    Phycicoccus|Phycicoccus
+    Brachybacterium faecium|Brachybacterium faecium
+    Dermabacter hominis|Dermabacter hominis
+    Devriesea|Devriesea
+    Helcobacillus|Helcobacillus
+    Sanguibacter keddieii|Sanguibacter keddieii
+    Jonesia denitrificans|Jonesia denitrificans
+    Beutenbergia cavernae|Beutenbergia cavernae
+    Salana|Salana
+    Promicromonospora citrea|Promicromonospora citrea
+    Cellulosimicrobium|Cellulosimicrobium
+    Isoptericola|Isoptericola
+    Xylanimonas|Xylanimonas
+    Xylanibacterium|Xylanibacterium
+    Myceligenerans|Myceligenerans
+    Ruania|Ruania
+    Haloactinobacterium|Haloactinobacterium
+    Rarobacter|Rarobacter
+    Bogoriella|Bogoriella
+    Georgenia|Georgenia
+    Rubrobacter xylanophilus|Rubrobacter xylanophilus
+    Rubrobacter radiotolerans|Rubrobacter radiotolerans
+    Gaiella|Gaiella
+    Thermoleophilum|Thermoleophilum
+    Solirubrobacter pauli|Solirubrobacter pauli
+    Patulibacter|Patulibacter
+    Conexibacter woesei|Conexibacter woesei
+    Acidimicrobium ferrooxidans|Acidimicrobium ferrooxidans
+    Ferrimicrobium|Ferrimicrobium
+    Ferrithrix|Ferrithrix
+    Ilumatobacter|Ilumatobacter
+    Iamia|Iamia
+    Aciditerrimonas|Aciditerrimonas
+    Coriobacterium glomerans|Coriobacterium glomerans
+    Collinsella aerofaciens|Collinsella aerofaciens
+    Eggerthella lenta|Eggerthella lenta
+    Atopobium parvulum|Atopobium parvulum
+    Atopobium vaginae|Atopobium vaginae
+    Olsenella|Olsenella
+    Cryptobacterium|Cryptobacterium
+    Slackia exigua|Slackia exigua
+    Gordonibacter|Gordonibacter
+    Adlercreutzia|Adlercreutzia
+    Enterorhabdus|Enterorhabdus
+    Paraeggerthella|Paraeggerthella
+    Denitrobacterium|Denitrobacterium
+    Asaccharobacter|Asaccharobacter
+    Senegalimassilia|Senegalimassilia
     Streptoalloteichus|Streptoalloteichus
     Thermomonospora|Thermomonospora
     Acidothermus|Acidothermus
@@ -417,6 +1102,42 @@ const TREE_TXT=`Life
       Hyphomicrobium (budding stalks)|Hyphomicrobium
       Beijerinckia|Beijerinckia
       Devosia|Devosia
+      Bradyrhizobium diazoefficiens|Bradyrhizobium diazoefficiens
+      Azorhizobium (stem nodules)|Azorhizobium
+      Methylocystis|Methylocystis
+      Methylosinus (methane-eater)|Methylosinus
+      Hyphomicrobium denitrificans|Hyphomicrobium denitrificans
+      Pedomicrobium|Pedomicrobium
+      Ancylobacter|Ancylobacter
+      Starkeya|Starkeya
+      Afipia|Afipia
+      Nitrobacter winogradskyi|Nitrobacter winogradskyi
+      Bradyrhizobium japonicum|Bradyrhizobium japonicum
+      Rhodoplanes|Rhodoplanes
+      Blastochloris (bacteriochlorophyll b)|Blastochloris
+      Rhizobium etli|Rhizobium etli
+      Agrobacterium rhizogenes (hairy root)|Agrobacterium rhizogenes
+      Ensifer|Ensifer
+      Mesorhizobium loti|Mesorhizobium loti
+      Aminobacter|Aminobacter
+      Chelativorans|Chelativorans
+      Brucella melitensis|Brucella melitensis
+      Brucella abortus|Brucella abortus
+      Bartonella quintana (trench fever)|Bartonella quintana
+      Bartonella bacilliformis|Bartonella bacilliformis
+      Methylobacterium extorquens|Methylobacterium extorquens
+      Microvirga|Microvirga
+      Beijerinckia indica|Beijerinckia indica
+      Devosia riboflavina|Devosia riboflavina
+      Hyphomicrobium zavarzinii|Hyphomicrobium zavarzinii
+      Filomicrobium|Filomicrobium
+      Dichotomicrobium|Dichotomicrobium
+      Prosthecomicrobium|Prosthecomicrobium
+      Rhodomicrobium|Rhodomicrobium
+      Stappia|Stappia
+      Labrenzia|Labrenzia
+      Pseudovibrio (sponge symbiont)|Pseudovibrio
+      Nitratireductor|Nitratireductor
       Phyllobacterium|Phyllobacterium
      Rickettsiales
       Rickettsias|Rickettsia
@@ -426,6 +1147,20 @@ const TREE_TXT=`Life
       Orientia (scrub typhus)|Orientia
       Midichloria (mitochondrial tick symbiont)|Midichloria
       Holospora (paramecium symbionts)|Holospora
+      Rickettsia rickettsii (Rocky Mountain spotted fever)|Rickettsia rickettsii
+      Rickettsia typhi (murine typhus)|Rickettsia typhi
+      Rickettsia prowazekii|Rickettsia prowazekii
+      Anaplasma phagocytophilum|Anaplasma phagocytophilum
+      Anaplasma marginale|Anaplasma marginale
+      Ehrlichia chaffeensis|Ehrlichia chaffeensis
+      Ehrlichia ruminantium (heartwater)|Ehrlichia ruminantium
+      Neorickettsia risticii|Neorickettsia risticii
+      Wolbachia pipientis|Wolbachia pipientis
+      Caedibacter (killer paramecium)|Caedibacter
+      Paracaedibacter|Paracaedibacter
+      Candidatus Pelagibacter ubique|Pelagibacter ubique
+      Candidatus Puniceispirillum (SAR116)|Puniceispirillum
+      Magnetococcus (magnetotactic coccus)|Magnetococcus
      Caulobacter|Caulobacter
      Rhodobacterales
       Rhodobacter (purple non-sulfur)|Rhodobacter
@@ -434,6 +1169,30 @@ const TREE_TXT=`Life
       Ruegeria|Ruegeria
       Dinoroseobacter|Dinoroseobacter
       Phaeobacter|Phaeobacter
+      Roseobacter litoralis|Roseobacter litoralis
+      Ruegeria pomeroyi|Ruegeria pomeroyi
+      Sulfitobacter|Sulfitobacter
+      Roseovarius|Roseovarius
+      Loktanella|Loktanella
+      Octadecabacter (sea-ice)|Octadecabacter
+      Silicibacter|Silicibacter
+      Jannaschia|Jannaschia
+      Rhodobacter capsulatus|Rhodobacter capsulatus
+      Rhodovulum sulfidophilum|Rhodovulum sulfidophilum
+      Paracoccus denitrificans|Paracoccus denitrificans
+      Rhodobaca|Rhodobaca
+      Haematobacter|Haematobacter
+      Pseudorhodobacter|Pseudorhodobacter
+      Amaricoccus|Amaricoccus
+      Maritimibacter|Maritimibacter
+      Marinovum|Marinovum
+      Nereida|Nereida
+      Oceanicola|Oceanicola
+      Pelagibaca|Pelagibaca
+      Thalassobius|Thalassobius
+      Tropicibacter|Tropicibacter
+      Leisingera|Leisingera
+      Phaeobacter inhibens|Phaeobacter inhibens
      Rhodospirillales
       Rhodospirillum|Rhodospirillum
       Magnetospirillum (magnetotactic)|Magnetospirillum
@@ -442,16 +1201,60 @@ const TREE_TXT=`Life
       Azospirillum (plant-growth promoters)|Azospirillum
       Rhodovibrio|Rhodovibrio
       Komagataeibacter (kombucha cellulose)|Komagataeibacter
+      Acetobacter pasteurianus|Acetobacter pasteurianus
+      Gluconacetobacter (sugarcane endophyte)|Gluconacetobacter
+      Asaia (mosquito symbiont)|Asaia
+      Acidiphilium (acid-mine)|Acidiphilium
+      Acidocella|Acidocella
+      Acidisphaera|Acidisphaera
+      Rhodopila|Rhodopila
+      Roseomonas|Roseomonas
+      Azospirillum brasilense|Azospirillum brasilense
+      Rhodospirillum rubrum|Rhodospirillum rubrum
+      Rhodospira|Rhodospira
+      Rhodocista|Rhodocista
+      Skermanella|Skermanella
+      Magnetospirillum gryphiswaldense|Magnetospirillum gryphiswaldense
+      Magnetospirillum magneticum|Magnetospirillum magneticum
+      Phaeospirillum|Phaeospirillum
+      Tistrella|Tistrella
+      Inquilinus|Inquilinus
+      Telmatospirillum|Telmatospirillum
+      Defluviicoccus|Defluviicoccus
      Pelagibacter (SAR11)|Pelagibacter
      Hyphomonas|Hyphomonas
      Maricaulis|Maricaulis
      Asticcacaulis|Asticcacaulis
      Rhodovulum|Rhodovulum
+     Caulobacter crescentus|Caulobacter crescentus
+     Brevundimonas|Brevundimonas
+     Phenylobacterium|Phenylobacterium
+     Asticcacaulis biprosthecium|Asticcacaulis biprosthecium
+     Maricaulis maris|Maricaulis maris
+     Hyphomonas neptunium|Hyphomonas neptunium
+     Hirschia|Hirschia
+     Oceanicaulis|Oceanicaulis
+     Parvularcula|Parvularcula
+     Kordiimonas|Kordiimonas
+     Kiloniella|Kiloniella
+     Emcibacter|Emcibacter
      Sphingomonadales
       Sphingomonas|Sphingomonas
       Zymomonas (pulque)|Zymomonas
       Novosphingobium|Novosphingobium
       Erythrobacter|Erythrobacter
+      Sphingomonas paucimobilis|Sphingomonas paucimobilis
+      Sphingobium (lindane-degrader)|Sphingobium
+      Sphingopyxis|Sphingopyxis
+      Sphingosinicella|Sphingosinicella
+      Zymomonas mobilis|Zymomonas mobilis
+      Erythrobacter litoralis|Erythrobacter litoralis
+      Porphyrobacter|Porphyrobacter
+      Altererythrobacter|Altererythrobacter
+      Citromicrobium|Citromicrobium
+      Blastomonas|Blastomonas
+      Sandaracinobacter|Sandaracinobacter
+      Erythromicrobium|Erythromicrobium
     Betaproteobacteria
      Neisseria|Neisseria
      Burkholderiales
@@ -475,6 +1278,66 @@ const TREE_TXT=`Life
       Hydrogenophaga|Hydrogenophaga
       Acidovorax|Acidovorax
       Variovorax|Variovorax
+      Burkholderia pseudomallei (melioidosis)|Burkholderia pseudomallei
+      Burkholderia mallei (glanders)|Burkholderia mallei
+      Burkholderia cenocepacia|Burkholderia cenocepacia
+      Paraburkholderia (nodule-formers)|Paraburkholderia
+      Caballeronia|Caballeronia
+      Ralstonia pickettii|Ralstonia pickettii
+      Ralstonia eutropha|Ralstonia eutropha
+      Pandoraea|Pandoraea
+      Lautropia|Lautropia
+      Polynucleobacter necessarius|Polynucleobacter necessarius
+      Cupriavidus metallidurans (metal-resistant)|Cupriavidus metallidurans
+      Bordetella bronchiseptica (kennel cough)|Bordetella bronchiseptica
+      Bordetella avium|Bordetella avium
+      Achromobacter xylosoxidans|Achromobacter xylosoxidans
+      Alcaligenes faecalis|Alcaligenes faecalis
+      Oligella|Oligella
+      Pigmentiphaga|Pigmentiphaga
+      Advenella|Advenella
+      Comamonas testosteroni|Comamonas testosteroni
+      Delftia acidovorans|Delftia acidovorans
+      Acidovorax avenae|Acidovorax avenae
+      Hydrogenophaga flava|Hydrogenophaga flava
+      Rhodoferax (purple, cold)|Rhodoferax
+      Albidiferax|Albidiferax
+      Polaromonas (glacier)|Polaromonas
+      Curvibacter (hydra symbiont)|Curvibacter
+      Limnohabitans planktonicus|Limnohabitans planktonicus
+      Aquabacterium|Aquabacterium
+      Leptothrix (iron-sheathed)|Leptothrix
+      Sphaerotilus (sewage fungus)|Sphaerotilus
+      Ideonella (PET-plastic eater)|Ideonella
+      Rubrivivax|Rubrivivax
+      Roseateles|Roseateles
+      Mitsuaria|Mitsuaria
+      Pelomonas|Pelomonas
+      Herminiimonas|Herminiimonas
+      Collimonas (fungus-eating)|Collimonas
+      Oxalobacter (oxalate-eater, gut)|Oxalobacter
+      Janthinobacterium lividum|Janthinobacterium lividum
+      Duganella|Duganella
+      Massilia timonae|Massilia timonae
+      Undibacterium|Undibacterium
+      Glaciimonas|Glaciimonas
+      Neisseria gonorrhoeae|Neisseria gonorrhoeae
+      Neisseria lactamica|Neisseria lactamica
+      Kingella (Kingella kingae)|Kingella
+      Eikenella|Eikenella
+      Simonsiella (gliding, mouth)|Simonsiella
+      Alysiella|Alysiella
+      Vitreoscilla|Vitreoscilla
+      Chromobacterium violaceum|Chromobacterium violaceum
+      Iodobacter|Iodobacter
+      Aquitalea|Aquitalea
+      Laribacter|Laribacter
+      Pseudogulbenkiania|Pseudogulbenkiania
+      Vogesella|Vogesella
+      Aquaspirillum|Aquaspirillum
+      Microvirgula|Microvirgula
+      Formivibrio|Formivibrio
+      Deefgea|Deefgea
      Nitrosomonadales
       Nitrosomonas (ammonia oxidisers)|Nitrosomonas
       Thiobacillus|Thiobacillus
@@ -483,6 +1346,37 @@ const TREE_TXT=`Life
       Gallionella (iron stalks)|Gallionella
       Sideroxydans|Sideroxydans
       Nitrosovibrio|Nitrosovibrio
+      Nitrosomonas europaea|Nitrosomonas europaea
+      Nitrosospira multiformis|Nitrosospira multiformis
+      Nitrosococcus mobilis|Nitrosococcus mobilis
+      Methylophilus methylotrophus|Methylophilus methylotrophus
+      Methylobacillus|Methylobacillus
+      Methylotenera|Methylotenera
+      Methylovorus|Methylovorus
+      Thiobacillus denitrificans|Thiobacillus denitrificans
+      Sulfuritalea|Sulfuritalea
+      Sulfuricella|Sulfuricella
+      Gallionella ferruginea|Gallionella ferruginea
+      Sideroxydans lithotrophicus|Sideroxydans lithotrophicus
+      Ferriphaselus|Ferriphaselus
+      Azoarcus tolulyticus|Azoarcus tolulyticus
+      Thauera aromatica|Thauera aromatica
+      Dechloromonas aromatica|Dechloromonas aromatica
+      Azospira|Azospira
+      Azonexus|Azonexus
+      Azovibrio|Azovibrio
+      Propionivibrio|Propionivibrio
+      Zoogloea ramigera|Zoogloea ramigera
+      Sterolibacterium|Sterolibacterium
+      Denitratisoma|Denitratisoma
+      Uliginosibacterium|Uliginosibacterium
+      Accumulibacter (phosphate-accumulating)|Accumulibacter
+      Rhodocyclus tenuis|Rhodocyclus tenuis
+      Nitrosomonas eutropha|Nitrosomonas eutropha
+      Hydrogenophilus|Hydrogenophilus
+      Tepidiphilus|Tepidiphilus
+      Thiobacter|Thiobacter
+      Petrobacter|Petrobacter
     Gammaproteobacteria
      Enterobacterales
       E. coli|Escherichia
@@ -499,6 +1393,29 @@ const TREE_TXT=`Life
       Edwardsiella|Edwardsiella
       Dickeya|Dickeya
       Buchnera (aphid symbiont)|Buchnera
+      Wigglesworthia (tsetse symbiont)|Wigglesworthia
+      Blochmannia (ant symbiont)|Blochmannia
+      Serratia symbiotica|Serratia symbiotica
+      Klebsiella oxytoca|Klebsiella oxytoca
+      Escherichia fergusonii|Escherichia fergusonii
+      Salmonella bongori|Salmonella bongori
+      Shigella flexneri|Shigella flexneri
+      Yersinia enterocolitica|Yersinia enterocolitica
+      Yersinia pseudotuberculosis|Yersinia pseudotuberculosis
+      Pectobacterium|Pectobacterium
+      Brenneria|Brenneria
+      Lonsdalea|Lonsdalea
+      Leminorella|Leminorella
+      Tatumella|Tatumella
+      Kosakonia|Kosakonia
+      Lelliottia|Lelliottia
+      Pluralibacter|Pluralibacter
+      Erwinia amylovora (fire blight)|Erwinia amylovora
+      Rahnella|Rahnella
+      Yokenella|Yokenella
+      Budvicia|Budvicia
+      Ewingella|Ewingella
+      Obesumbacterium (brewery contaminant)|Obesumbacterium
       Sodalis (tsetse symbiont)|Sodalis
       Hafnia|Hafnia
       Cronobacter (infant formula)|Cronobacter
@@ -520,6 +1437,15 @@ const TREE_TXT=`Life
       Vibrio vulnificus|Vibrio vulnificus
       Vibrio harveyi (milky seas)|Vibrio harveyi
       Vibrio natriegens (fastest grower)|Vibrio natriegens
+      Vibrio alginolyticus|Vibrio alginolyticus
+      Vibrio anguillarum (fish vibriosis)|Vibrio anguillarum
+      Vibrio coralliilyticus (coral bleaching)|Vibrio coralliilyticus
+      Grimontia|Grimontia
+      Salinivibrio|Salinivibrio
+      Enterovibrio|Enterovibrio
+      Aeromonas salmonicida (furunculosis)|Aeromonas salmonicida
+      Tolumonas|Tolumonas
+      Oceanimonas|Oceanimonas
       Photobacterium|Photobacterium
       Vibrio parahaemolyticus & vulnificus|Vibrio parahaemolyticus
      Aeromonas|Aeromonas
@@ -541,6 +1467,29 @@ const TREE_TXT=`Life
       Alcanivorax (oil-spill eaters)|Alcanivorax
       Marinobacter|Marinobacter
       Oceanospirillum|Oceanospirillum
+      Pseudomonas stutzeri|Pseudomonas stutzeri
+      Pseudomonas chlororaphis|Pseudomonas chlororaphis
+      Azomonas|Azomonas
+      Acinetobacter calcoaceticus|Acinetobacter calcoaceticus
+      Moraxella bovis (pinkeye)|Moraxella bovis
+      Psychrobacter arcticus|Psychrobacter arcticus
+      Halomonas titanicae (Titanic rusticles)|Halomonas titanicae
+      Chromohalobacter|Chromohalobacter
+      Kushneria|Kushneria
+      Cobetia|Cobetia
+      Marinospirillum|Marinospirillum
+      Nitrincola|Nitrincola
+      Oleiphilus|Oleiphilus
+      Thalassolituus|Thalassolituus
+      Oleispira|Oleispira
+      Cycloclasticus (PAH-eaters)|Cycloclasticus
+      Methylophaga|Methylophaga
+      Methylomonas|Methylomonas
+      Methylobacter|Methylobacter
+      Methylomicrobium|Methylomicrobium
+      Methylocaldum|Methylocaldum
+      Methylosarcina|Methylosarcina
+      Crenothrix (sheathed methane-eater)|Crenothrix
      Legionellales
       Legionella|Legionella
       Coxiella (Q fever)|Coxiella
@@ -565,6 +1514,80 @@ const TREE_TXT=`Life
      Idiomarina|Idiomarina
      Lysobacter|Lysobacter
      Kangiella|Kangiella
+     Legionella longbeachae|Legionella longbeachae
+     Tatlockia|Tatlockia
+     Fluoribacter|Fluoribacter
+     Rickettsiella (insect pathogens)|Rickettsiella
+     Diplorickettsia|Diplorickettsia
+     Aquicella|Aquicella
+     Francisella philomiragia|Francisella philomiragia
+     Fangia|Fangia
+     Piscirickettsia (salmon)|Piscirickettsia
+     Hydrogenovibrio|Hydrogenovibrio
+     Thiomicrospira|Thiomicrospira
+     Thiomicrorhabdus|Thiomicrorhabdus
+     Leucothrix|Leucothrix
+     Candidatus Thiodiazotropha (lucinid clam symbiont)|Thiodiazotropha
+     Candidatus Ruthia (vent clam symbiont)|Ruthia
+     Candidatus Vesicomyosocius|Vesicomyosocius
+     Sedimenticola|Sedimenticola
+     Haemophilus ducreyi|Haemophilus ducreyi
+     Aggregatibacter|Aggregatibacter
+     Actinobacillus (pig pleuropneumonia)|Actinobacillus
+     Mannheimia (shipping fever)|Mannheimia
+     Bibersteinia|Bibersteinia
+     Gallibacterium|Gallibacterium
+     Avibacterium|Avibacterium
+     Histophilus|Histophilus
+     Lysobacter enzymogenes|Lysobacter enzymogenes
+     Luteimonas|Luteimonas
+     Pseudoxanthomonas|Pseudoxanthomonas
+     Xanthomonas oryzae (rice blight)|Xanthomonas oryzae
+     Stenotrophomonas rhizophila|Stenotrophomonas rhizophila
+     Silanimonas|Silanimonas
+     Thermomonas|Thermomonas
+     Dokdonella|Dokdonella
+     Rhodanobacter|Rhodanobacter
+     Frateuria|Frateuria
+     Coxiella-like endosymbionts|Coxiella-like
+     Allochromatium|Allochromatium
+     Thiocapsa|Thiocapsa
+     Thiocystis|Thiocystis
+     Marichromatium|Marichromatium
+     Thiohalocapsa|Thiohalocapsa
+     Halochromatium|Halochromatium
+     Thiorhodococcus|Thiorhodococcus
+     Nitrosococcus oceani|Nitrosococcus oceani
+     Thioalkalivibrio (soda-lake sulfur)|Thioalkalivibrio
+     Thioalkalimicrobium|Thioalkalimicrobium
+     Ectothiorhodosinus|Ectothiorhodosinus
+     Halorhodospira halophila|Halorhodospira halophila
+     Pseudoalteromonas|Pseudoalteromonas
+     Shewanella putrefaciens|Shewanella putrefaciens
+     Shewanella benthica (deep-sea)|Shewanella benthica
+     Moritella (deep-sea, cold)|Moritella
+     Psychromonas|Psychromonas
+     Ferrimonas|Ferrimonas
+     Idiomarina loihiensis|Idiomarina loihiensis
+     Glaciecola|Glaciecola
+     Alteromonas macleodii|Alteromonas macleodii
+     Catenovulum|Catenovulum
+     Salinimonas|Salinimonas
+     Alishewanella|Alishewanella
+     Cellvibrio japonicus|Cellvibrio japonicus
+     Teredinibacter (shipworm symbiont)|Teredinibacter
+     Saccharophagus (seaweed-degrader)|Saccharophagus
+     Microbulbifer|Microbulbifer
+     Simiduia|Simiduia
+     Marinimicrobium|Marinimicrobium
+     Cardiobacterium hominis|Cardiobacterium hominis
+     Suttonella|Suttonella
+     Dichelobacter (foot rot)|Dichelobacter
+     Marinobacterium|Marinobacterium
+     Balneatrix|Balneatrix
+     Neptunomonas|Neptunomonas
+     Spongiibacter|Spongiibacter
+     Zhongshania|Zhongshania
      Ectothiorhodospira|Ectothiorhodospira
      Dyella|Dyella
      Alteromonadales
@@ -581,6 +1604,28 @@ const TREE_TXT=`Life
      Caminibacter|Caminibacter
      Wolinella|Wolinella
      Hydrogenimonas|Hydrogenimonas
+     Helicobacter hepaticus|Helicobacter hepaticus
+     Helicobacter felis|Helicobacter felis
+     Helicobacter cinaedi|Helicobacter cinaedi
+     Campylobacter coli|Campylobacter coli
+     Campylobacter fetus|Campylobacter fetus
+     Campylobacter lari|Campylobacter lari
+     Campylobacter upsaliensis|Campylobacter upsaliensis
+     Arcobacter butzleri|Arcobacter butzleri
+     Aliarcobacter|Aliarcobacter
+     Sulfurospirillum|Sulfurospirillum
+     Sulfurimonas denitrificans|Sulfurimonas denitrificans
+     Sulfuricurvum|Sulfuricurvum
+     Thiovulum (fast-swimming sulfur)|Thiovulum
+     Thiofractor|Thiofractor
+     Nitratiruptor|Nitratiruptor
+     Nitratifractor|Nitratifractor
+     Lebetimonas|Lebetimonas
+     Thioreductor|Thioreductor
+     Caminibacter mediatlanticus|Caminibacter mediatlanticus
+     Hydrogenimonas thermophila|Hydrogenimonas thermophila
+     Nautilia profundicola|Nautilia profundicola
+     Candidatus Arcobacter sulfidicus|Arcobacter sulfidicus
     Deltaproteobacteria
      Myxobacteria|Myxococcus
      Desulfovibrio (sulfate reducers)|Desulfovibrio
@@ -600,6 +1645,65 @@ const TREE_TXT=`Life
      Nannocystis|Nannocystis
      Syntrophus|Syntrophus
      Lawsonia (pig ileitis)|Lawsonia
+     Desulfovibrio desulfuricans|Desulfovibrio desulfuricans
+     Desulfovibrio gigas|Desulfovibrio gigas
+     Desulfomicrobium|Desulfomicrobium
+     Desulfohalobium|Desulfohalobium
+     Desulfonatronovibrio|Desulfonatronovibrio
+     Desulfotalea (permafrost)|Desulfotalea
+     Desulfocapsa|Desulfocapsa
+     Desulfobacterium|Desulfobacterium
+     Desulfobacula|Desulfobacula
+     Desulfococcus oleovorans|Desulfococcus oleovorans
+     Desulfonema (gliding filaments)|Desulfonema
+     Desulfosarcina variabilis|Desulfosarcina variabilis
+     Desulfobotulus|Desulfobotulus
+     Desulfatibacillum|Desulfatibacillum
+     Desulfofaba|Desulfofaba
+     Desulfofrigus|Desulfofrigus
+     Desulfoglaeba|Desulfoglaeba
+     Desulforhopalus|Desulforhopalus
+     Desulfuromusa|Desulfuromusa
+     Geobacter metallireducens|Geobacter metallireducens
+     Geobacter sulfurreducens|Geobacter sulfurreducens
+     Geopsychrobacter|Geopsychrobacter
+     Geothermobacter|Geothermobacter
+     Geoalkalibacter|Geoalkalibacter
+     Desulfuromonas acetoxidans|Desulfuromonas acetoxidans
+     Pelobacter carbinolicus|Pelobacter carbinolicus
+     Malonomonas|Malonomonas
+     Syntrophus aciditrophicus|Syntrophus aciditrophicus
+     Smithella|Smithella
+     Syntrophobacter fumaroxidans|Syntrophobacter fumaroxidans
+     Desulfobacca|Desulfobacca
+     Desulfomonile|Desulfomonile
+     Syntrophorhabdus|Syntrophorhabdus
+     Desulfarculus|Desulfarculus
+     Myxococcus xanthus|Myxococcus xanthus
+     Corallococcus|Corallococcus
+     Pyxidicoccus|Pyxidicoccus
+     Archangium|Archangium
+     Cystobacter|Cystobacter
+     Melittangium|Melittangium
+     Hyalangium|Hyalangium
+     Stigmatella aurantiaca|Stigmatella aurantiaca
+     Chondromyces crocatus|Chondromyces crocatus
+     Sorangium cellulosum|Sorangium cellulosum
+     Polyangium|Polyangium
+     Byssovorax|Byssovorax
+     Jahnella|Jahnella
+     Haliangium (marine myxobacteria)|Haliangium
+     Kofleria|Kofleria
+     Nannocystis exedens|Nannocystis exedens
+     Plesiocystis|Plesiocystis
+     Enhygromyxa|Enhygromyxa
+     Anaeromyxobacter dehalogenans|Anaeromyxobacter dehalogenans
+     Vulgatibacter|Vulgatibacter
+     Bdellovibrio bacteriovorus|Bdellovibrio bacteriovorus
+     Bacteriovorax|Bacteriovorax
+     Peredibacter|Peredibacter
+     Halobacteriovorax|Halobacteriovorax
+     Micavibrio|Micavibrio
     Zetaproteobacteria (iron-oxidising mats)|Mariprofundus
    Acidobacteria|Acidobacteriota
    Solibacter|Solibacter
@@ -631,6 +1735,170 @@ const TREE_TXT=`Life
      Parabacteroides|Parabacteroides
      Odoribacter|Odoribacter
      Tannerella (gum disease)|Tannerella
+     Bacteroides fragilis|Bacteroides fragilis
+     Bacteroides thetaiotaomicron|Bacteroides thetaiotaomicron
+     Bacteroides vulgatus|Bacteroides vulgatus
+     Bacteroides ovatus|Bacteroides ovatus
+     Bacteroides uniformis|Bacteroides uniformis
+     Bacteroides caccae|Bacteroides caccae
+     Bacteroides dorei|Bacteroides dorei
+     Bacteroides xylanisolvens|Bacteroides xylanisolvens
+     Bacteroides plebeius (nori-digesting gene)|Bacteroides plebeius
+     Phocaeicola|Phocaeicola
+     Prevotella copri|Prevotella copri
+     Prevotella intermedia|Prevotella intermedia
+     Prevotella melaninogenica|Prevotella melaninogenica
+     Prevotella bivia|Prevotella bivia
+     Prevotella ruminicola|Prevotella ruminicola
+     Prevotella bryantii|Prevotella bryantii
+     Segatella|Segatella
+     Alloprevotella|Alloprevotella
+     Paraprevotella|Paraprevotella
+     Porphyromonas gingivalis|Porphyromonas gingivalis
+     Porphyromonas endodontalis|Porphyromonas endodontalis
+     Porphyromonas asaccharolytica|Porphyromonas asaccharolytica
+     Tannerella forsythia|Tannerella forsythia
+     Parabacteroides distasonis|Parabacteroides distasonis
+     Parabacteroides merdae|Parabacteroides merdae
+     Parabacteroides goldsteinii|Parabacteroides goldsteinii
+     Alistipes putredinis|Alistipes putredinis
+     Alistipes finegoldii|Alistipes finegoldii
+     Alistipes shahii|Alistipes shahii
+     Rikenella|Rikenella
+     Odoribacter splanchnicus|Odoribacter splanchnicus
+     Barnesiella intestinihominis|Barnesiella intestinihominis
+     Butyricimonas|Butyricimonas
+     Coprobacter|Coprobacter
+     Dysgonomonas gadei|Dysgonomonas gadei
+     Petrimonas|Petrimonas
+     Proteiniphilum|Proteiniphilum
+     Macellibacteroides|Macellibacteroides
+     Paludibacter propionicigenes|Paludibacter propionicigenes
+     Marinilabilia|Marinilabilia
+     Anaerophaga|Anaerophaga
+     Mangroviflexus|Mangroviflexus
+     Bacteroides 2|Bacteroides cellulosilyticus
+     Flavobacterium psychrophilum (coldwater disease)|Flavobacterium psychrophilum
+     Flavobacterium columnare (columnaris)|Flavobacterium columnare
+     Flavobacterium johnsoniae (gliding model)|Flavobacterium johnsoniae
+     Flavobacterium branchiophilum|Flavobacterium branchiophilum
+     Chryseobacterium indologenes|Chryseobacterium indologenes
+     Elizabethkingia meningoseptica|Elizabethkingia meningoseptica
+     Elizabethkingia anophelis|Elizabethkingia anophelis
+     Riemerella anatipestifer|Riemerella anatipestifer
+     Ornithobacterium (turkey rhinotracheitis)|Ornithobacterium
+     Capnocytophaga canimorsus|Capnocytophaga canimorsus
+     Capnocytophaga ochracea|Capnocytophaga ochracea
+     Bergeyella|Bergeyella
+     Weeksella|Weeksella
+     Empedobacter|Empedobacter
+     Myroides|Myroides
+     Cloacibacterium|Cloacibacterium
+     Apibacter (bee gut)|Apibacter
+     Zobellia galactanivorans|Zobellia galactanivorans
+     Cellulophaga baltica|Cellulophaga baltica
+     Cellulophaga lytica|Cellulophaga lytica
+     Polaribacter irgensii|Polaribacter irgensii
+     Tenacibaculum maritimum|Tenacibaculum maritimum
+     Maribacter|Maribacter
+     Winogradskyella|Winogradskyella
+     Dokdonia|Dokdonia
+     Krokinobacter|Krokinobacter
+     Leeuwenhoekiella|Leeuwenhoekiella
+     Gramella|Gramella
+     Salegentibacter|Salegentibacter
+     Psychroflexus|Psychroflexus
+     Psychroserpens|Psychroserpens
+     Gelidibacter|Gelidibacter
+     Formosa|Formosa
+     Algibacter|Algibacter
+     Aquimarina|Aquimarina
+     Arenibacter|Arenibacter
+     Muricauda|Muricauda
+     Robiginitalea|Robiginitalea
+     Ulvibacter|Ulvibacter
+     Mesonia|Mesonia
+     Kordia|Kordia
+     Croceibacter|Croceibacter
+     Nonlabens|Nonlabens
+     Lutibacter|Lutibacter
+     Lacinutrix|Lacinutrix
+     Bizionia|Bizionia
+     Gillisia|Gillisia
+     Subsaxibacter|Subsaxibacter
+     Sediminicola|Sediminicola
+     Joostella|Joostella
+     Zunongwangia|Zunongwangia
+     Coenonia|Coenonia
+     Candidatus Sulcia (leafhopper symbiont)|Sulcia
+     Blattabacterium (cockroach symbiont)|Blattabacterium
+     Candidatus Uzinura (armoured scale symbiont)|Uzinura
+     Candidatus Walczuchella|Walczuchella
+     Cytophaga hutchinsonii|Cytophaga hutchinsonii
+     Sporocytophaga|Sporocytophaga
+     Flexibacter flexilis|Flexibacter flexilis
+     Hymenobacter roseosalivarius|Hymenobacter roseosalivarius
+     Spirosoma linguale|Spirosoma linguale
+     Runella slithyformis|Runella slithyformis
+     Dyadobacter fermentans|Dyadobacter fermentans
+     Emticicia|Emticicia
+     Flectobacillus|Flectobacillus
+     Arcicella|Arcicella
+     Larkinella|Larkinella
+     Leadbetterella|Leadbetterella
+     Pontibacter|Pontibacter
+     Adhaeribacter|Adhaeribacter
+     Rhodonellum|Rhodonellum
+     Algoriphagus|Algoriphagus
+     Cyclobacterium|Cyclobacterium
+     Belliella|Belliella
+     Echinicola|Echinicola
+     Aquiflexum|Aquiflexum
+     Microscilla|Microscilla
+     Flammeovirga|Flammeovirga
+     Persicobacter|Persicobacter
+     Roseivirga|Roseivirga
+     Fabibacter|Fabibacter
+     Reichenbachiella|Reichenbachiella
+     Marinoscillum|Marinoscillum
+     Thermonema|Thermonema
+     Rapidithrix|Rapidithrix
+     Saprospira grandis|Saprospira grandis
+     Lewinella cohaerens|Lewinella cohaerens
+     Haliscomenobacter hydrossis|Haliscomenobacter hydrossis
+     Aureispira|Aureispira
+     Chitinophaga pinensis|Chitinophaga pinensis
+     Niastella|Niastella
+     Terrimonas|Terrimonas
+     Sediminibacterium|Sediminibacterium
+     Flavisolibacter|Flavisolibacter
+     Segetibacter|Segetibacter
+     Ferruginibacter|Ferruginibacter
+     Lacibacter|Lacibacter
+     Filimonas|Filimonas
+     Hydrotalea|Hydrotalea
+     Parafilimonas|Parafilimonas
+     Sphingobacterium spiritivorum|Sphingobacterium spiritivorum
+     Sphingobacterium multivorum|Sphingobacterium multivorum
+     Pedobacter heparinus|Pedobacter heparinus
+     Mucilaginibacter paludis|Mucilaginibacter paludis
+     Olivibacter|Olivibacter
+     Parapedobacter|Parapedobacter
+     Nubsella|Nubsella
+     Solitalea|Solitalea
+     Arcticibacter|Arcticibacter
+     Salinibacter ruber|Salinibacter ruber
+     Salisaeta|Salisaeta
+     Rhodothermus marinus|Rhodothermus marinus
+     Rubricoccus|Rubricoccus
+     Rubrivirga|Rubrivirga
+     Longimonas|Longimonas
+     Longibacter|Longibacter
+     Balneola|Balneola
+     Gracilimonas|Gracilimonas
+     Aliifodinibius|Aliifodinibius
+     Fodinibius|Fodinibius
+     Rhodohalobacter|Rhodohalobacter
      Riemerella (duck septicaemia)|Riemerella
      Mucilaginibacter|Mucilaginibacter
      Runella|Runella
@@ -647,6 +1915,32 @@ const TREE_TXT=`Life
     Prosthecochloris|Prosthecochloris
     Pelodictyon|Pelodictyon
     Marinimicrobia|Marinimicrobia
+    Chlorobium tepidum|Chlorobium tepidum
+    Chlorobium limicola|Chlorobium limicola
+    Chlorobium phaeobacteroides (Black Sea)|Chlorobium phaeobacteroides
+    Chlorobium ferrooxidans|Chlorobium ferrooxidans
+    Chlorobaculum thiosulfatiphilum|Chlorobaculum thiosulfatiphilum
+    Prosthecochloris aestuarii|Prosthecochloris aestuarii
+    Pelodictyon phaeoclathratiforme|Pelodictyon phaeoclathratiforme
+    Chloroherpeton (gliding green sulfur)|Chloroherpeton
+    Ignavibacterium album|Ignavibacterium album
+    Melioribacter|Melioribacter
+    Kapabacteria|Kapabacteria
+    Fibrobacter succinogenes|Fibrobacter succinogenes
+    Fibrobacter intestinalis|Fibrobacter intestinalis
+    Chitinispirillum|Chitinispirillum
+    Chitinivibrio|Chitinivibrio
+    Gemmatimonas aurantiaca|Gemmatimonas aurantiaca
+    Gemmatimonas phototrophica|Gemmatimonas phototrophica
+    Gemmatirosa|Gemmatirosa
+    Roseisolibacter|Roseisolibacter
+    Longimicrobium|Longimicrobium
+    Caldithrix abyssi|Caldithrix abyssi
+    Calorithrix|Calorithrix
+    Candidatus Cloacimonas|Cloacimonas
+    Candidatus Latescibacter|Latescibacter
+    Candidatus Zixibacter|Zixibacter
+    Candidatus Marinimicrobium (SAR406)|Marinimicrobium SAR406
     Cloacimonetes|Cloacimonadota
     Latescibacteria|Latescibacterota
     Caldithrix|Caldithrix
@@ -667,6 +1961,42 @@ const TREE_TXT=`Life
      Blastopirellula|Blastopirellula
      Singulisphaera|Singulisphaera
      Phycisphaera|Phycisphaera
+     Planctomyces bekefii|Planctomyces bekefii
+     Planctomyces brasiliensis|Planctomyces brasiliensis
+     Planctopirus limnophila|Planctopirus limnophila
+     Rhodopirellula baltica|Rhodopirellula baltica
+     Pirellula staleyi|Pirellula staleyi
+     Gimesia maris|Gimesia maris
+     Fuerstiella|Fuerstiella
+     Rubinisphaera|Rubinisphaera
+     Schlesneria paludicola|Schlesneria paludicola
+     Zavarzinella formosa|Zavarzinella formosa
+     Singulisphaera acidiphila|Singulisphaera acidiphila
+     Aquisphaera|Aquisphaera
+     Isosphaera pallida|Isosphaera pallida
+     Gemmata obscuriglobus|Gemmata obscuriglobus
+     Gemmata massiliana|Gemmata massiliana
+     Telmatocola|Telmatocola
+     Tuwongella immobilis|Tuwongella immobilis
+     Urbifossiella|Urbifossiella
+     Kuenenia stuttgartiensis|Kuenenia stuttgartiensis
+     Brocadia anammoxidans|Brocadia anammoxidans
+     Brocadia fulgida|Brocadia fulgida
+     Scalindua brodae|Scalindua brodae
+     Scalindua sorokinii|Scalindua sorokinii
+     Jettenia caeni|Jettenia caeni
+     Anammoxoglobus propionicus|Anammoxoglobus propionicus
+     Anammoximicrobium|Anammoximicrobium
+     Phycisphaera mikurensis|Phycisphaera mikurensis
+     Algisphaera|Algisphaera
+     Tepidisphaera|Tepidisphaera
+     Sedimentisphaera|Sedimentisphaera
+     Mariniblastus|Mariniblastus
+     Bythopirellula|Bythopirellula
+     Lacipirellula|Lacipirellula
+     Anatilimnocola|Anatilimnocola
+     Candidatus Uab amorphum (Saltatorellus)|Saltatorellus
+     Candidatus Brocadiae 2|Brocadiae sp.
      Zavarzinella|Zavarzinella
      Schlesneria|Schlesneria
      Jettenia|Jettenia
@@ -680,6 +2010,29 @@ const TREE_TXT=`Life
      Chlamydia psittaci|Chlamydia psittaci
      Chlamydia pneumoniae|Chlamydia pneumoniae
      Protochlamydia|Protochlamydia
+     Chlamydia muridarum|Chlamydia muridarum
+     Chlamydia suis|Chlamydia suis
+     Chlamydia abortus (enzootic abortion)|Chlamydia abortus
+     Chlamydia felis|Chlamydia felis
+     Chlamydia caviae|Chlamydia caviae
+     Chlamydia pecorum|Chlamydia pecorum
+     Chlamydia gallinacea|Chlamydia gallinacea
+     Chlamydia avium|Chlamydia avium
+     Parachlamydia acanthamoebae|Parachlamydia acanthamoebae
+     Protochlamydia amoebophila|Protochlamydia amoebophila
+     Neochlamydia hartmannellae|Neochlamydia hartmannellae
+     Simkania negevensis|Simkania negevensis
+     Waddlia chondrophila|Waddlia chondrophila
+     Estrella|Estrella
+     Criblamydia sequanensis|Criblamydia sequanensis
+     Rhabdochlamydia porcellionis|Rhabdochlamydia porcellionis
+     Candidatus Fritschea bemisiae|Fritschea bemisiae
+     Candidatus Piscichlamydia (salmon gill)|Piscichlamydia
+     Candidatus Clavichlamydia|Clavichlamydia
+     Candidatus Similichlamydia|Similichlamydia
+     Candidatus Amphibiichlamydia|Amphibiichlamydia
+     Candidatus Actinochlamydia|Actinochlamydia
+     Candidatus Renichlamydia|Renichlamydia
      Neochlamydia|Neochlamydia
      Criblamydia|Criblamydia
      Rhabdochlamydia|Rhabdochlamydia
@@ -691,6 +2044,41 @@ const TREE_TXT=`Life
     Prosthecobacter|Prosthecobacter
     Methylacidiphilum (acid methane-eaters)|Methylacidiphilum
     Kiritimatiellae|Kiritimatiellae
+    Akkermansia muciniphila|Akkermansia muciniphila
+    Akkermansia glycaniphila|Akkermansia glycaniphila
+    Prosthecobacter fusiformis|Prosthecobacter fusiformis
+    Prosthecobacter dejongeii|Prosthecobacter dejongeii
+    Luteolibacter|Luteolibacter
+    Roseibacillus|Roseibacillus
+    Persicirhabdus|Persicirhabdus
+    Haloferula|Haloferula
+    Rubritalea marina|Rubritalea marina
+    Coraliomargarita akajimensis|Coraliomargarita akajimensis
+    Puniceicoccus|Puniceicoccus
+    Cerasicoccus|Cerasicoccus
+    Pelagicoccus|Pelagicoccus
+    Lentimonas|Lentimonas
+    Opitutus terrae|Opitutus terrae
+    Alterococcus|Alterococcus
+    Chthoniobacter flavus|Chthoniobacter flavus
+    Terrimicrobium|Terrimicrobium
+    Candidatus Udaeobacter (dominant soil)|Udaeobacter
+    Candidatus Xiphinematobacter (nematode symbiont)|Xiphinematobacter
+    Diplosphaera|Diplosphaera
+    Lacunisphaera|Lacunisphaera
+    Methylacidiphilum infernorum|Methylacidiphilum infernorum
+    Methylacidiphilum fumariolicum|Methylacidiphilum fumariolicum
+    Methylacidimicrobium|Methylacidimicrobium
+    Victivallis vadensis|Victivallis vadensis
+    Lentisphaera araneosa|Lentisphaera araneosa
+    Oligosphaera|Oligosphaera
+    Kiritimatiella glycovorans|Kiritimatiella glycovorans
+    Pontiella|Pontiella
+    Tichowtungia|Tichowtungia
+    Candidatus Sumerlaea|Sumerlaea
+    Candidatus Omnitrophus|Omnitrophus
+    Candidatus Poribacteria 2|Poribacteria sp.
+    Candidatus Hydrogenedens|Hydrogenedens
     Rubritalea|Rubritalea
     Coraliomargarita|Coraliomargarita
     Pedosphaera|Pedosphaera
@@ -706,6 +2094,68 @@ const TREE_TXT=`Life
     Treponema denticola|Treponema denticola
     Leptonema|Leptonema
     Turneriella|Turneriella
+    Treponema pallidum|Treponema pallidum
+    Treponema pertenue (yaws)|Treponema pertenue
+    Treponema carateum (pinta)|Treponema carateum
+    Treponema vincentii (trench mouth)|Treponema vincentii
+    Treponema socranskii|Treponema socranskii
+    Treponema primitia (termite gut)|Treponema primitia
+    Treponema azotonutricium|Treponema azotonutricium
+    Treponema bryantii (rumen)|Treponema bryantii
+    Treponema succinifaciens|Treponema succinifaciens
+    Treponema brennaborense|Treponema brennaborense
+    Treponema phagedenis (digital dermatitis)|Treponema phagedenis
+    Borrelia burgdorferi|Borrelia burgdorferi
+    Borrelia garinii|Borrelia garinii
+    Borrelia afzelii|Borrelia afzelii
+    Borrelia mayonii|Borrelia mayonii
+    Borrelia hermsii|Borrelia hermsii
+    Borrelia recurrentis|Borrelia recurrentis
+    Borrelia duttonii|Borrelia duttonii
+    Borrelia turicatae|Borrelia turicatae
+    Borrelia anserina (fowl spirochaetosis)|Borrelia anserina
+    Borrelia coriaceae|Borrelia coriaceae
+    Borrelia theileri|Borrelia theileri
+    Leptospira interrogans|Leptospira interrogans
+    Leptospira biflexa (saprophyte)|Leptospira biflexa
+    Leptospira borgpetersenii|Leptospira borgpetersenii
+    Leptospira kirschneri|Leptospira kirschneri
+    Leptospira noguchii|Leptospira noguchii
+    Leptospira santarosai|Leptospira santarosai
+    Leptospira weilii|Leptospira weilii
+    Leptonema illini|Leptonema illini
+    Turneriella parva|Turneriella parva
+    Spirochaeta africana|Spirochaeta africana
+    Spirochaeta halophila|Spirochaeta halophila
+    Spirochaeta aurantia|Spirochaeta aurantia
+    Spirochaeta cellobiosiphila|Spirochaeta cellobiosiphila
+    Sediminispirochaeta smaragdinae|Sediminispirochaeta smaragdinae
+    Sphaerochaeta globosa|Sphaerochaeta globosa
+    Sphaerochaeta pleomorpha|Sphaerochaeta pleomorpha
+    Exilispira thermophila|Exilispira thermophila
+    Brachyspira hyodysenteriae (swine dysentery)|Brachyspira hyodysenteriae
+    Brachyspira pilosicoli|Brachyspira pilosicoli
+    Brachyspira aalborgi|Brachyspira aalborgi
+    Brachyspira murdochii|Brachyspira murdochii
+    Brachyspira intermedia|Brachyspira intermedia
+    Brachyspira innocens|Brachyspira innocens
+    Brachyspira hampsonii|Brachyspira hampsonii
+    Brevinema (shrew spirochaete)|Brevinema
+    Cristispira (mollusc crystalline style)|Cristispira
+    Clevelandina (termite gut)|Clevelandina
+    Diplocalyx|Diplocalyx
+    Hollandina|Hollandina
+    Pillotina|Pillotina
+    Oceanispirochaeta|Oceanispirochaeta
+    Alkalispirochaeta|Alkalispirochaeta
+    Salinispira|Salinispira
+    Pleomorphochaeta|Pleomorphochaeta
+    Rectinema|Rectinema
+    Thermospira|Thermospira
+    Breznakiella|Breznakiella
+    Candidatus Termititreponema|Termititreponema
+    Candidatus Gracilinema|Gracilinema
+    Candidatus Zymospirochaeta|Zymospirochaeta
     Borrelia miyamotoi|Borrelia miyamotoi
     Exilispira|Exilispira
     Spirochaeta thermophila|Spirochaeta thermophila
@@ -715,9 +2165,206 @@ const TREE_TXT=`Life
    Sneathia|Sneathia
    Streptobacillus (rat-bite fever)|Streptobacillus
    Cetobacterium|Cetobacterium
+   Fusobacterium nucleatum|Fusobacterium nucleatum
+   Fusobacterium necrophorum (Lemierre's)|Fusobacterium necrophorum
+   Fusobacterium mortiferum|Fusobacterium mortiferum
+   Fusobacterium varium|Fusobacterium varium
+   Fusobacterium periodonticum|Fusobacterium periodonticum
+   Fusobacterium ulcerans|Fusobacterium ulcerans
+   Fusobacterium gonidiaformans|Fusobacterium gonidiaformans
+   Fusobacterium naviforme|Fusobacterium naviforme
+   Fusobacterium russii|Fusobacterium russii
+   Fusobacterium simiae|Fusobacterium simiae
+   Fusobacterium equinum|Fusobacterium equinum
+   Fusobacterium canifelinum|Fusobacterium canifelinum
+   Fusobacterium perfoetens|Fusobacterium perfoetens
+   Leptotrichia buccalis|Leptotrichia buccalis
+   Leptotrichia goodfellowii|Leptotrichia goodfellowii
+   Leptotrichia wadei|Leptotrichia wadei
+   Leptotrichia shahii|Leptotrichia shahii
+   Leptotrichia hofstadii|Leptotrichia hofstadii
+   Leptotrichia trevisanii|Leptotrichia trevisanii
+   Sneathia amnii|Sneathia amnii
+   Sneathia sanguinegens|Sneathia sanguinegens
+   Streptobacillus moniliformis|Streptobacillus moniliformis
+   Streptobacillus hongkongensis|Streptobacillus hongkongensis
+   Sebaldella (termite)|Sebaldella
+   Oceanivirga|Oceanivirga
+   Caviibacter|Caviibacter
+   Cetobacterium somerae|Cetobacterium somerae
+   Cetobacterium ceti|Cetobacterium ceti
+   Ilyobacter polytropus|Ilyobacter polytropus
+   Ilyobacter tartaricus|Ilyobacter tartaricus
+   Propionigenium modestum|Propionigenium modestum
+   Propionigenium maris|Propionigenium maris
+   Psychrilyobacter|Psychrilyobacter
+   Hypnocyclicus|Hypnocyclicus
+   Fusobacterium 2|Fusobacterium polymorphum
    Ilyobacter|Ilyobacter
    Propionigenium|Propionigenium
    Elusimicrobia (termite gut)|Elusimicrobiota
+   Elusimicrobium minutum|Elusimicrobium minutum
+   Endomicrobium proavitum|Endomicrobium proavitum
+   Candidatus Endomicrobium trichonymphae|Endomicrobium trichonymphae
+   Aquifex aeolicus|Aquifex aeolicus
+   Aquifex pyrophilus|Aquifex pyrophilus
+   Hydrogenobacter thermophilus|Hydrogenobacter thermophilus
+   Hydrogenobaculum|Hydrogenobaculum
+   Hydrogenivirga|Hydrogenivirga
+   Thermocrinis ruber|Thermocrinis ruber
+   Thermocrinis albus|Thermocrinis albus
+   Sulfurihydrogenibium|Sulfurihydrogenibium
+   Persephonella (deep vent)|Persephonella
+   Hydrogenothermus|Hydrogenothermus
+   Venenivibrio|Venenivibrio
+   Balnearium|Balnearium
+   Desulfurobacterium|Desulfurobacterium
+   Thermovibrio|Thermovibrio
+   Phorcysia|Phorcysia
+   Thermotoga maritima|Thermotoga maritima
+   Thermotoga neapolitana|Thermotoga neapolitana
+   Thermotoga petrophila|Thermotoga petrophila
+   Thermotoga naphthophila|Thermotoga naphthophila
+   Pseudothermotoga|Pseudothermotoga
+   Fervidobacterium|Fervidobacterium
+   Thermosipho|Thermosipho
+   Geotoga|Geotoga
+   Petrotoga (oil reservoir)|Petrotoga
+   Marinitoga|Marinitoga
+   Kosmotoga olearia|Kosmotoga olearia
+   Mesotoga (mesophilic toga)|Mesotoga
+   Oceanotoga|Oceanotoga
+   Defluviitoga|Defluviitoga
+   Athalassotoga|Athalassotoga
+   Mesoaciditoga|Mesoaciditoga
+   Deinococcus radiodurans|Deinococcus radiodurans
+   Deinococcus geothermalis|Deinococcus geothermalis
+   Deinococcus deserti|Deinococcus deserti
+   Deinococcus gobiensis|Deinococcus gobiensis
+   Deinococcus radiopugnans|Deinococcus radiopugnans
+   Deinococcus proteolyticus|Deinococcus proteolyticus
+   Deinococcus murrayi|Deinococcus murrayi
+   Deinobacterium|Deinobacterium
+   Truepera (radiation-resistant, alkaline)|Truepera
+   Thermus thermophilus|Thermus thermophilus
+   Thermus aquaticus|Thermus aquaticus
+   Thermus scotoductus|Thermus scotoductus
+   Thermus filiformis|Thermus filiformis
+   Meiothermus ruber|Meiothermus ruber
+   Meiothermus silvanus|Meiothermus silvanus
+   Marinithermus|Marinithermus
+   Oceanithermus|Oceanithermus
+   Vulcanithermus|Vulcanithermus
+   Rhabdothermus|Rhabdothermus
+   Chloroflexus aurantiacus|Chloroflexus aurantiacus
+   Chloroflexus aggregans|Chloroflexus aggregans
+   Roseiflexus castenholzii|Roseiflexus castenholzii
+   Heliothrix|Heliothrix
+   Oscillochloris|Oscillochloris
+   Chlorothrix|Chlorothrix
+   Chloronema|Chloronema
+   Candidatus Chlorothrix halophila|Chlorothrix halophila
+   Herpetosiphon (predatory gliders)|Herpetosiphon
+   Kouleothrix (sludge bulking)|Kouleothrix
+   Anaerolinea (sludge)|Anaerolinea
+   Levilinea|Levilinea
+   Leptolinea|Leptolinea
+   Longlinea|Longlinea
+   Bellilinea|Bellilinea
+   Ornatilinea|Ornatilinea
+   Caldilinea|Caldilinea
+   Litorilinea|Litorilinea
+   Dehalococcoides mccartyi|Dehalococcoides mccartyi
+   Dehalogenimonas|Dehalogenimonas
+   Dehalobium|Dehalobium
+   Candidatus Dehalobium chlorocoercia|Dehalobium chlorocoercia
+   Thermomicrobium roseum|Thermomicrobium roseum
+   Sphaerobacter|Sphaerobacter
+   Nitrolancea|Nitrolancea
+   Thermorudis|Thermorudis
+   Ktedonobacter racemifer|Ktedonobacter racemifer
+   Thermosporothrix|Thermosporothrix
+   Thermogemmatispora|Thermogemmatispora
+   Dictyobacter|Dictyobacter
+   Tepidiforma|Tepidiforma
+   Ardenticatena|Ardenticatena
+   Thermoflexus|Thermoflexus
+   Candidatus Thermofonsia|Thermofonsia
+   Armatimonas rosea|Armatimonas rosea
+   Chthonomonas|Chthonomonas
+   Fimbriimonas|Fimbriimonas
+   Capsulimonas|Capsulimonas
+   Abditibacterium|Abditibacterium
+   Coprothermobacter proteolyticus|Coprothermobacter proteolyticus
+   Caldiserica: Caldisericum exile|Caldisericum exile
+   Dictyoglomus thermophilum|Dictyoglomus thermophilum
+   Dictyoglomus turgidum|Dictyoglomus turgidum
+   Thermodesulfobacterium commune|Thermodesulfobacterium commune
+   Thermodesulfatator|Thermodesulfatator
+   Thermodesulfobium narugense|Thermodesulfobium narugense
+   Calditerrivibrio|Calditerrivibrio
+   Deferribacter desulfuricans|Deferribacter desulfuricans
+   Denitrovibrio|Denitrovibrio
+   Flexistipes|Flexistipes
+   Geovibrio|Geovibrio
+   Mucispirillum (gut mucus)|Mucispirillum
+   Petrothermobacter|Petrothermobacter
+   Seleniivibrio|Seleniivibrio
+   Synergistes jonesii|Synergistes jonesii
+   Aminobacterium|Aminobacterium
+   Aminomonas|Aminomonas
+   Anaerobaculum|Anaerobaculum
+   Cloacibacillus|Cloacibacillus
+   Dethiosulfovibrio|Dethiosulfovibrio
+   Fretibacterium|Fretibacterium
+   Jonquetella|Jonquetella
+   Pyramidobacter|Pyramidobacter
+   Thermanaerovibrio|Thermanaerovibrio
+   Thermovirga|Thermovirga
+   Acetomicrobium|Acetomicrobium
+   Chrysiogenes arsenatis|Chrysiogenes arsenatis
+   Desulfurispirillum indicum|Desulfurispirillum indicum
+   Desulfurispira|Desulfurispira
+   Nitrospira moscoviensis|Nitrospira moscoviensis
+   Nitrospira defluvii|Nitrospira defluvii
+   Nitrospira inopinata (comammox)|Nitrospira inopinata
+   Nitrospira marina|Nitrospira marina
+   Nitrospira japonica|Nitrospira japonica
+   Leptospirillum (acid mine iron)|Leptospirillum
+   Leptospirillum ferriphilum|Leptospirillum ferriphilum
+   Thermodesulfovibrio|Thermodesulfovibrio
+   Candidatus Magnetobacterium (magnetotactic)|Magnetobacterium
+   Candidatus Magnetoovum|Magnetoovum
+   Nitrospina gracilis|Nitrospina gracilis
+   Nitrospina watsonii|Nitrospina watsonii
+   Candidatus Nitromaritima|Nitromaritima
+   Acidobacterium capsulatum|Acidobacterium capsulatum
+   Granulicella|Granulicella
+   Terriglobus|Terriglobus
+   Edaphobacter|Edaphobacter
+   Acidicapsa|Acidicapsa
+   Bryocella|Bryocella
+   Telmatobacter|Telmatobacter
+   Silvibacterium|Silvibacterium
+   Occallatibacter|Occallatibacter
+   Paraacidobacterium|Paraacidobacterium
+   Acidipila|Acidipila
+   Candidatus Koribacter|Koribacter
+   Candidatus Solibacter usitatus|Solibacter usitatus
+   Bryobacter|Bryobacter
+   Paludibaculum|Paludibaculum
+   Holophaga|Holophaga
+   Geothrix (iron-reducer)|Geothrix
+   Acanthopleuribacter|Acanthopleuribacter
+   Thermoanaerobaculum|Thermoanaerobaculum
+   Chloracidobacterium (phototrophic)|Chloracidobacterium
+   Pyrinomonas|Pyrinomonas
+   Vicinamibacter|Vicinamibacter
+   Luteitalea|Luteitalea
+   Stenotrophobacter|Stenotrophobacter
+   Tellurimicrobium|Tellurimicrobium
+   Aridibacter|Aridibacter
+   Sulfotelmatobacter|Sulfotelmatobacter
    CPR ultrasmall bacteria|Patescibacteria
    Saccharibacteria (TM7)|Saccharibacteria
    Gracilibacteria|Gracilibacteria
@@ -3967,7 +5614,7 @@ const AGES={"Life":4000,"Bacteria":3600,"Archaea":3500,"Eukaryotes":1900,"Terrab
 "Amoebozoans":1100,"Opisthokonts":1200,"Fungi":1050,"Dikarya":650,"Sac fungi":550,"Club fungi":500,"Animals":750,"Sponges":650,"Cnidarians":620,"True jellyfish":350,"Anthozoans":500,"Hydrozoans":450,"Bilaterians":620,"Protostomes":580,"Ecdysozoans":570,"Roundworms":450,"Arthropods":550,"Chelicerates":500,"Scorpions":350,"Spiders":320,"Mites & ticks":420,"Myriapods":420,"Pancrustaceans":520,"Barnacles":300,"True crabs":180,"Insects":420,"Insects with metamorphosis":320,"Beetles":270,"Butterflies & moths":180,"Flies":250,"Hymenopterans":250,"Lophotrochozoans":570,"Flatworms":450,"Annelids":520,"Molluscs":540,"Gastropods":470,"Bivalves":500,"Cephalopods":420,
 "Deuterostomes":590,"Echinoderms":520,"Hemichordates":520,"Chordates":560,"Tunicates":420,"Vertebrates":520,"Jawed vertebrates":460,"Cartilaginous fish":420,"Sharks":280,"Rays":220,"Bony vertebrates":440,"Ray-finned fish":410,"Teleosts":270,"Eels":110,"Catfish":110,"Anglerfish":110,"Lobe-finned lineage":420,"Tetrapods":375,"Amphibians":310,"Frogs & toads":200,"Salamanders & newts":170,"Amniotes":320,"Mammals":200,"Monotremes":50,"Therians":165,"Marsupials":85,"Placentals":100,"Xenarthrans":65,"Afrotherians":75,"Boreoeutherians":92,"Euarchontoglires":87,"Primates":68,"Rodents":66,"Laurasiatherians":88,"Bats":62,"Carnivorans":52,"Odd-toed ungulates":56,"Even-toed ungulates":62,"Whales & dolphins":36,"Cats":15,"Small cats & domestic cat":10,"Dogs & foxes":40,"Bears":20,"Deer":20,"Cattle, sheep & antelope":25,"Rodents":66,"Mice & rats":20,"Squirrels & chipmunks":35,"Primates":68,"Great apes":15,"Old World monkeys":20,"Bats":62,"Crows & ravens":15,"Songbirds":58,"Parrots":45,"Ducks":30,"Owls":45,"Hawks & eagles":40,"Penguins":40,"Turtles":160,"Sea turtles":60,"Tortoises":50,"Snakes":125,"Pit vipers & rattlesnakes":40,"Cobras & kraits":35,"Crocodilians":95,"Lizards":190,"Frogs & toads":200,"True frogs":80,"Tree frogs":60,"Salamanders & newts":170,"Newts":70,"Sharks":280,"Rays":220,"Teleosts":270,"Cichlids":45,"Salmon & trout":50,"Carps & goldfish":60,"Butterflies & moths":180,"Swallowtails":60,"Brush-footed butterflies":90,"Beetles":270,"Weevils":110,"Ladybirds":90,"Flies":250,"Mosquitoes":150,"Hymenopterans":250,"Ants":140,"Honeybees":30,"Bumblebees":30,"Spiders":320,"Jumping spiders":50,"Orb-weavers":150,"Cephalopods":420,"Octopuses":150,"Squid":150,"Bivalves":500,"Gastropods":470,"Sea urchins":250,"Starfish":450,"Stony corals":250,"Sponges":650,"Reptiles":285,"Turtles":160,"Lepidosaurs":250,"Squamates":195,"Snakes":125,"Archosaurs":250,"Crocodilians":95,"Birds":105,"Palaeognaths":80,"Neognath birds":95,"Fowl & waterfowl":85,"Neoaves":72,"Parrots":45,"Songbirds":58};
 const ROOT_AGE=4000;
-let ROUND_SECONDS=45; const BLIND_FROM=3;
+let ROUND_SECONDS=25; const BLIND_FROM=3;
 const L1=new Set(["Bacteria","Archaea","Cyanobacteria","Firmicutes","Actinobacteria","Proteobacteria","Euryarchaeota","TACK archaea","Asgard archaea","Excavates","SAR supergroup","Archaeplastids","Land plants","Flowering plants","Amoebozoans","Fungi","Animals","Cnidarians","Arthropods","Insects","Molluscs","Echinoderms","Chordates","Vertebrates","Teleosts","Amphibians","Mammals","Reptiles","Birds"]);
 const DOM={"Bacteria":{c:"#3f7fcf",k:"#2b5a99"},"Archaea":{c:"#d39a2a",k:"#8a6216"},"Eukaryotes":{c:"#8f6fd0",k:"#5a3f96"}};
 const mix=(hex,t)=>{const n=parseInt(hex.slice(1),16),r=n>>16,gg=n>>8&255,b=n&255;const f=v=>Math.round(v+(255-v)*t);return `rgb(${f(r)},${f(gg)},${f(b)})`;};
@@ -4017,7 +5664,7 @@ const ancestors=n=>{const a=[];while(n){a.push(n);n=n.parent;}return a;};
 function pathBetween(a,b){const A=new Set(ancestors(a));let l=b;while(!A.has(l))l=l.parent;const up=[],down=[];for(let n=a;n!==l;n=n.parent)up.push(n);for(let n=b;n!==l;n=n.parent)down.push(n);return{lca:realUp(l),up,down,dist:up.filter(real).length+down.filter(real).length};}
 
 // ================= LAYOUT =================
-const N=leaves.length, R=Math.round(N*14.5/(2*Math.PI)), ROW=14, XW=Math.round(MAXH*34);
+const N=leaves.length, R=Math.round(N*14.5/(2*Math.PI)), ROW=14, XW=Math.round(MAXH*34); const K=R/3845;
 let BBOX;
 const rad=n=>n===root?0:1-Math.pow(n.age/ROOT_AGE,0.5);
 function layoutFractal(){
@@ -4085,7 +5732,7 @@ function render(){
     if(!n.children.length){
       const deg=n.a*180/Math.PI, left=Math.cos(n.a)<0;
       const t=el("text",{class:"lbl",transform:`rotate(${deg.toFixed(2)}${left?"":""})`.replace(/rotate\(([-\d.]+)\)/,(m,v)=>`rotate(${left?(+v+180).toFixed(2):v})`),x:left?-(R+13):R+13,y:3.5,"text-anchor":left?"end":"start"});
-      t.textContent=n.name.replace(/\s*\([^)]*\)/,"")+(LATIN[n.name]&&LATIN[n.name]!==n.name?" · "+LATIN[n.name]:""); n.lbl=t; gL.appendChild(t);
+      t.textContent=LATIN[n.name]||n.name; n.lbl=t; gL.appendChild(t);
     } else if(n!==root && (EASY||MAJOR.has(n.name))){
       const deg=n.a*180/Math.PI, bottom=Math.sin(n.a)>0, rr=n.r-7;
       const t=el("text",{class:"clbl major"+(L1.has(n.name)?"":" l2"),"data-lvl":MAJOR.has(n.name)?"":"3",style:n.style,"text-anchor":"middle"});
@@ -4099,11 +5746,11 @@ function decollide(items){ // items: {el,x,y,w,h,pri}; greedy, higher pri first
   items.sort((a,b)=>b.pri-a.pri); const kept=[];
   items.forEach(it=>{ const hit=kept.some(k=>Math.abs(k.x-it.x)<(k.w+it.w)/2*0.85 && Math.abs(k.y-it.y)<(k.h+it.h)/2*0.9); if(hit) it.el.style.display="none"; else kept.push(it); }); }
 function placeMajors(){ if(LAYOUT==="fractal"){ view.style.setProperty("--eo","1"); const items=[]; nodes.forEach(n=>{ if(!n.lbl) return; const px=n.fs*s; const ok=(px>=5&&px<=90); n.lbl.style.display=ok?"":"none"; if(ok&&n.major){ const p=toScreen(n.x,n.y); const w=n.lbl.textContent.length*px*0.58; items.push({el:n.lbl,x:p.x,y:p.y,w:Math.max(w,px),h:Math.max(w,px)*0.5,pri:n.L}); } }); decollide(items); return; }
-  const items=[]; const fs=Math.max(9,Math.min(14/s,160)); view.style.setProperty("--fs",fs+"px"); view.style.setProperty("--eo",Math.min(1,0.18+s*1.4).toFixed(2)); view.classList.toggle("z2",s>(EASY?0.2:0.42));
+  const items=[]; const fs=Math.max(9,Math.min(14/s,160*K)); view.style.setProperty("--fs",fs+"px"); view.style.setProperty("--eo",Math.min(1,0.18+s*1.4*K).toFixed(2)); view.classList.toggle("z2",s>(EASY?0.2:0.42)/K);
   nodes.forEach(n=>{ if(!n.major) return; const deg=n.a*180/Math.PI, bottom=Math.sin(n.a)>0, left=Math.cos(n.a)<0;
     const width=n.name.length*fs*0.58, sector=(n.hi-n.lo+1)*2*Math.PI/N*R;
     const room = n.depth<=1 || sector>=fs*1.15; n.lbl.style.display=room?"":"none"; if(!room) return;
-    if(n.depth<=1 && s>0.5){ n.lbl.style.display="none"; return; }
+    if(n.depth<=1 && s>0.5/K){ n.lbl.style.display="none"; return; }
     const cr=n.children.reduce((t,c)=>t+c.r,0)/n.children.length; const mid=n.depth<=1? R+fs*1.1 : Math.min((n.r+R)/2, n.r+(cr-n.r)*0.55+fs*0.6), arcMid=(n.hi-n.lo+1)*2*Math.PI/N*mid;
     if(width<arcMid*0.95){ n.lbl.setAttribute("transform",`rotate(${(bottom?deg-90:deg+90).toFixed(2)}) translate(0 ${(bottom?mid:-mid).toFixed(1)})`); n.lbl.setAttribute("x",0); n.lbl.setAttribute("y",fs*0.35); n.lbl.setAttribute("text-anchor","middle"); }
     else { n.lbl.setAttribute("transform",`rotate(${(left?deg+180:deg).toFixed(2)})`); n.lbl.setAttribute("x",left?-mid:mid); n.lbl.setAttribute("y",fs*0.35); n.lbl.setAttribute("text-anchor","middle"); }
@@ -4148,14 +5795,14 @@ function flyTo(s2,tx2,ty2,ms=550){ if(flyRaf) cancelAnimationFrame(flyRaf); cons
 const cv=document.getElementById("cv"), layer=document.getElementById("layer");
 function drawStatic(){ const dpr=window.devicePixelRatio||1; if(cv.width!==Math.round(W*dpr)||cv.height!==Math.round(H*dpr)){ cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr); }
   const c=cv.getContext("2d"); c.setTransform(1,0,0,1,0,0); c.clearRect(0,0,cv.width,cv.height);
-  c.setTransform(dpr*s,0,0,dpr*s,dpr*(W/2+tx),dpr*(H/2+ty)); const eo=Math.min(1,0.18+s*1.4); c.lineCap="round"; c.lineJoin="round";
+  c.setTransform(dpr*s,0,0,dpr*s,dpr*(W/2+tx),dpr*(H/2+ty)); const eo=Math.min(1,0.18+s*1.4*K); c.lineCap="round"; c.lineJoin="round";
   CV.forEach(gp=>{ if(gp.kind==="wedge"){ c.globalAlpha=0.07; c.fillStyle=gp.color; c.fill(gp.path); }
     else if(gp.kind==="edge"){ c.globalAlpha=eo; c.strokeStyle=gp.color; c.lineWidth=1.3/s; c.stroke(gp.path); }
-    else if(gp.kind==="tick"){ if(s<0.55) return; c.globalAlpha=0.9; c.strokeStyle=gp.color; c.lineWidth=1/s; c.setLineDash([2/s,3/s]); c.stroke(gp.path); c.setLineDash([]); }
-    else if(gp.kind==="dot"){ if(s<0.3) return; c.globalAlpha=eo; c.fillStyle="#fff"; c.fill(gp.path); c.strokeStyle=gp.color; c.lineWidth=1.2/s; c.stroke(gp.path); }
+    else if(gp.kind==="tick"){ if(s<0.55/K) return; c.globalAlpha=0.9; c.strokeStyle=gp.color; c.lineWidth=1/s; c.setLineDash([2/s,3/s]); c.stroke(gp.path); c.setLineDash([]); }
+    else if(gp.kind==="dot"){ if(s<0.3/K) return; c.globalAlpha=eo; c.fillStyle="#fff"; c.fill(gp.path); c.strokeStyle=gp.color; c.lineWidth=1.2/s; c.stroke(gp.path); }
     else if(gp.kind==="leaf"){ c.globalAlpha=0.55; c.fillStyle=gp.color; c.fill(gp.path); } });
   c.globalAlpha=1; }
-function commit(){ cs=s;ctx=tx;cty=ty; layer.style.transform=""; drawStatic(); view.setAttribute("transform",`translate(${W/2+tx} ${H/2+ty}) scale(${s})`); document.getElementById("fxview").setAttribute("transform",`translate(${W/2+tx} ${H/2+ty}) scale(${s})`); view.classList.toggle("zoomed",s>1.6); view.classList.toggle("lowzoom",s<(EASY?0.3:0.55)); placeMajors(); if(raf){cancelAnimationFrame(raf);raf=null;} placeChip(); }
+function commit(){ cs=s;ctx=tx;cty=ty; layer.style.transform=""; drawStatic(); view.setAttribute("transform",`translate(${W/2+tx} ${H/2+ty}) scale(${s})`); document.getElementById("fxview").setAttribute("transform",`translate(${W/2+tx} ${H/2+ty}) scale(${s})`); view.classList.toggle("zoomed",s>1.6/K); view.classList.toggle("lowzoom",s<(EASY?0.3:0.55)/K); placeMajors(); if(raf){cancelAnimationFrame(raf);raf=null;} placeChip(); }
 function sheetH(){ const sh=document.getElementById("sheet"); return sh.classList.contains("hide")?0:sh.offsetHeight; }
 function fit(){ size(); const _c=commit; const Hv=H-sheetH()-70, bw=BBOX.x1-BBOX.x0, bh=BBOX.y1-BBOX.y0; s=Math.min((W-16)/bw, Hv/bh); if(LAYOUT!=="radial") s=Math.max(s,(W-16)/bw*0.999); s=Math.max(MINS(),Math.min(s,3));
   const cx=(BBOX.x0+BBOX.x1)/2, cy=LAYOUT==="radial"?(BBOX.y0+BBOX.y1)/2:Math.min((BBOX.y0+BBOX.y1)/2, BBOX.y0+Hv/(2*s)); const S=s,TX=-cx*s,TY=-cy*s-sheetH()/2+35; if(view.childNodes.length&&cs!==1){ s=cs;tx=ctx;ty=cty; flyTo(S,TX,TY); } else { tx=TX;ty=TY; commit(); } }
@@ -4188,7 +5835,7 @@ let wheelT=null;
 document.getElementById("fit").onclick=()=>{ if(SCOPE==="bacteria"&&!$("overlay").classList.contains("on")) fitTo(byName["Bacteria"]); else fit(); };
 function nearest(cx,cy){ const w=toWorld(cx,cy); let best=null,bd=Infinity;
   nodes.forEach(n=>{ if(n.implicit) return; let d=Math.hypot(n.x-w.x,n.y-w.y);
-    if(!n.children.length && !(MODE==="clades")){ const len=(n.lbl.textContent.length*5.0)+13; const proj=(w.x-n.x)*n.ux+(w.y-n.y)*n.uy; const c=Math.max(0,Math.min(len,proj)); d=Math.min(d,Math.hypot(n.x+n.ux*c-w.x,n.y+n.uy*c-w.y)*0.9); }
+    if(!n.children.length && !(MODE==="clades")){ const len=(n.lbl.textContent.length*5.2)+13; const proj=(w.x-n.x)*n.ux+(w.y-n.y)*n.uy; const c=Math.max(0,Math.min(len,proj)); d=Math.min(d,Math.hypot(n.x+n.ux*c-w.x,n.y+n.uy*c-w.y)*0.9); }
     if(d<bd){bd=d;best=n;} }); return best; }
 
 // ================= GAME =================
@@ -4208,7 +5855,16 @@ function newGame(){ $("overlay").classList.remove("peek"); $("sheet").classList.
 function dayKey(){ const d=new Date(); return d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate(); }
 const EPOCH=Date.UTC(2026,8,11); const dayNum=()=>Math.floor((Date.now()-EPOCH)/86400000)+1;
 function mulberry(seed){ return ()=>{ seed|=0; seed=seed+0x6D2B79F5|0; let t=Math.imul(seed^seed>>>15,1|seed); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
-function dailyPick(pools,scope){ const rng=mulberry(dayKey()*7+(scope==="bacteria"?3:1)); return pools.map(p=>p[Math.floor(rng()*p.length)]); }
+function famKey(n){ // a real ancestor 2 named levels above the tip (roughly family/order), used to keep the five picks apart
+  let a=n; for(let i=0;i<2;i++){ a=realUp(a.parent||a); if(a===root) break; } return a.name; }
+function dailyPick(pools,scope){ const rng=mulberry(dayKey()*7+11); const out=[], used=new Set(), usedDom=[];
+  pools.forEach((p,i)=>{ let cand=p.filter(o=>byName[o.leaf]&&byName[o.leaf].dom!=="Bacteria"); if(!cand.length) cand=p.slice(); if(i===pools.length-1){ const bact=pools.slice(3).flat().filter(o=>byName[o.leaf]&&byName[o.leaf].dom==="Bacteria"); if(bact.length) cand=bact; }
+    // seeded shuffle
+    for(let k=cand.length-1;k>0;k--){ const j=Math.floor(rng()*(k+1)); [cand[k],cand[j]]=[cand[j],cand[k]]; }
+    let pick=cand.find(o=>{ const t=byName[o.leaf]; if(!t) return false; if(used.has(famKey(t))) return false; return out.every(q=>pathBetween(byName[q.leaf],t).dist>=5); });
+    if(!pick) pick=cand.find(o=>byName[o.leaf]&&!used.has(famKey(byName[o.leaf])))||cand[0];
+    used.add(famKey(byName[pick.leaf])); out.push(pick); });
+  return out; }
 function scopedPools(){ if(SCOPE==="all") return POOLS; return POOLS.map(p=>p.filter(o=>byName[o.leaf].dom==="Bacteria")).map((p,i)=>p.length?p:POOLS[i]); }
 function fitTo(node){ size(); const Hv=H-sheetH()-70; const pts=[[node.x,node.y]]; const a0=-Math.PI/2+(node.lo-0.5)*2*Math.PI/N, a1=-Math.PI/2+(node.hi+0.5)*2*Math.PI/N;
   for(let a=a0;a<=a1;a+=(a1-a0)/12) pts.push([(R+120)*Math.cos(a),(R+120)*Math.sin(a)]);
@@ -4217,20 +5873,20 @@ function fitTo(node){ size(); const Hv=H-sheetH()-70; const pts=[[node.x,node.y]
 const TUT=[
  {t:"This is the tree of life",b:"Every living thing, from E. coli to elephants, hangs off one tree. The centre is the last universal common ancestor, about four billion years ago. Time runs outward: the rim is today, and every tip on it is a living group. Blue is Bacteria, gold is Archaea, purple is Eukaryotes (everything with a nucleus, including you).",go:()=>fit()},
  {t:"You are here",b:"Zoom in far enough and the tree reaches you. Under Primates sit four neighbouring tips: orangutans, gorillas, chimpanzees and bonobos, and humans. Humans and chimps are one split apart (about 7 million years); gorillas one more; orangutans one more again. Every organism in the game sits on a tip like these, and you score by how many splits lie between your pin and the right one.",go:()=>{ const n=byName["Great apes"]||byName["Humans"]; const hu=byName["Humans"], po=byName["Orangutans"]; const m={x:(hu.x+po.x)/2+hu.ux*40,y:(hu.y+po.y)/2+hu.uy*40}; const S=2.2; flyTo(S,-m.x*S,-m.y*S-sheetH()*0.75,800); $("marks").innerHTML=""; ["Humans","Chimpanzees & bonobos","Gorillas","Orangutans"].forEach((k,i)=>{ const t=byName[k]; if(!t) return; const c=mark(t,i===0?"correct":"lca"); c.style.animationDelay=(i*0.12)+"s"; }); }},
- {t:"Reading the map",b:"Big labels mark kingdoms and phyla: Animals, Fungi, Land plants, Mammals, Insects, Proteobacteria. Pinch or scroll to zoom in and smaller groups appear, down to labelled tips like ‘Bears · Ursidae’. In Easy mode every group is labelled. The ⤢ button snaps back to the whole tree.",go:()=>{ const n=byName["Mammals"]; flyTo(0.7,-n.x*0.7,-n.y*0.7-sheetH()/2,700); }},
+ {t:"Reading the map",b:"Big labels mark kingdoms and phyla: Animals, Fungi, Land plants, Mammals, Insects, Proteobacteria. Pinch or scroll to zoom in and smaller groups appear, down to tips labelled with their Latin names, like ‘Ursidae’. In Easy mode every group is labelled. The ⤢ button snaps back to the whole tree.",go:()=>{ const n=byName["Mammals"]; flyTo(0.7,-n.x*0.7,-n.y*0.7-sheetH()/2,700); }},
  {t:"How a round works",b:"You get an organism, a photo, and a clue. Tap where you think it belongs — anywhere on the tree counts, the pin snaps to the nearest branch. Then press the orange button to lock it in. There is a timer, so don’t dither.",go:()=>fit()},
  {t:"Scoring",b:"Your score is how many branches lie between your pin and the right tip, turned into points out of 100: exact is 100 🎯, one branch off is about 90 👑, five is about 60 🤨, twenty is 14 💀. Five rounds add up to a final score, Map Tap style.",go:null},
  {t:"Strategy: hedge like a pro",b:"Not sure which family? Tap the group instead. Placing a cat on ‘Carnivorans’ costs a few branches; placing it on ‘Fish’ costs twenty. A confident hedge beats a wild guess every time — the sheet tells you the minimum branches a hedge costs before you commit.",go:()=>{ const n=byName["Carnivorans"]; flyTo(1.6,-n.x*1.6,-n.y*1.6-sheetH()/2,700); }},
  {t:"Strategy: read the clue",b:"The blurb hides the taxonomy. ‘No nucleus’ means Bacteria or Archaea; ‘no nucleus but no bacterial cell wall’ means Archaea. ‘Milk’ means mammal, ‘feathers’ means bird, ‘lays eggs but has fur’ means monotreme. ‘Six legs’ is an insect; ‘eight legs, no antennae’ is an arachnid. ‘Spores, not seeds’ is a fern or moss; ‘cones, no flowers’ is a conifer.",go:null},
  {t:"Strategy: know the traps",b:"Whales sit with hippos, not fish. Birds sit inside reptiles, next to crocodiles. Kelp is not a plant (it is with diatoms), fungi are closer to animals than to plants, and a slowworm is a lizard. Later rounds are built from exactly these.",go:null},
- {t:"Modes",b:"Tap or Press-and-hold selection. Kingdoms and phyla are labelled; zoom in for more. 30 seconds a round — when the clock hits five the screen flashes red, so commit. One shared set of five organisms per day, so compare scores with friends. Share your score line at the end. Good luck.",go:null}
+ {t:"Modes",b:"Tap or Press-and-hold selection. Kingdoms and phyla are labelled; zoom in for more. 25 seconds a round — when the clock hits five the screen flashes red, so commit. One shared set of five organisms per day, so compare scores with friends. Share your score line at the end. Good luck.",go:null}
 ];
 function tutorial(i){ $("marks").innerHTML=""; if(i<0||i>=TUT.length){ newGame(); return; } const st=TUT[i]; $("sheet").classList.add("hide"); if(!view.childNodes.length) render();
   $("card").innerHTML=`<p class="sub" style="margin:0 0 6px">Tutorial · ${i+1} of ${TUT.length}</p><p class="rank" style="margin-top:0">${st.t}</p><p class="sub">${st.b}</p>
     <div class="row"><button class="go ghost" id="tb">${i===0?"Close":"Back"}</button><button class="go" id="tn">${i===TUT.length-1?"Done":"Next"}</button></div>`;
   $("overlay").classList.add("on"); $("overlay").classList.add("peek"); $("tb").onclick=()=>{ if(i===0){ $("overlay").classList.remove("peek"); newGame(); } else tutorial(i-1); }; $("tn").onclick=()=>{ if(i===TUT.length-1){ $("overlay").classList.remove("peek"); newGame(); } else tutorial(i+1); };
   if(st.go) st.go(); }
-function begin(){ ROUND_SECONDS=EASY?15:30; render(); round=0;hist=[];totalMs=0; orgs=dailyPick(scopedPools(),SCOPE);
+function begin(){ ROUND_SECONDS=25; render(); round=0;hist=[];totalMs=0; orgs=dailyPick(scopedPools(),SCOPE);
   $("overlay").classList.remove("on"); $("sheet").classList.remove("hide"); startRound(); requestAnimationFrame(()=>{ if(SCOPE==="bacteria") fitTo(byName["Bacteria"]); else fit(); }); toast("Drag to pan · pinch or scroll to zoom"); }
 function dots(){ $("dots").innerHTML=orgs.map((_,i)=>`<i class="${i<round?'done'+(hist[i]&&hist[i].dist>0?' miss':''):i===round?'now':''}"></i>`).join(""); }
 function clearMarks(){ $("marks").innerHTML=""; $("hl").innerHTML=""; nodes.forEach(n=>{ if(n.marks){n.marks=null;} n.lbl&&n.lbl.classList.remove("picked","correct","lca"); }); chip.classList.remove("on","green"); chipNode=null; }
